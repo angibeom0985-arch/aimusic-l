@@ -28,7 +28,7 @@ const SidebarAd: React.FC<SidebarAdProps> = ({ position }) => {
     >
       <ins
         className="adsbygoogle"
-        style={{ display: "block", width: "160px", height: "600px" }}
+        style={{ display: "block" }}
         data-ad-client="ca-pub-2686975437928535"
         data-ad-slot="6712949943"
         data-ad-format="auto"
