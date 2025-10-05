@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ApiKeyManager from "../components/ApiKeyManager";
+import DisplayAd from "../components/DisplayAd";
 
 const API_KEY_STORAGE = "gemini_api_key";
 
@@ -34,6 +35,11 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
       {/* API 키 입력 섹션 */}
       <div className="w-full max-w-2xl mb-12">
         <ApiKeyManager onKeySet={handleKeySet} />
+      </div>
+
+      {/* 광고 */}
+      <div className="w-full max-w-4xl mb-8">
+        <DisplayAd />
       </div>
 
       {/* 메인 버튼 그리드 (2x2) */}
@@ -91,6 +97,11 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
           </div>
           <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
         </Link>
+      </div>
+
+      {/* 하단 광고 */}
+      <div className="w-full max-w-4xl mt-8">
+        <DisplayAd />
       </div>
     </div>
   );
