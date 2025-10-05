@@ -1,0 +1,26 @@
+{
+  "name": "AI 음원 가사 및 썸네일 제작",
+  "short_name": "AI Music",
+  "description": "AI로 음악 가사와 썸네일을 제작하세요",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#ec4899",
+  "background_color": "#18181b",
+  "display": "standalone",
+  "start_url": "/"
+}
