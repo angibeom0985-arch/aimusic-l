@@ -67,7 +67,7 @@ const StepTitle: React.FC<StepTitleProps> = ({
         </div>
       ) : (
         <>
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {titles.map((title, index) => {
               const colors = [
                 "from-violet-600/20 to-purple-600/20 hover:from-violet-600/30 hover:to-purple-600/30 border-violet-600/50",
