@@ -29,22 +29,22 @@ const StepGenre: React.FC<StepGenreProps> = ({ genres, onGenreSelect }) => {
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {genres.map((genre, index) => {
           const colors = [
-            "from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700",
-            "from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700",
-            "from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700",
-            "from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700",
-            "from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700",
-            "from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700",
-            "from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700",
-            "from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700",
+            "from-blue-900 to-blue-800 hover:from-blue-800 hover:to-blue-700 border-orange-500/30",
+            "from-rose-900 to-pink-800 hover:from-rose-800 hover:to-pink-700 border-pink-500/30",
+            "from-orange-900 to-red-900 hover:from-orange-800 hover:to-red-800 border-orange-500/30",
+            "from-teal-900 to-cyan-900 hover:from-teal-800 hover:to-cyan-800 border-cyan-500/30",
+            "from-indigo-900 to-blue-900 hover:from-indigo-800 hover:to-blue-800 border-blue-500/30",
+            "from-purple-900 to-violet-900 hover:from-purple-800 hover:to-violet-800 border-purple-500/30",
+            "from-amber-900 to-orange-900 hover:from-amber-800 hover:to-orange-800 border-amber-500/30",
+            "from-pink-900 to-rose-900 hover:from-pink-800 hover:to-rose-800 border-pink-500/30",
           ];
           return (
             <button
               key={genre}
               onClick={() => onGenreSelect(genre)}
-              className={`p-4 bg-gradient-to-r ${
+              className={`p-4 bg-gradient-to-br ${
                 colors[index % colors.length]
-              } rounded-lg text-center font-medium hover:scale-105 transform transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-zinc-900 shadow-md hover:shadow-lg`}
+              } border rounded-lg text-center font-medium hover:scale-105 transform transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-slate-900 shadow-lg hover:shadow-orange-500/30 hover:shadow-xl`}
             >
               {genre}
             </button>
@@ -60,7 +60,7 @@ const StepGenre: React.FC<StepGenreProps> = ({ genres, onGenreSelect }) => {
           value={customGenre}
           onChange={(e) => setCustomGenre(e.target.value)}
           placeholder="직접 장르 입력..."
-          className="flex-grow bg-zinc-800 border border-zinc-700 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 w-full"
+          className="flex-grow bg-slate-800 border border-orange-500/30 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500 w-full text-slate-200 placeholder:text-slate-400"
           aria-label="직접 장르 입력"
         />
         <Button type="submit" disabled={!customGenre.trim()}>

@@ -35,7 +35,7 @@ const AppContent: React.FC = () => {
   const showHeader = location.pathname !== "/";
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 relative">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-zinc-100 relative">
       {/* 사이드바 광고 */}
       <SidebarAd position="left" />
       <SidebarAd position="right" />
@@ -44,10 +44,10 @@ const AppContent: React.FC = () => {
       <div className="min-h-screen flex flex-col p-4 lg:px-[180px]">
         {showHeader && (
           <header className="text-center mb-8 pt-8">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-orange-400">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-orange-400 via-pink-500 to-rose-500">
               <Link to="/">AI 음원 가사 및 썸네일 제작</Link>
             </h1>
-            <p className="text-zinc-400 mt-2">
+            <p className="text-slate-300 mt-2">
               AI로 당신의 음악에 생명을 불어넣으세요
             </p>
           </header>
@@ -70,7 +70,7 @@ const AppContent: React.FC = () => {
           </Routes>
         </main>
 
-        <footer className="text-center mt-12 text-zinc-500 text-sm pb-24">
+        <footer className="text-center mt-12 text-slate-400 text-sm pb-24">
           <p className="mb-2">
             쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를
             제공받습니다.
