@@ -468,7 +468,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           </p>
           <a
             href="/"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-lg font-medium hover:from-orange-600 hover:to-pink-600 transition-all shadow-lg hover:shadow-orange-500/30"
+            className="inline-block px-6 py-3 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
           >
             홈으로 돌아가기
           </a>
@@ -614,8 +614,8 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                         }
                         className={`px-3 py-1 rounded-full text-sm font-medium cursor-pointer transition-all duration-200 shadow-md ${
                           category.state === option.en
-                            ? "bg-gradient-to-r from-orange-500 to-pink-500 text-white shadow-orange-500/30"
-                            : "bg-slate-800 text-slate-200 hover:bg-slate-700 border border-orange-500/20"
+                            ? "bg-gradient-to-r from-pink-500 to-orange-500 text-white"
+                            : "bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
                         }`}
                       >
                         {option.ko}
@@ -659,14 +659,14 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               <button
                 onClick={handleCopyToClipboard}
                 disabled={!musicPrompt}
-                className="w-full bg-gradient-to-r from-blue-700 to-cyan-700 hover:from-blue-600 hover:to-cyan-600 disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-cyan-500/30"
+                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
               >
                 📋 프롬프트 복사
               </button>
               <button
                 onClick={handleGenerate}
                 disabled={!canGenerate}
-                className="w-full bg-gradient-to-r from-orange-500 to-pink-500 hover:from-orange-600 hover:to-pink-600 disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-orange-500/30"
+                className="w-full bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
               >
                 {isLoading ? "⏳ 생성 중..." : "✨ 이미지 생성"}
               </button>
@@ -700,7 +700,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   isUpscaling ||
                   isCroppingModalOpen
                 }
-                className="w-full bg-gradient-to-r from-purple-700 to-pink-700 hover:from-purple-600 hover:to-pink-600 disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 text-sm shadow-lg hover:shadow-purple-500/30"
+                className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 text-sm shadow-md hover:shadow-lg"
               >
                 ✂️ 16:9로 자르기
               </button>
@@ -712,7 +712,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   isUpscaling ||
                   isCroppingModalOpen
                 }
-                className="w-full bg-gradient-to-r from-emerald-700 to-teal-700 hover:from-emerald-600 hover:to-teal-600 disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-emerald-500/30"
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
               >
                 {isUpscaling ? "⏳ 업스케일링..." : "⬆️ 업스케일"}
               </button>
@@ -724,7 +724,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   isUpscaling ||
                   isCroppingModalOpen
                 }
-                className="w-full bg-gradient-to-r from-blue-700 to-cyan-700 hover:from-blue-600 hover:to-cyan-600 disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-blue-500/30"
+                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
               >
                 💾 다운로드
               </button>

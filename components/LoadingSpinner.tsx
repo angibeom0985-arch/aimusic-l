@@ -7,7 +7,7 @@ interface LoadingSpinnerProps {
 const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ className = "" }) => {
   return (
     <svg
-      className={`animate-spin h-8 w-8 text-pink-500 ${className}`}
+      className={`animate-spin h-8 w-8 text-pink-500 drop-shadow-[0_0_10px_rgba(236,72,153,0.8)] ${className}`}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

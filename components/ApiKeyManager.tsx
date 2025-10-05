@@ -41,11 +41,11 @@ const ApiKeyManager: React.FC<ApiKeyManagerProps> = ({ onKeySet }) => {
 
   if (savedKey) {
     return (
-      <div className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 mb-4">
+      <div className="bg-gradient-to-r from-green-900/30 via-emerald-900/30 to-teal-900/30 border border-green-500/30 rounded-lg p-4 mb-4 shadow-lg shadow-green-500/20">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <svg
-              className="w-5 h-5 text-green-500"
+              className="w-5 h-5 text-green-400 drop-shadow-lg"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -57,11 +57,11 @@ const ApiKeyManager: React.FC<ApiKeyManagerProps> = ({ onKeySet }) => {
                 d="M5 13l4 4L19 7"
               />
             </svg>
-            <span className="text-zinc-300">API 키가 저장되었습니다</span>
+            <span className="text-zinc-200 font-medium">API 키가 저장되었습니다</span>
           </div>
           <button
             onClick={handleRemoveKey}
-            className="text-sm text-red-400 hover:text-red-300 transition-colors"
+            className="text-sm text-red-400 hover:text-red-300 transition-all hover:scale-105 font-medium"
           >
             삭제
           </button>
@@ -73,7 +73,7 @@ const ApiKeyManager: React.FC<ApiKeyManagerProps> = ({ onKeySet }) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-zinc-900 border border-zinc-800 rounded-lg p-4 mb-4"
+      className="bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800 border border-zinc-700/50 rounded-lg p-4 mb-4 shadow-xl shadow-black/50"
     >
       <label className="block text-sm font-medium text-zinc-300 mb-2">
         Gemini API 키
