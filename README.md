@@ -1,4 +1,4 @@
-# AI Music - 통합 프로젝트
+# AI 음원 가사 및 썸네일 제작
 
 AI를 활용한 **가사 생성**과 **썸네일 생성** 기능을 하나로 통합한 웹 애플리케이션입니다.
 
@@ -59,4 +59,4 @@ aimusic-integrated/
 
 ## 라이선스
 
-© 2025 작사의 신. All rights reserved.
+© 2025 AI 음원 가사 및 썸네일 제작. All rights reserved.
