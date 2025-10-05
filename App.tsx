@@ -39,29 +39,29 @@ const App: React.FC = () => {
             <p className="text-zinc-400 mt-2">
               AI로 당신의 음악에 생명을 불어넣으세요
             </p>
-            
+
             {/* 네비게이션 메뉴 */}
             <nav className="mt-4 flex justify-center gap-4">
-              <Link 
-                to="/" 
+              <Link
+                to="/"
                 className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
               >
                 가사 생성
               </Link>
-              <Link 
-                to="/thumbnail" 
+              <Link
+                to="/thumbnail"
                 className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
               >
                 썸네일 생성
               </Link>
-              <Link 
-                to="/api-guide" 
+              <Link
+                to="/api-guide"
                 className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
               >
                 API 가이드
               </Link>
-              <Link 
-                to="/how-to-use" 
+              <Link
+                to="/how-to-use"
                 className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg transition-colors"
               >
                 사용 방법
@@ -72,10 +72,7 @@ const App: React.FC = () => {
           <main className="w-full max-w-7xl">
             <Routes>
               <Route path="/" element={<MainPage />} />
-              <Route 
-                path="/thumbnail" 
-                element={<ThumbnailPage />} 
-              />
+              <Route path="/thumbnail" element={<ThumbnailPage />} />
               <Route path="/api-guide" element={<ApiGuidePage />} />
               <Route path="/how-to-use" element={<HowToUsePage />} />
               <Route path="/admin" element={<AdminPage />} />
