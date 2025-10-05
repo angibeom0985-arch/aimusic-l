@@ -17,11 +17,11 @@ export const handleCopyDownload = (
       .writeText(content)
       .then(() => {
         // 성공 메시지 표시
-        showSuccessMessage("복사되었습니다.");
+        showSuccessMessage("📋 복사되었습니다.");
       })
       .catch((err) => {
         console.error("복사 실패:", err);
-        showSuccessMessage("복사에 실패했습니다.");
+        showSuccessMessage("❌ 복사에 실패했습니다.");
       });
   } else {
     // 다운로드 처리
@@ -34,7 +34,7 @@ export const handleCopyDownload = (
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showSuccessMessage("다운로드되었습니다.");
+    showSuccessMessage("💾 다운로드되었습니다.");
   }
 
   // 3초 후 쿠팡 링크 열기
