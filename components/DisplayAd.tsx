@@ -17,17 +17,15 @@ const DisplayAd: React.FC = () => {
 
   return (
     <div className="w-full my-4 flex justify-center">
-      <div>
-        <center>
-          <ins
-            className="adsbygoogle"
-            style={{ display: "block" }}
-            data-ad-client="ca-pub-2686975437928535"
-            data-ad-slot="6106251761"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          />
-        </center>
+      <div className="w-full max-w-4xl">
+        <ins
+          className="adsbygoogle"
+          style={{ display: "block", minHeight: "100px" }}
+          data-ad-client="ca-pub-2686975437928535"
+          data-ad-slot="6106251761"
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        />
       </div>
     </div>
   );
