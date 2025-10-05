@@ -58,19 +58,25 @@ const showSuccessMessage = (message: string) => {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.9);
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.95), rgba(239, 68, 68, 0.95));
     color: white;
-    padding: 2rem;
+    padding: 2rem 3rem;
     border-radius: 1rem;
     z-index: 10000;
     text-align: center;
-    font-size: 1.2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    font-size: 1.25rem;
+    font-weight: 600;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.3);
   `;
   modal.textContent = message;
   document.body.appendChild(modal);
 
   setTimeout(() => {
-    modal.remove();
-  }, 2000);
+    modal.style.opacity = "0";
+    modal.style.transition = "opacity 0.3s ease";
+    setTimeout(() => {
+      modal.remove();
+    }, 300);
+  }, 2700);
 };
