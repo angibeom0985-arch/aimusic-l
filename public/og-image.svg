@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#18181b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#27272a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="text" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fb923c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <text x="600" y="250" font-family="'Noto Sans KR', Arial, sans-serif" font-size="100" font-weight="bold" fill="url(#text)" text-anchor="middle">작사의 신</text>
+  <text x="600" y="320" font-family="'Noto Sans KR', Arial, sans-serif" font-size="36" fill="#a1a1aa" text-anchor="middle">AI로 당신의 음악에 생명을 불어넣으세요</text>
+  <text x="600" y="400" font-family="Arial" font-size="120" text-anchor="middle">🎵</text>
+  <text x="600" y="480" font-family="'Noto Sans KR', Arial, sans-serif" font-size="28" fill="#71717a" text-anchor="middle">Google Gemini 기반 노래 가사 자동 생성</text>
+</svg>

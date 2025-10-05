@@ -1,0 +1,115 @@
+import React, { useState, useEffect, useCallback } from "react";
+import { generateThemes } from "../services/geminiService";
+import Card from "./Card";
+import StepIndicator from "./StepIndicator";
+import LoadingSpinner from "./LoadingSpinner";
+import Button from "./Button";
+
+interface StepThemeProps {
+  genre: string;
+  title: string;
+  onThemeSelect: (theme: string) => void;
+  onBack: () => void;
+  apiKey: string;
+}
+
+const StepTheme: React.FC<StepThemeProps> = ({
+  genre,
+  title,
+  onThemeSelect,
+  onBack,
+  apiKey,
+}) => {
+  const [themes, setThemes] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [customTheme, setCustomTheme] = useState("");
+
+  const fetchThemes = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const newThemes = await generateThemes(genre, title, apiKey);
+      setThemes(newThemes);
+    } catch (err) {
+      setError("주제를 생성하는 데 실패했습니다. 다시 시도해주세요.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [genre, title, apiKey]);
+
+  useEffect(() => {
+    fetchThemes();
+  }, [fetchThemes]);
+
+  const handleCustomSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (customTheme.trim()) {
+      onThemeSelect(customTheme.trim());
+    }
+  };
+
+  return (
+    <Card>
+      <StepIndicator
+        currentStep={3}
+        totalSteps={3}
+        stepTitle="가사의 주제를 선택하세요"
+      />
+      <div className="text-center mb-4 text-zinc-400">
+        <p>
+          선택한 제목:{" "}
+          <span className="font-semibold text-orange-300">{title}</span>
+        </p>
+      </div>
+      {loading ? (
+        <div className="flex flex-col items-center justify-center min-h-[200px]">
+          <LoadingSpinner />
+          <p className="mt-4 text-zinc-400">AI가 주제를 구상하고 있어요...</p>
+        </div>
+      ) : error ? (
+        <div className="text-center text-red-400 min-h-[200px] flex items-center justify-center">
+          {error}
+        </div>
+      ) : (
+        <>
+          <div className="space-y-3">
+            {themes.map((theme, index) => (
+              <button
+                key={index}
+                onClick={() => onThemeSelect(theme)}
+                className="w-full text-left p-4 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors duration-200"
+              >
+                {theme}
+              </button>
+            ))}
+          </div>
+          <div className="mt-6 text-center text-zinc-400">
+            <p>또는</p>
+          </div>
+          <form onSubmit={handleCustomSubmit} className="mt-4 flex gap-2">
+            <input
+              type="text"
+              value={customTheme}
+              onChange={(e) => setCustomTheme(e.target.value)}
+              placeholder="직접 주제 입력..."
+              className="flex-grow bg-zinc-800 border border-zinc-700 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 w-full"
+              aria-label="직접 주제 입력"
+            />
+            <Button type="submit" disabled={!customTheme.trim()}>
+              선택
+            </Button>
+          </form>
+        </>
+      )}
+      <div className="flex justify-between items-center mt-8">
+        <Button onClick={onBack} variant="secondary">
+          뒤로가기
+        </Button>
+      </div>
+    </Card>
+  );
+};
+
+export default StepTheme;
