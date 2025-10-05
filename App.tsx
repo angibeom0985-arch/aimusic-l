@@ -1,14 +1,77 @@
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import ApiGuidePage from "./pages/ApiGuidePage";
 import HowToUsePage from "./pages/HowToUsePage";
 import AdminPage from "./pages/AdminPage";
 import ThumbnailPage from "./pages/ThumbnailPage";
+import HomePage from "./pages/HomePage";
 import SidebarAd from "./components/SidebarAd";
 import FloatingBanner from "./components/FloatingBanner";
 import { initContentProtection } from "./utils/contentProtection";
 import { initAdBlockerDetection } from "./utils/adBlockDetector";
+
+const API_KEY_STORAGE = "gemini_api_key";
+
+const AppContent: React.FC = () => {
+  const [apiKey, setApiKey] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    // API 키 불러오기
+    const stored = localStorage.getItem(API_KEY_STORAGE);
+    if (stored) {
+      setApiKey(stored);
+    }
+  }, []);
+
+  // HomePage가 아닌 경우 헤더 표시
+  const showHeader = location.pathname !== "/";
+
+  return (
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 relative">
+      {/* 사이드바 광고 */}
+      <SidebarAd position="left" />
+      <SidebarAd position="right" />
+
+      {/* 메인 컨텐츠 */}
+      <div className="min-h-screen flex flex-col p-4 lg:px-[180px]">
+        {showHeader && (
+          <header className="text-center mb-8 pt-8">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-orange-400">
+              <Link to="/">AI 음원 가사 및 썸네일 제작</Link>
+            </h1>
+            <p className="text-zinc-400 mt-2">
+              AI로 당신의 음악에 생명을 불어넣으세요
+            </p>
+          </header>
+        )}
+
+        <main className="w-full max-w-7xl mx-auto flex-1">
+          <Routes>
+            <Route path="/" element={<HomePage apiKey={apiKey} setApiKey={setApiKey} />} />
+            <Route path="/lyrics" element={<MainPage apiKey={apiKey} />} />
+            <Route path="/thumbnail" element={<ThumbnailPage apiKey={apiKey} />} />
+            <Route path="/api-guide" element={<ApiGuidePage />} />
+            <Route path="/how-to-use" element={<HowToUsePage />} />
+            <Route path="/admin" element={<AdminPage />} />
+          </Routes>
+        </main>
+
+        <footer className="text-center mt-12 text-zinc-500 text-sm pb-24">
+          <p className="mb-2">
+            쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를
+            제공받습니다.
+          </p>
+          <p>&copy; 2025 AI 음원 가사 및 썸네일 제작. All rights reserved.</p>
+        </footer>
+      </div>
+
+      {/* 플로팅 배너 */}
+      <FloatingBanner />
+    </div>
+  );
+};
 
 const App: React.FC = () => {
   useEffect(() => {
@@ -25,72 +88,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <div className="min-h-screen bg-zinc-950 text-zinc-100 relative">
-        {/* 사이드바 광고 */}
-        <SidebarAd position="left" />
-        <SidebarAd position="right" />
-
-        {/* 메인 컨텐츠 */}
-        <div className="min-h-screen flex flex-col items-center justify-center p-4 lg:px-[180px]">
-          <header className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-orange-400">
-              <Link to="/">AI 음원 가사 및 썸네일 제작</Link>
-            </h1>
-            <p className="text-zinc-400 mt-2">
-              AI로 당신의 음악에 생명을 불어넣으세요
-            </p>
-
-            {/* 네비게이션 메뉴 */}
-            <nav className="mt-4 flex justify-center gap-4 flex-wrap">
-              <Link
-                to="/"
-                className="px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 rounded-lg transition-all shadow-md hover:shadow-lg"
-              >
-                🎵 가사 생성
-              </Link>
-              <Link
-                to="/thumbnail"
-                className="px-4 py-2 bg-gradient-to-r from-pink-600 to-orange-600 hover:from-pink-700 hover:to-orange-700 rounded-lg transition-all shadow-md hover:shadow-lg"
-              >
-                🖼️ 썸네일 생성
-              </Link>
-              <Link
-                to="/api-guide"
-                className="px-4 py-2 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 rounded-lg transition-all shadow-md hover:shadow-lg"
-              >
-                📚 API 가이드
-              </Link>
-              <Link
-                to="/how-to-use"
-                className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 rounded-lg transition-all shadow-md hover:shadow-lg"
-              >
-                💡 사용 방법
-              </Link>
-            </nav>
-          </header>
-
-          <main className="w-full max-w-7xl">
-            <Routes>
-              <Route path="/" element={<MainPage />} />
-              <Route path="/thumbnail" element={<ThumbnailPage />} />
-              <Route path="/api-guide" element={<ApiGuidePage />} />
-              <Route path="/how-to-use" element={<HowToUsePage />} />
-              <Route path="/admin" element={<AdminPage />} />
-            </Routes>
-          </main>
-
-          <footer className="text-center mt-12 text-zinc-500 text-sm pb-24">
-            <p className="mb-2">
-              쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를
-              제공받습니다.
-            </p>
-            <p>&copy; 2025 AI 음원 가사 및 썸네일 제작. All rights reserved.</p>
-          </footer>
-        </div>
-
-        {/* 플로팅 배너 */}
-        <FloatingBanner />
-      </div>
+      <AppContent />
     </Router>
   );
 };
