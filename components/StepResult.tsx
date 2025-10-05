@@ -35,16 +35,16 @@ const StepResult: React.FC<StepResultProps> = ({ lyrics, onReset, error }) => {
         </div>
       )}
       <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-8">
-        <Button onClick={onReset} variant="secondary">
-          처음부터 다시하기
+        <Button onClick={onReset} variant="info">
+          🔄 처음부터 다시하기
         </Button>
         {!error && (
           <>
-            <Button onClick={handleCopy} variant="primary">
-              가사 복사하기
+            <Button onClick={handleCopy} variant="success">
+              📋 가사 복사하기
             </Button>
-            <Button onClick={handleDownload} variant="primary">
-              가사 다운로드
+            <Button onClick={handleDownload} variant="purple">
+              💾 가사 다운로드
             </Button>
           </>
         )}

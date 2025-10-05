@@ -7,6 +7,7 @@ import { ImageCropper } from '../components/ImageCropper';
 import { UploadIcon, CloseIcon } from '../components/icons';
 import type { CustomizationCategory } from '../types';
 import ApiKeyManager from '../components/ApiKeyManager';
+import DisplayAd from '../components/DisplayAd';
 
 const ThumbnailPage: React.FC = () => {
   const [apiKey, setApiKey] = useState("");
@@ -295,6 +296,42 @@ const ThumbnailPage: React.FC = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    // 다운로드 성공 메시지 표시
+    const modal = document.createElement("div");
+    modal.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.9);
+      color: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      z-index: 10000;
+      text-align: center;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    `;
+    modal.textContent = "다운로드되었습니다.";
+    document.body.appendChild(modal);
+
+    setTimeout(() => {
+      modal.remove();
+    }, 2000);
+
+    // 3초 후 쿠팡 링크 열기
+    setTimeout(() => {
+      const coupangLinks = [
+        "https://link.coupang.com/a/cUVNWY",
+        "https://link.coupang.com/a/cUVNXR",
+        "https://link.coupang.com/a/cUVNYk",
+        "https://link.coupang.com/a/cUVNY1",
+        "https://link.coupang.com/a/cUVN47",
+      ];
+      const randomLink = coupangLinks[Math.floor(Math.random() * coupangLinks.length)];
+      window.open(randomLink, "_blank");
+    }, 3000);
   }, [generatedImage]);
 
   const handleCropTo16_9 = useCallback(() => {
@@ -403,6 +440,8 @@ const ThumbnailPage: React.FC = () => {
                 <p>메뉴에서 장르를 선택하여 프롬프트를 확인하세요.</p>
               </div>
             )}
+
+            <DisplayAd />
           </section>
         </div>
 
@@ -492,16 +531,16 @@ const ThumbnailPage: React.FC = () => {
               <button
                 onClick={handleCopyToClipboard}
                 disabled={!musicPrompt}
-                className="w-full bg-zinc-800 hover:bg-zinc-700 disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition duration-300"
+                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
               >
-                프롬프트 복사
+                📋 프롬프트 복사
               </button>
               <button
                 onClick={handleGenerate}
                 disabled={!canGenerate}
-                className="w-full bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition duration-300"
+                className="w-full bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
               >
-                {isLoading ? '생성 중...' : '이미지 생성'}
+                {isLoading ? '⏳ 생성 중...' : '✨ 이미지 생성'}
               </button>
             </div>
           </div>
@@ -524,25 +563,27 @@ const ThumbnailPage: React.FC = () => {
               <button
                 onClick={handleCropTo16_9}
                 disabled={!generatedImage || isLoading || isUpscaling || isCroppingModalOpen}
-                className="w-full bg-zinc-800 hover:bg-zinc-700 disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition duration-300 text-sm"
+                className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 text-sm shadow-md hover:shadow-lg"
               >
-                16:9로 자르기
+                ✂️ 16:9로 자르기
               </button>
               <button
                 onClick={handleUpscaleImage}
                 disabled={!generatedImage || isLoading || isUpscaling || isCroppingModalOpen}
-                className="w-full bg-zinc-800 hover:bg-zinc-700 disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition duration-300"
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
               >
-                {isUpscaling ? '업스케일링...' : '업스케일'}
+                {isUpscaling ? '⏳ 업스케일링...' : '⬆️ 업스케일'}
               </button>
               <button
                 onClick={handleDownloadImage}
                 disabled={!generatedImage || isLoading || isUpscaling || isCroppingModalOpen}
-                className="w-full bg-zinc-800 hover:bg-zinc-700 disabled:bg-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition duration-300"
+                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
               >
-                다운로드
+                💾 다운로드
               </button>
             </div>
+
+            <DisplayAd />
           </div>
         </section>
       </main>

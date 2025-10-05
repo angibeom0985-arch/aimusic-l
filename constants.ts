@@ -15,9 +15,11 @@ export const INITIAL_GENRES: string[] = [
 ];
 
 export const COUPANG_LINKS: string[] = [
-  "https://link.coupang.com/a/bY9Lao",
-  "https://link.coupang.com/a/bY9L4H",
-  "https://link.coupang.com/a/bY9Mgn",
+  "https://link.coupang.com/a/cUVNWY",
+  "https://link.coupang.com/a/cUVNXR",
+  "https://link.coupang.com/a/cUVNYk",
+  "https://link.coupang.com/a/cUVNY1",
+  "https://link.coupang.com/a/cUVN47",
 ];
 
 export const ADMIN_CREDENTIALS = {

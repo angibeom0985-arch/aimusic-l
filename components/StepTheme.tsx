@@ -75,15 +75,24 @@ const StepTheme: React.FC<StepThemeProps> = ({
       ) : (
         <>
           <div className="space-y-3">
-            {themes.map((theme, index) => (
-              <button
-                key={index}
-                onClick={() => onThemeSelect(theme)}
-                className="w-full text-left p-4 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors duration-200"
-              >
-                {theme}
-              </button>
-            ))}
+            {themes.map((theme, index) => {
+              const colors = [
+                'from-rose-600/20 to-pink-600/20 hover:from-rose-600/30 hover:to-pink-600/30 border-rose-600/50',
+                'from-amber-600/20 to-orange-600/20 hover:from-amber-600/30 hover:to-orange-600/30 border-amber-600/50',
+                'from-emerald-600/20 to-green-600/20 hover:from-emerald-600/30 hover:to-green-600/30 border-emerald-600/50',
+                'from-sky-600/20 to-blue-600/20 hover:from-sky-600/30 hover:to-blue-600/30 border-sky-600/50',
+                'from-purple-600/20 to-violet-600/20 hover:from-purple-600/30 hover:to-violet-600/30 border-purple-600/50',
+              ];
+              return (
+                <button
+                  key={index}
+                  onClick={() => onThemeSelect(theme)}
+                  className={`w-full text-left p-4 bg-gradient-to-r ${colors[index % colors.length]} rounded-lg transition-all duration-200 border shadow-md hover:shadow-lg hover:scale-[1.02]`}
+                >
+                  {theme}
+                </button>
+              );
+            })}
           </div>
           <div className="mt-6 text-center text-zinc-400">
             <p>또는</p>
@@ -104,8 +113,8 @@ const StepTheme: React.FC<StepThemeProps> = ({
         </>
       )}
       <div className="flex justify-between items-center mt-8">
-        <Button onClick={onBack} variant="secondary">
-          뒤로가기
+        <Button onClick={onBack} variant="info">
+          ← 뒤로가기
         </Button>
       </div>
     </Card>

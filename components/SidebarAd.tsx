@@ -23,8 +23,8 @@ const SidebarAd: React.FC<SidebarAdProps> = ({ position }) => {
     <div
       className={`fixed top-0 ${
         position === "left" ? "left-0" : "right-0"
-      } h-full hidden lg:flex items-center justify-center p-4`}
-      style={{ width: "160px" }}
+      } h-full hidden lg:flex items-center justify-center p-2`}
+      style={{ width: "180px" }}
     >
       <ins
         className="adsbygoogle"

@@ -67,15 +67,27 @@ const StepTitle: React.FC<StepTitleProps> = ({
       ) : (
         <>
           <div className="space-y-3">
-            {titles.map((title, index) => (
-              <button
-                key={index}
-                onClick={() => onTitleSelect(title)}
-                className="w-full text-left p-4 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors duration-200"
-              >
-                {title}
-              </button>
-            ))}
+            {titles.map((title, index) => {
+              const colors = [
+                'from-violet-600/20 to-purple-600/20 hover:from-violet-600/30 hover:to-purple-600/30 border-violet-600/50',
+                'from-blue-600/20 to-cyan-600/20 hover:from-blue-600/30 hover:to-cyan-600/30 border-blue-600/50',
+                'from-pink-600/20 to-rose-600/20 hover:from-pink-600/30 hover:to-rose-600/30 border-pink-600/50',
+                'from-green-600/20 to-emerald-600/20 hover:from-green-600/30 hover:to-emerald-600/30 border-green-600/50',
+                'from-orange-600/20 to-red-600/20 hover:from-orange-600/30 hover:to-red-600/30 border-orange-600/50',
+                'from-indigo-600/20 to-blue-600/20 hover:from-indigo-600/30 hover:to-blue-600/30 border-indigo-600/50',
+                'from-yellow-600/20 to-orange-600/20 hover:from-yellow-600/30 hover:to-orange-600/30 border-yellow-600/50',
+                'from-teal-600/20 to-cyan-600/20 hover:from-teal-600/30 hover:to-cyan-600/30 border-teal-600/50',
+              ];
+              return (
+                <button
+                  key={index}
+                  onClick={() => onTitleSelect(title)}
+                  className={`w-full text-left p-4 bg-gradient-to-r ${colors[index % colors.length]} rounded-lg transition-all duration-200 border shadow-md hover:shadow-lg hover:scale-[1.02]`}
+                >
+                  {title}
+                </button>
+              );
+            })}
           </div>
           <div className="mt-6 text-center text-zinc-400">
             <p>또는</p>
@@ -96,11 +108,11 @@ const StepTitle: React.FC<StepTitleProps> = ({
         </>
       )}
       <div className="flex justify-between items-center mt-8">
-        <Button onClick={onBack} variant="secondary">
-          뒤로가기
+        <Button onClick={onBack} variant="info">
+          ← 뒤로가기
         </Button>
-        <Button onClick={fetchTitles} disabled={loading} variant="ghost">
-          새로운 제목 생성
+        <Button onClick={fetchTitles} disabled={loading} variant="purple">
+          🔄 새로운 제목 생성
         </Button>
       </div>
     </Card>
