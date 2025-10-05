@@ -45,9 +45,7 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
           <div className="text-center">
             <div className="text-6xl mb-4">🎵</div>
             <h2 className="text-3xl font-bold text-white mb-2">가사 생성</h2>
-            <p className="text-blue-100">
-              AI가 창의적인 가사를 작성해드립니다
-            </p>
+            <p className="text-blue-100">AI가 창의적인 가사를 작성해드립니다</p>
           </div>
           <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></div>
         </Link>

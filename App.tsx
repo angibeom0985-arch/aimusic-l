@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import ApiGuidePage from "./pages/ApiGuidePage";
 import HowToUsePage from "./pages/HowToUsePage";
@@ -49,9 +55,15 @@ const AppContent: React.FC = () => {
 
         <main className="w-full max-w-7xl mx-auto flex-1">
           <Routes>
-            <Route path="/" element={<HomePage apiKey={apiKey} setApiKey={setApiKey} />} />
+            <Route
+              path="/"
+              element={<HomePage apiKey={apiKey} setApiKey={setApiKey} />}
+            />
             <Route path="/lyrics" element={<MainPage apiKey={apiKey} />} />
-            <Route path="/thumbnail" element={<ThumbnailPage apiKey={apiKey} />} />
+            <Route
+              path="/thumbnail"
+              element={<ThumbnailPage apiKey={apiKey} />}
+            />
             <Route path="/api-guide" element={<ApiGuidePage />} />
             <Route path="/how-to-use" element={<HowToUsePage />} />
             <Route path="/admin" element={<AdminPage />} />

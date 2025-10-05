@@ -52,17 +52,12 @@ const StepTheme: React.FC<StepThemeProps> = ({
 
   return (
     <Card>
-      <StepIndicator
-        currentStep={3}
-        totalSteps={3}
-        stepTitle="가사의 주제를 선택하세요"
-      />
-      <div className="text-center mb-4 text-zinc-400">
-        <p>
-          선택한 제목:{" "}
-          <span className="font-semibold text-orange-300">{title}</span>
-        </p>
-      </div>
+      <h2 className="text-2xl md:text-3xl font-bold text-center mb-2">
+        가사의 주제를 선택하세요
+      </h2>
+      <p className="text-zinc-400 text-center mb-6">
+        선택한 제목: <span className="text-orange-400 font-medium">{title}</span>
+      </p>
       {loading ? (
         <div className="flex flex-col items-center justify-center min-h-[200px]">
           <LoadingSpinner />
@@ -114,11 +109,6 @@ const StepTheme: React.FC<StepThemeProps> = ({
           </form>
         </>
       )}
-      <div className="flex justify-between items-center mt-8">
-        <Button onClick={onBack} variant="info">
-          ← 뒤로가기
-        </Button>
-      </div>
     </Card>
   );
 };

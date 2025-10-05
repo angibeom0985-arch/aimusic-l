@@ -28,7 +28,7 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
     setError(null);
     setIsGenerating(false);
     setShowResult(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   const handleGenreSelect = (genre: string) => {
@@ -51,10 +51,7 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
 
       {/* 1단계: 장르 선택 */}
       <div className="scroll-mt-20" id="genre-section">
-        <StepGenre
-          onGenreSelect={handleGenreSelect}
-          genres={INITIAL_GENRES}
-        />
+        <StepGenre onGenreSelect={handleGenreSelect} genres={INITIAL_GENRES} />
       </div>
 
       {/* 2단계: 제목 선택 (장르가 선택되면 표시) */}
@@ -65,7 +62,7 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
             <StepTitle
               genre={selections.genre}
               onTitleSelect={handleTitleSelect}
-              onBack={() => setSelections(prev => ({ ...prev, genre: "" }))}
+              onBack={() => setSelections((prev) => ({ ...prev, genre: "" }))}
               apiKey={apiKey}
             />
           </div>
@@ -81,7 +78,7 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
               genre={selections.genre}
               title={selections.title}
               onThemeSelect={handleThemeSelect}
-              onBack={() => setSelections(prev => ({ ...prev, title: "" }))}
+              onBack={() => setSelections((prev) => ({ ...prev, title: "" }))}
               apiKey={apiKey}
             />
           </div>

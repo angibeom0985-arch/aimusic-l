@@ -50,11 +50,12 @@ const StepTitle: React.FC<StepTitleProps> = ({
 
   return (
     <Card>
-      <StepIndicator
-        currentStep={2}
-        totalSteps={3}
-        stepTitle="마음에 드는 제목을 고르세요"
-      />
+      <h2 className="text-2xl md:text-3xl font-bold text-center mb-2">
+        마음에 드는 제목을 고르세요
+      </h2>
+      <p className="text-zinc-400 text-center mb-6">
+        선택한 장르: <span className="text-pink-400 font-medium">{genre}</span>
+      </p>
       {loading ? (
         <div className="flex flex-col items-center justify-center min-h-[200px]">
           <LoadingSpinner />
@@ -109,10 +110,7 @@ const StepTitle: React.FC<StepTitleProps> = ({
           </form>
         </>
       )}
-      <div className="flex justify-between items-center mt-8">
-        <Button onClick={onBack} variant="info">
-          ← 뒤로가기
-        </Button>
+      <div className="flex justify-center mt-8">
         <Button onClick={fetchTitles} disabled={loading} variant="purple">
           🔄 새로운 제목 생성
         </Button>

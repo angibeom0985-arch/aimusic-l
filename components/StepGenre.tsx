@@ -20,12 +20,13 @@ const StepGenre: React.FC<StepGenreProps> = ({ genres, onGenreSelect }) => {
 
   return (
     <Card>
-      <StepIndicator
-        currentStep={1}
-        totalSteps={3}
-        stepTitle="어떤 장르를 만들까요?"
-      />
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-8">
+      <h2 className="text-2xl md:text-3xl font-bold text-center mb-2">
+        어떤 장르를 만들까요?
+      </h2>
+      <p className="text-zinc-400 text-center mb-6">
+        원하는 음악 장르를 선택하세요
+      </p>
+      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
         {genres.map((genre, index) => {
           const colors = [
             "from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700",
