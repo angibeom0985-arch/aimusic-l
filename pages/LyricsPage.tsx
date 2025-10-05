@@ -47,13 +47,12 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
 
   return (
     <div className="w-full max-w-4xl mx-auto space-y-6 pb-8">
-      <DisplayAd />
-
       {/* 1단계: 장르 선택 */}
       <div className="scroll-mt-20" id="genre-section">
         <StepGenre onGenreSelect={handleGenreSelect} genres={INITIAL_GENRES} />
       </div>
 
+      {/* 광고 1: 장르와 제목 사이 */}
       <DisplayAd />
 
       {/* 2단계: 제목 선택 */}
@@ -90,6 +89,7 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
         )}
       </div>
 
+      {/* 광고 2: 제목과 주제 사이 */}
       <DisplayAd />
 
       {/* 3단계: 주제 선택 */}
@@ -131,6 +131,7 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
         )}
       </div>
 
+      {/* 광고 3: 주제와 가사 완성 사이 */}
       <DisplayAd />
 
       {/* 4단계: 가사 생성 */}
@@ -170,8 +171,6 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
         )}
       </div>
 
-      <DisplayAd />
-
       {/* 5단계: 결과 */}
       <div className="scroll-mt-20" id="result-section">
         {showResult ? (
@@ -202,8 +201,6 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
           </div>
         )}
       </div>
-
-      <DisplayAd />
     </div>
   );
 };
