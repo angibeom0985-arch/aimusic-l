@@ -56,7 +56,8 @@ const StepTheme: React.FC<StepThemeProps> = ({
         가사의 주제를 선택하세요
       </h2>
       <p className="text-zinc-400 text-center mb-6">
-        선택한 제목: <span className="text-orange-400 font-medium">{title}</span>
+        선택한 제목:{" "}
+        <span className="text-orange-400 font-medium">{title}</span>
       </p>
       {loading ? (
         <div className="flex flex-col items-center justify-center min-h-[200px]">

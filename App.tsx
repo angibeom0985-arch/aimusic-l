@@ -6,7 +6,7 @@ import {
   Link,
   useLocation,
 } from "react-router-dom";
-import MainPage from "./pages/MainPage";
+import LyricsPage from "./pages/LyricsPage";
 import ApiGuidePage from "./pages/ApiGuidePage";
 import HowToUsePage from "./pages/HowToUsePage";
 import AdminPage from "./pages/AdminPage";
@@ -59,7 +59,7 @@ const AppContent: React.FC = () => {
               path="/"
               element={<HomePage apiKey={apiKey} setApiKey={setApiKey} />}
             />
-            <Route path="/lyrics" element={<MainPage apiKey={apiKey} />} />
+            <Route path="/lyrics" element={<LyricsPage apiKey={apiKey} />} />
             <Route
               path="/thumbnail"
               element={<ThumbnailPage apiKey={apiKey} />}
