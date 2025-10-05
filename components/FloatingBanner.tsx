@@ -49,20 +49,16 @@ const FloatingBanner: React.FC = () => {
         transition: "all 0.3s ease-in-out",
       }}
     >
-      <div>
-        <ins
-          className="adsbygoogle"
-          style={{
-            display: "inline-block",
-            width: isMobile ? "320px" : "728px",
-            height: isMobile ? "50px" : "90px",
-          }}
-          data-ad-client="ca-pub-2686975437928535"
-          data-ad-slot="6106251761"
-          data-ad-format="auto"
-          data-full-width-responsive="true"
-        />
-      </div>
+      <ins
+        className="adsbygoogle"
+        style={{
+          display: "block",
+          width: isMobile ? "320px" : "728px",
+          height: isMobile ? "50px" : "90px",
+        }}
+        data-ad-client="ca-pub-2686975437928535"
+        data-ad-slot="6106251761"
+      />
     </div>
   );
 };
