@@ -401,7 +401,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       modal.remove();
     }, 2000);
 
-    // 3초 후 쿠팡 링크 열기
+    // 3초 후 쿠팡 링크로 이동
     setTimeout(() => {
       const coupangLinks = [
         "https://link.coupang.com/a/cUVNWY",
@@ -412,7 +412,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       ];
       const randomLink =
         coupangLinks[Math.floor(Math.random() * coupangLinks.length)];
-      window.open(randomLink, "_blank");
+      window.location.href = randomLink;
     }, 3000);
   }, [generatedImage]);
 
@@ -492,18 +492,14 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
       {/* 페이지 헤더 */}
       <div className="text-center pt-8 pb-4 mb-6">
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent mb-4" style={{
+          textShadow: '0 0 20px rgba(99, 102, 241, 0.5), 0 0 40px rgba(99, 102, 241, 0.3), 0 0 60px rgba(99, 102, 241, 0.2)'
+        }}>
           🎨 AI 음악 썸네일 제작
         </h1>
         <p className="text-zinc-400 text-lg mb-6">
           태그를 선택하고 AI가 생성한 고퀄리티 썸네일을 다운로드하세요
         </p>
-        <button
-          onClick={() => navigate("/")}
-          className="bg-gradient-to-r from-zinc-700 to-zinc-600 hover:from-zinc-600 hover:to-zinc-500 text-white px-6 py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-        >
-          🏠 홈으로 돌아가기
-        </button>
       </div>
 
       <main className="grid grid-cols-1 lg:grid-cols-12 gap-6">

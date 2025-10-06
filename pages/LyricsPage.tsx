@@ -52,18 +52,14 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
     <div className="w-full max-w-4xl mx-auto space-y-6 pb-8">
       {/* 페이지 헤더 */}
       <div className="text-center pt-8 pb-4">
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 bg-clip-text text-transparent mb-4">
+        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 bg-clip-text text-transparent mb-4" style={{
+          textShadow: '0 0 20px rgba(236, 72, 153, 0.5), 0 0 40px rgba(236, 72, 153, 0.3), 0 0 60px rgba(236, 72, 153, 0.2)'
+        }}>
           🎵 AI 음악 가사 1초 완성
         </h1>
         <p className="text-zinc-400 text-lg mb-6">
           장르, 제목, 테마를 선택하면 AI가 완벽한 가사를 생성해드립니다
         </p>
-        <button
-          onClick={() => navigate("/")}
-          className="bg-gradient-to-r from-zinc-700 to-zinc-600 hover:from-zinc-600 hover:to-zinc-500 text-white px-6 py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
-        >
-          🏠 홈으로 돌아가기
-        </button>
       </div>
 
       {/* 1단계: 장르 선택 */}
