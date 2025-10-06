@@ -478,22 +478,6 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       let imagePrompt = "";
 
       if (uploadedImage) {
-        if (
-          !selectedPose &&
-          !selectedExpression &&
-          !selectedBackground &&
-          !selectedOutfit &&
-          !selectedBodyType &&
-          !selectedMood &&
-          !selectedNoise
-        ) {
-          setError(
-            "하나 이상의 사용자 지정 옵션(포즈, 표정, 배경 등)을 선택하십시오."
-          );
-          setIsLoading(false);
-          return;
-        }
-
         let customPrompt = `Create a new photo inspired by the reference image style. `;
 
         const descriptions = [];
@@ -510,7 +494,10 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
         if (selectedMood)
           descriptions.push(`Mood: ${selectedMood}`);
 
-        customPrompt += descriptions.join(", ");
+        // 커스터마이징 옵션이 있으면 추가
+        if (descriptions.length > 0) {
+          customPrompt += descriptions.join(", ") + ". ";
+        }
 
         const cameraStyles = [
           "professional photography",
@@ -529,7 +516,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           finalStylePrompt += `, calm and emotional atmosphere`;
         }
 
-        customPrompt += `. ${finalStylePrompt}. Create a high-quality image suitable for music playlist cover art.`;
+        customPrompt += `${finalStylePrompt}. Create a high-quality image suitable for music playlist cover art.`;
 
         imagePrompt = customPrompt;
       } else {
@@ -684,15 +671,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     !isLoading &&
     !isUpscaling &&
     !isCroppingModalOpen &&
-    ((selectedTags.size > 0 && !uploadedImage) ||
-      (!!uploadedImage &&
-        (!!selectedPose ||
-          !!selectedExpression ||
-          !!selectedBackground ||
-          !!selectedOutfit ||
-          !!selectedBodyType ||
-          !!selectedMood ||
-          !!selectedNoise)));
+    (selectedTags.size > 0 || !!uploadedImage);
 
   if (!apiKey) {
     return (
