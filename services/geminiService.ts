@@ -205,7 +205,7 @@ export async function generateImage(
       .replace(/revealing|sexy|glamorous/gi, "natural");
 
     parts.push({ 
-      text: `${sanitizedPrompt}\n\n중요: 이미지는 반드시 생성되어야 합니다. 음악 플레이리스트 커버 아트로 적합한 이미지를 만들어주세요.` 
+      text: `${sanitizedPrompt}\n\nIMPORTANT: Generate a high-quality image. This is for a music playlist cover art. The image must be created.` 
     });
 
     console.log(`이미지 생성 시도 ${retryCount + 1}/${MAX_RETRIES + 1}`);
@@ -359,7 +359,7 @@ export async function upscaleImage(
         },
       },
       {
-        text: "이 이미지를 고해상도로 업스케일하세요. 디테일을 향상시키고 선명도를 높이되, 원본 구성과 색상을 그대로 유지하세요. 전문적인 품질의 이미지를 만들어주세요. 반드시 이미지를 생성해야 합니다.",
+        text: "Upscale this image to higher resolution. Enhance details and sharpness while maintaining the original composition and colors. Create a professional quality image. The image must be generated.",
       },
     ]);
 

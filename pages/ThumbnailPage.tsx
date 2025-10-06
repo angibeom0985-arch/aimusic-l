@@ -494,42 +494,42 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           return;
         }
 
-        let customPrompt = `참조 이미지의 스타일과 분위기를 따르되, 새로운 구도의 이미지를 생성하세요. `;
+        let customPrompt = `Create a new photo inspired by the reference image style. `;
 
         const descriptions = [];
         if (selectedPose)
-          descriptions.push(`포즈: ${selectedPose}`);
+          descriptions.push(`Pose: ${selectedPose}`);
         if (selectedExpression)
-          descriptions.push(`표정: ${selectedExpression}`);
+          descriptions.push(`Expression: ${selectedExpression}`);
         if (selectedBackground)
-          descriptions.push(`배경: ${selectedBackground}`);
+          descriptions.push(`Background: ${selectedBackground}`);
         if (selectedOutfit)
-          descriptions.push(`의상: ${selectedOutfit}`);
+          descriptions.push(`Outfit: ${selectedOutfit}`);
         if (selectedBodyType)
-          descriptions.push(`체형: ${selectedBodyType}`);
+          descriptions.push(`Body type: ${selectedBodyType}`);
         if (selectedMood)
-          descriptions.push(`분위기: ${selectedMood}`);
+          descriptions.push(`Mood: ${selectedMood}`);
 
         customPrompt += descriptions.join(", ");
 
         const cameraStyles = [
-          "프로페셔널 카메라",
-          "자연스러운 조명",
-          "영화 같은 스타일",
-          "깔끔한 구도",
-          "미니멀한 배경",
+          "professional photography",
+          "natural lighting",
+          "cinematic style",
+          "clean composition",
+          "minimal background",
         ];
         const randomCameraStyle =
           cameraStyles[Math.floor(Math.random() * cameraStyles.length)];
 
         const noiseValue = selectedNoise || "low noise";
-        let finalStylePrompt = `촬영 스타일: ${randomCameraStyle}`;
+        let finalStylePrompt = `Shot with ${randomCameraStyle}`;
 
         if (!selectedMood) {
-          finalStylePrompt += `, 차분하고 감성적인 분위기`;
+          finalStylePrompt += `, calm and emotional atmosphere`;
         }
 
-        customPrompt += `. ${finalStylePrompt}. 음악 플레이리스트 커버로 적합한 이미지를 만들어주세요.`;
+        customPrompt += `. ${finalStylePrompt}. Create a high-quality image suitable for music playlist cover art.`;
 
         imagePrompt = customPrompt;
       } else {
@@ -540,24 +540,24 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
         }
         
         const cameraStyles = [
-          "프로페셔널 카메라",
-          "자연스러운 조명",
-          "영화 같은 스타일",
-          "깔끔한 구도",
-          "아티스틱한 구성",
+          "professional camera",
+          "natural lighting",
+          "cinematic style",
+          "clean composition",
+          "artistic framing",
         ];
         const randomCameraStyle =
           cameraStyles[Math.floor(Math.random() * cameraStyles.length)];
 
-        let basePrompt = `음악 플레이리스트 커버 아트. 스타일 키워드: ${musicPrompt}`;
+        let basePrompt = `Music playlist cover art. Style keywords: ${musicPrompt}`;
 
         // 가사가 있으면 가사의 분위기와 내용을 반영
         if (lyricsText.trim()) {
           const lyricsPreview = lyricsText.slice(0, 300).replace(/\n/g, ' ');
-          basePrompt += `. 가사의 분위기: "${lyricsPreview}"`;
+          basePrompt += `. Mood from lyrics: "${lyricsPreview}"`;
         }
 
-        imagePrompt = `한국의 젊은 여성 인물 사진, ${randomCameraStyle}, 차분하고 감성적인 분위기. ${basePrompt}. 고품질 이미지를 생성해주세요.`;
+        imagePrompt = `Portrait photo of a young Korean woman, ${randomCameraStyle}, calm and emotional atmosphere. ${basePrompt}. Create a high-quality, professional image.`;
       }
 
       console.log("이미지 생성 프롬프트:", imagePrompt);
