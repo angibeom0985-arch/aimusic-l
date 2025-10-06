@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import LyricsPage from "./pages/LyricsPage";
 import ApiGuidePage from "./pages/ApiGuidePage";
-import ApiKeyPage from "./pages/ApiKeyPage";
 import HowToUsePage from "./pages/HowToUsePage";
 import AdminPage from "./pages/AdminPage";
 import ThumbnailPage from "./pages/ThumbnailPage";
@@ -60,28 +59,6 @@ const AppContent: React.FC = () => {
             <p className="text-zinc-400 mt-2 text-shadow-lg">
               유튜브 플레이리스트 채널을 누구나 운영할 수 있게 도와드립니다.
             </p>
-            
-            {/* 네비게이션 버튼 */}
-            <div className="flex flex-wrap justify-center gap-3 mt-6">
-              <Link
-                to="/how-to-use"
-                className="bg-gradient-to-r from-zinc-700 to-zinc-600 hover:from-zinc-600 hover:to-zinc-500 text-white font-semibold py-2 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-zinc-500/30"
-              >
-                📖 사용법
-              </Link>
-              <Link
-                to="/api-guide"
-                className="bg-gradient-to-r from-zinc-700 to-zinc-600 hover:from-zinc-600 hover:to-zinc-500 text-white font-semibold py-2 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-zinc-500/30"
-              >
-                🔑 API 키 발급 방법
-              </Link>
-              <Link
-                to="/api-key"
-                className="bg-gradient-to-r from-blue-700 to-blue-600 hover:from-blue-600 hover:to-blue-500 text-white font-semibold py-2 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-blue-500/30"
-              >
-                ⚙️ API 키 입력
-              </Link>
-            </div>
           </header>
         )}
 
@@ -97,10 +74,6 @@ const AppContent: React.FC = () => {
               element={<ThumbnailPage apiKey={apiKey} />}
             />
             <Route path="/api-guide" element={<ApiGuidePage />} />
-            <Route
-              path="/api-key"
-              element={<ApiKeyPage apiKey={apiKey} setApiKey={setApiKey} />}
-            />
             <Route path="/how-to-use" element={<HowToUsePage />} />
             <Route path="/admin" element={<AdminPage />} />
           </Routes>

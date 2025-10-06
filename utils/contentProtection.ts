@@ -2,20 +2,6 @@
 
 // 드래그 방지 (우회 프로그램 방어 강화)
 export const preventDrag = (e: Event) => {
-  // input, textarea, label, form 관련 요소는 허용
-  const target = e.target as HTMLElement;
-  if (
-    target.tagName === "INPUT" ||
-    target.tagName === "TEXTAREA" ||
-    target.tagName === "LABEL" ||
-    target.closest("input") ||
-    target.closest("textarea") ||
-    target.closest("label") ||
-    target.closest("form")
-  ) {
-    return true;
-  }
-  
   e.preventDefault();
   e.stopPropagation();
   e.stopImmediatePropagation();
@@ -24,20 +10,6 @@ export const preventDrag = (e: Event) => {
 
 // 우클릭 방지 (우회 프로그램 방어 강화)
 export const preventContextMenu = (e: Event) => {
-  // input, textarea, label, form 관련 요소는 허용 (복사/붙여넣기/잘라내기 가능)
-  const target = e.target as HTMLElement;
-  if (
-    target.tagName === "INPUT" ||
-    target.tagName === "TEXTAREA" ||
-    target.tagName === "LABEL" ||
-    target.closest("input") ||
-    target.closest("textarea") ||
-    target.closest("label") ||
-    target.closest("form")
-  ) {
-    return true;
-  }
-  
   e.preventDefault();
   e.stopPropagation();
   e.stopImmediatePropagation();
@@ -46,20 +18,6 @@ export const preventContextMenu = (e: Event) => {
 
 // 텍스트 선택 방지 (추가)
 export const preventSelection = (e: Event) => {
-  // input, textarea, label, form 관련 요소는 허용
-  const target = e.target as HTMLElement;
-  if (
-    target.tagName === "INPUT" ||
-    target.tagName === "TEXTAREA" ||
-    target.tagName === "LABEL" ||
-    target.closest("input") ||
-    target.closest("textarea") ||
-    target.closest("label") ||
-    target.closest("form")
-  ) {
-    return true;
-  }
-  
   e.preventDefault();
   e.stopPropagation();
   e.stopImmediatePropagation();
@@ -72,18 +30,13 @@ export const preventSelection = (e: Event) => {
 
 // 마우스 이벤트 강제 차단 (드래그프리 방어)
 export const blockMouseEvents = (e: MouseEvent) => {
-  // input, textarea, button, label, form 요소 및 그 자식 요소는 허용
+  // input, textarea, button은 허용
   const target = e.target as HTMLElement;
   if (
     target.tagName === "INPUT" ||
     target.tagName === "TEXTAREA" ||
     target.tagName === "BUTTON" ||
-    target.tagName === "LABEL" ||
-    target.closest("button") ||
-    target.closest("input") ||
-    target.closest("textarea") ||
-    target.closest("label") ||
-    target.closest("form")
+    target.closest("button")
   ) {
     return true;
   }
@@ -121,15 +74,6 @@ export const preventShortcuts = (e: KeyboardEvent) => {
   const ctrl = e.ctrlKey || e.metaKey;
   const shift = e.shiftKey;
   const win = e.metaKey;
-
-  // 허용할 단축키 (새로고침)
-  if (
-    (ctrl && shift && key === "r") || // Ctrl+Shift+R (강력 새로고침)
-    (ctrl && key === "r") || // Ctrl+R (새로고침)
-    key === "f5" // F5 (새로고침)
-  ) {
-    return true; // 허용
-  }
 
   // 차단할 단축키 목록
   if (

@@ -1,14 +1,26 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import ApiKeyManager from "../components/ApiKeyManager";
 import DisplayAd from "../components/DisplayAd";
 import RelatedServices from "../components/RelatedServices";
+
+const API_KEY_STORAGE = "gemini_api_key";
 
 interface HomePageProps {
   apiKey: string;
   setApiKey: (key: string) => void;
 }
 
-const HomePage: React.FC<HomePageProps> = () => {
+const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
+  const handleKeySet = (key: string) => {
+    setApiKey(key);
+    if (key) {
+      localStorage.setItem(API_KEY_STORAGE, key);
+    } else {
+      localStorage.removeItem(API_KEY_STORAGE);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       {/* 타이틀 */}
@@ -25,6 +37,11 @@ const HomePage: React.FC<HomePageProps> = () => {
         <p className="text-zinc-400 text-lg md:text-xl drop-shadow-lg">
           유튜브 플레이리스트 채널을 누구나 운영할 수 있게 도와드립니다.
         </p>
+      </div>
+
+      {/* API 키 입력 섹션 */}
+      <div className="w-full max-w-2xl mb-12">
+        <ApiKeyManager onKeySet={handleKeySet} />
       </div>
 
       {/* 광고 */}
