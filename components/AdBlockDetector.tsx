@@ -17,7 +17,8 @@ const AdBlockDetector: React.FC = () => {
 
           if (
             typeof window.adsbygoogle === "undefined" ||
-            window.adsbygoogle.loaded === false
+            !window.adsbygoogle ||
+            window.adsbygoogle.length === 0
           ) {
             setAdBlockDetected(true);
             return;
@@ -147,7 +148,7 @@ const AdBlockDetector: React.FC = () => {
 
 declare global {
   interface Window {
-    adsbygoogle: any;
+    adsbygoogle: any[];
   }
 }
 

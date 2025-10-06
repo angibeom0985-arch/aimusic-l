@@ -530,8 +530,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
         if (selectedBackground)
           descriptions.push(`Background: ${selectedBackground}`);
         if (selectedOutfit) descriptions.push(`Outfit: ${selectedOutfit}`);
-        if (selectedBodyType)
-          descriptions.push(`Style: ${selectedBodyType}`);
+        if (selectedBodyType) descriptions.push(`Style: ${selectedBodyType}`);
         if (selectedMood) descriptions.push(`Lighting: ${selectedMood}`);
         if (selectedNoise) descriptions.push(`Quality: ${selectedNoise}`);
 
@@ -1075,7 +1074,9 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               ) : (
                 <div className="text-center text-zinc-400">
                   <p>이미지가 여기에 표시됩니다</p>
-                  <p className="text-sm text-zinc-500 mt-2">16:9 유튜브 썸네일 비율</p>
+                  <p className="text-sm text-zinc-500 mt-2">
+                    16:9 유튜브 썸네일 비율
+                  </p>
                 </div>
               )}
             </div>

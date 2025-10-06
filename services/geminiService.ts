@@ -458,7 +458,7 @@ export async function upscaleImage(
         await new Promise((resolve) =>
           setTimeout(resolve, 1500 * (retryCount + 1))
         );
-        return upscaleImage(base64ImageData, apiKey, retryCount + 1);
+        return upscaleImage(base64ImageData, apiKey, direction, retryCount + 1);
       }
 
       throw new Error("업스케일에 실패했습니다. 다시 시도해주세요.");
@@ -475,7 +475,7 @@ export async function upscaleImage(
         await new Promise((resolve) =>
           setTimeout(resolve, 1500 * (retryCount + 1))
         );
-        return upscaleImage(base64ImageData, apiKey, retryCount + 1);
+        return upscaleImage(base64ImageData, apiKey, direction, retryCount + 1);
       }
     }
 
@@ -491,7 +491,7 @@ export async function upscaleImage(
         await new Promise((resolve) =>
           setTimeout(resolve, 1500 * (retryCount + 1))
         );
-        return upscaleImage(base64ImageData, apiKey, retryCount + 1);
+        return upscaleImage(base64ImageData, apiKey, direction, retryCount + 1);
       }
 
       throw new Error("업스케일된 이미지 데이터가 없습니다.");
@@ -521,7 +521,7 @@ export async function upscaleImage(
       await new Promise((resolve) =>
         setTimeout(resolve, 1500 * (retryCount + 1))
       );
-      return upscaleImage(base64ImageData, apiKey, retryCount + 1);
+      return upscaleImage(base64ImageData, apiKey, direction, retryCount + 1);
     }
 
     throw new Error(
@@ -544,7 +544,7 @@ export async function upscaleImage(
         await new Promise((resolve) =>
           setTimeout(resolve, 2000 * (retryCount + 1))
         );
-        return upscaleImage(base64ImageData, apiKey, retryCount + 1);
+        return upscaleImage(base64ImageData, apiKey, direction, retryCount + 1);
       }
 
       throw error;
