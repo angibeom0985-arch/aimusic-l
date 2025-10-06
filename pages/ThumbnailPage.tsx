@@ -583,11 +583,6 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     apiKey,
   ]);
 
-  const handleCopyToClipboard = () => {
-    if (!musicPrompt) return;
-    navigator.clipboard.writeText(musicPrompt);
-  };
-
   const handleDownloadImage = useCallback(() => {
     if (!generatedImage) return;
 
@@ -958,48 +953,15 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
           <div>
             <h2 className="text-xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
-              프롬프트 및 이미지
+              이미지 생성
             </h2>
-            <div className="bg-black p-4 rounded-lg min-h-[100px] border border-zinc-800 mb-4">
-              {uploadedImage ? (
-                <div className="space-y-2">
-                  <p className="text-zinc-300 font-mono text-sm">
-                    {customizationPromptText}
-                  </p>
-                  {musicPrompt && (
-                    <>
-                      <hr className="border-zinc-700/50" />
-                      <p className="text-zinc-300 font-mono text-sm">
-                        <span className="font-bold text-orange-400">
-                          음악 키워드:{" "}
-                        </span>{" "}
-                        {musicPrompt}
-                      </p>
-                    </>
-                  )}
-                </div>
-              ) : (
-                <p className="text-zinc-300 font-mono">
-                  {musicPrompt || "선택한 태그가 여기에 표시됩니다..."}
-                </p>
-              )}
-            </div>
-            <div className="grid grid-cols-2 gap-2 mb-4">
-              <button
-                onClick={handleCopyToClipboard}
-                disabled={!musicPrompt}
-                className="w-full bg-gradient-to-r from-blue-500 via-cyan-500 to-teal-500 hover:from-blue-600 hover:via-cyan-600 hover:to-teal-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 hover:scale-105"
-              >
-                📋 프롬프트 복사
-              </button>
-              <button
-                onClick={handleGenerate}
-                disabled={!canGenerate}
-                className="w-full bg-gradient-to-r from-pink-500 via-rose-500 to-orange-500 hover:from-pink-600 hover:via-rose-600 hover:to-orange-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-pink-500/50 hover:scale-105 animate-pulse"
-              >
-                {isLoading ? "⏳ 생성 중..." : "✨ 이미지 생성"}
-              </button>
-            </div>
+            <button
+              onClick={handleGenerate}
+              disabled={!canGenerate}
+              className="w-full bg-gradient-to-r from-pink-500 via-rose-500 to-orange-500 hover:from-pink-600 hover:via-rose-600 hover:to-orange-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-pink-500/50 hover:scale-105 mb-4"
+            >
+              {isLoading ? "⏳ 생성 중..." : "✨ 이미지 생성"}
+            </button>
           </div>
 
           <div className="flex-grow flex flex-col justify-end">
@@ -1020,7 +982,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                 </div>
               )}
             </div>
-            <div className="mt-4 grid grid-cols-3 gap-2">
+            <div className="mt-4 flex flex-col gap-2">
               <button
                 onClick={handleCropTo16_9}
                 disabled={
@@ -1029,7 +991,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   isUpscaling ||
                   isCroppingModalOpen
                 }
-                className="w-full bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-500 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 text-sm shadow-lg hover:shadow-purple-500/50 hover:scale-105"
+                className="w-full bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-500 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-purple-500/50 hover:scale-105"
               >
                 ✂️ 16:9로 자르기
               </button>
@@ -1041,7 +1003,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   isUpscaling ||
                   isCroppingModalOpen
                 }
-                className="w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-green-500/50 hover:scale-105"
+                className="w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-green-500/50 hover:scale-105"
               >
                 {isUpscaling ? "⏳ 업스케일링..." : "⬆️ 업스케일"}
               </button>
@@ -1053,7 +1015,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   isUpscaling ||
                   isCroppingModalOpen
                 }
-                className="w-full bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500 hover:from-blue-600 hover:via-sky-600 hover:to-cyan-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-blue-500/50 hover:scale-105"
+                className="w-full bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500 hover:from-blue-600 hover:via-sky-600 hover:to-cyan-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-blue-500/50 hover:scale-105"
               >
                 💾 다운로드
               </button>
