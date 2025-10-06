@@ -740,9 +740,12 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       <main className="w-full max-w-6xl mx-auto px-4 lg:px-6 space-y-6">
         {/* 섹션 1: 목차 */}
         <section className="bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-rose-900/40 rounded-xl p-6 border border-purple-500/30 shadow-lg">
-          <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
             📚 장르 선택
           </h2>
+          <p className="text-zinc-400 text-sm mb-4">
+            원하는 음악 장르를 클릭하세요. 선택한 장르에 맞는 다양한 스타일 태그가 아래에 나타납니다.
+          </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {Object.keys(PROMPT_DATA).map((genre, index) => {
               const Icon = GENRE_ICONS[genre];
@@ -780,9 +783,12 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
         {/* 섹션 2: 세부주제 */}
         <section className="bg-gradient-to-br from-blue-900/40 via-indigo-900/40 to-purple-900/40 rounded-xl p-6 border border-blue-500/30 shadow-lg">
-          <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+          <h2 className="text-2xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             🎨 세부 스타일 선택
           </h2>
+          <p className="text-zinc-400 text-sm mb-4">
+            원하는 스타일 태그를 여러 개 선택하세요. 선택한 태그들을 조합하여 AI가 썸네일을 생성합니다. (3-5개 추천)
+          </p>
           {selectedGenre && PROMPT_DATA[selectedGenre] ? (
             <div className="space-y-6">
               {PROMPT_DATA[selectedGenre].map((subGenre, idx) => (
@@ -820,42 +826,42 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
             <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent flex items-center gap-2">
               🎵 가사 첨부 (선택 사항)
             </h2>
-            {lyricsText ? (
-              <div className="relative">
-                <div className="bg-zinc-800 rounded-lg p-3 max-h-32 overflow-y-auto text-sm text-zinc-300 whitespace-pre-wrap border border-zinc-700">
-                  {lyricsText}
-                </div>
+            <div className="relative">
+              <textarea
+                value={lyricsText}
+                onChange={(e) => setLyricsText(e.target.value)}
+                placeholder="가사를 직접 입력하거나 아래 버튼으로 파일을 업로드하세요...&#10;&#10;💡 Ctrl+A로 전체 선택, Ctrl+C로 복사, Ctrl+V로 붙여넣기, Ctrl+X로 잘라내기가 가능합니다."
+                className="w-full h-40 bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-zinc-300 text-sm resize-none focus:outline-none focus:border-emerald-500 transition-colors"
+                spellCheck={false}
+                onCopy={(e) => e.stopPropagation()}
+                onCut={(e) => e.stopPropagation()}
+                onPaste={(e) => e.stopPropagation()}
+                onSelect={(e) => e.stopPropagation()}
+              />
+              {lyricsText && (
                 <button
                   onClick={handleRemoveLyrics}
-                  className="absolute top-2 right-2 bg-red-600 hover:bg-red-500 text-white rounded-full p-1"
+                  className="absolute top-2 right-2 bg-red-600 hover:bg-red-500 text-white rounded-full p-1.5 shadow-lg transition-all hover:scale-110"
                   aria-label="Remove lyrics"
+                  title="가사 전체 삭제"
                 >
                   <CloseIcon className="w-4 h-4" />
                 </button>
-              </div>
-            ) : (
-              <>
-                <textarea
-                  value={lyricsText}
-                  onChange={(e) => setLyricsText(e.target.value)}
-                  placeholder="가사를 직접 입력하거나 아래 버튼으로 파일을 업로드하세요..."
-                  className="w-full h-32 bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-zinc-300 text-sm resize-none focus:outline-none focus:border-blue-500 transition-colors"
-                />
-                <button
-                  onClick={() => lyricsFileInputRef.current?.click()}
-                  className="mt-2 w-full py-2 border-2 border-dashed border-emerald-500/50 rounded-lg bg-gradient-to-r from-emerald-900/30 to-teal-900/30 text-emerald-300 hover:from-emerald-800/50 hover:to-teal-800/50 hover:border-emerald-400/70 transition-all duration-300 text-sm font-semibold shadow-md hover:shadow-emerald-500/30"
-                >
-                  📄 가사 파일 업로드 (.txt)
-                </button>
-                <input
-                  type="file"
-                  ref={lyricsFileInputRef}
-                  onChange={handleLyricsFileUpload}
-                  accept=".txt"
-                  className="hidden"
-                />
-              </>
-            )}
+              )}
+            </div>
+            <button
+              onClick={() => lyricsFileInputRef.current?.click()}
+              className="mt-2 w-full py-2 border-2 border-dashed border-emerald-500/50 rounded-lg bg-gradient-to-r from-emerald-900/30 to-teal-900/30 text-emerald-300 hover:from-emerald-800/50 hover:to-teal-800/50 hover:border-emerald-400/70 transition-all duration-300 text-sm font-semibold shadow-md hover:shadow-emerald-500/30"
+            >
+              📄 가사 파일 업로드 (.txt)
+            </button>
+            <input
+              type="file"
+              ref={lyricsFileInputRef}
+              onChange={handleLyricsFileUpload}
+              accept=".txt"
+              className="hidden"
+            />
             <p className="text-xs text-zinc-500 mt-2">
               💡 가사를 첨부하면 가사의 감정과 분위기에 맞는 썸네일을 생성합니다
             </p>

@@ -26,7 +26,7 @@ const ContentAd: React.FC<ContentAdProps> = ({
       try {
         if (typeof window !== "undefined" && adRef.current) {
           const ins = adRef.current.querySelector("ins.adsbygoogle");
-          
+
           if (ins && !ins.getAttribute("data-adsbygoogle-status")) {
             // adsbygoogle 배열 초기화 및 광고 푸시
             (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -56,10 +56,10 @@ const ContentAd: React.FC<ContentAdProps> = ({
     >
       <ins
         className="adsbygoogle"
-        style={{ 
+        style={{
           display: "block",
           width: "100%",
-          minHeight: "280px"
+          minHeight: "280px",
         }}
         data-ad-client="ca-pub-2686975437928535"
         data-ad-slot="6106251761"
