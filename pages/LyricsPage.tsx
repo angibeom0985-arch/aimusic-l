@@ -270,6 +270,9 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
         )}
       </div>
 
+      {/* 광고 4: 결과 다음 */}
+      <ContentAd />
+
       {/* 구분선 */}
       <div className="my-16 border-t-2 border-zinc-800"></div>
 
