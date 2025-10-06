@@ -12,9 +12,38 @@ interface StepResultProps {
 const StepResult: React.FC<StepResultProps> = ({ lyrics, onReset, error }) => {
   const navigate = useNavigate();
 
+  const showMessageAndOpenCoupang = (message: string) => {
+    // 안내 메시지 표시
+    const modal = document.createElement("div");
+    modal.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.95);
+      color: white;
+      padding: 2rem 3rem;
+      border-radius: 1rem;
+      z-index: 10000;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    `;
+    modal.textContent = message;
+    document.body.appendChild(modal);
+
+    // 3초 후 쿠팡 링크 열기 및 메시지 제거
+    setTimeout(() => {
+      modal.remove();
+      window.open("https://link.coupang.com/a/bZYkzU", "_blank");
+    }, 3000);
+  };
+
   const handleCopy = () => {
     navigator.clipboard.writeText(lyrics);
-    alert("가사가 클립보드에 복사되었습니다!");
+    showMessageAndOpenCoupang("✅ 복사가 완료되었습니다!");
   };
 
   const handleDownload = () => {
@@ -27,6 +56,8 @@ const StepResult: React.FC<StepResultProps> = ({ lyrics, onReset, error }) => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+    
+    showMessageAndOpenCoupang("✅ 다운로드가 완료되었습니다!");
   };
 
   const goToThumbnail = () => {

@@ -590,6 +590,35 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     apiKey,
   ]);
 
+  const showMessageAndOpenCoupang = useCallback((message: string) => {
+    // 안내 메시지 표시
+    const modal = document.createElement("div");
+    modal.style.cssText = `
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.95);
+      color: white;
+      padding: 2rem 3rem;
+      border-radius: 1rem;
+      z-index: 10000;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    `;
+    modal.textContent = message;
+    document.body.appendChild(modal);
+
+    // 3초 후 쿠팡 링크 열기 및 메시지 제거
+    setTimeout(() => {
+      modal.remove();
+      window.open("https://link.coupang.com/a/bZYkzU", "_blank");
+    }, 3000);
+  }, []);
+
   const handleDownloadImage = useCallback(() => {
     if (!generatedImage) return;
 
@@ -600,34 +629,14 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     link.click();
     document.body.removeChild(link);
 
-    // 다운로드 성공 메시지 표시
-    const modal = document.createElement("div");
-    modal.style.cssText = `
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.9);
-      color: white;
-      padding: 2rem;
-      border-radius: 1rem;
-      z-index: 10000;
-      text-align: center;
-      font-size: 1.2rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    `;
-    modal.textContent = "다운로드되었습니다.";
-    document.body.appendChild(modal);
-
-    setTimeout(() => {
-      modal.remove();
-    }, 2000);
-  }, [generatedImage]);
+    showMessageAndOpenCoupang("✅ 다운로드가 완료되었습니다!");
+  }, [generatedImage, showMessageAndOpenCoupang]);
 
   const handleCropTo16_9 = useCallback(() => {
     if (!generatedImage) return;
+    showMessageAndOpenCoupang("✂️ 16:9 비율로 다시 생성하겠습니다!");
     setIsCroppingModalOpen(true);
-  }, [generatedImage]);
+  }, [generatedImage, showMessageAndOpenCoupang]);
 
   const handleConfirmCrop = (croppedImage: string) => {
     setGeneratedImage(croppedImage);
@@ -640,6 +649,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
   const handleUpscaleImage = useCallback(async () => {
     if (!generatedImage) return;
+    showMessageAndOpenCoupang("⬆️ 업스케일해서 새로 이미지를 생성하겠습니다!");
     setIsUpscaling(true);
     setError(null);
     try {
@@ -653,7 +663,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     } finally {
       setIsUpscaling(false);
     }
-  }, [generatedImage, apiKey]);
+  }, [generatedImage, apiKey, showMessageAndOpenCoupang]);
 
   const canGenerate =
     !isLoading &&
