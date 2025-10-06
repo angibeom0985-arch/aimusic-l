@@ -45,7 +45,7 @@ export const generateTitles = async (
     const result = await model.generateContent(
       `${genre} 장르에 어울리는 창의적이고 감성적인 노래 제목을 8개 생성해주세요. 한국어로 작성해주세요.`
     );
-    
+
     const response = result.response;
     const text = response.text();
     const parsed = JSON.parse(text);
@@ -86,7 +86,7 @@ export const generateThemes = async (
     const result = await model.generateContent(
       `${genre} 장르의 '${title}'라는 제목의 한국 노래에 대한 5가지 가사 테마를 생성해주세요. 간결한 한국어 문구로 작성해주세요.`
     );
-    
+
     const response = result.response;
     const text = response.text();
     const parsed = JSON.parse(text);
