@@ -737,77 +737,84 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
         </div>
       </div>
 
-      <main className="w-full max-w-[1800px] mx-auto px-4 lg:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_380px] gap-4 lg:gap-6">
-          {/* 좌측 사이드바 - 목차 */}
-          <aside className="bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-rose-900/40 rounded-xl p-4 border border-purple-500/30 shadow-lg">
-            <h2 className="text-xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              목차
-            </h2>
-            <ul className="space-y-2">
-              {Object.keys(PROMPT_DATA).map((genre, index) => {
-                const Icon = GENRE_ICONS[genre];
-                const colors = [
-                  "from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500",
-                  "from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500",
-                  "from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500",
-                  "from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500",
-                  "from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500",
-                  "from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500",
-                  "from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500",
-                  "from-teal-600 to-green-600 hover:from-teal-500 hover:to-green-500",
-                ];
-                const colorClass = colors[index % colors.length];
-                return (
-                  <li key={genre}>
-                    <button
-                      onClick={() => setSelectedGenre(genre)}
-                      className={`w-full text-left p-3 rounded-lg transition-all duration-200 flex items-center gap-3 ${
-                        selectedGenre === genre
-                          ? `bg-gradient-to-r ${colorClass} text-white shadow-lg scale-105`
-                          : "bg-zinc-800/50 hover:bg-zinc-700/50 text-zinc-300"
-                      }`}
-                    >
-                      {Icon && <Icon className="w-5 h-5" />}
-                      {genre}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </aside>
+      <main className="w-full max-w-6xl mx-auto px-4 lg:px-6 space-y-6">
+        {/* 섹션 1: 목차 */}
+        <section className="bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-rose-900/40 rounded-xl p-6 border border-purple-500/30 shadow-lg">
+          <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+            📚 장르 선택
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {Object.keys(PROMPT_DATA).map((genre, index) => {
+              const Icon = GENRE_ICONS[genre];
+              const colors = [
+                "from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500",
+                "from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500",
+                "from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500",
+                "from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500",
+                "from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500",
+                "from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500",
+                "from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500",
+                "from-teal-600 to-green-600 hover:from-teal-500 hover:to-green-500",
+              ];
+              const colorClass = colors[index % colors.length];
+              return (
+                <button
+                  key={genre}
+                  onClick={() => setSelectedGenre(genre)}
+                  className={`p-4 rounded-lg transition-all duration-200 flex flex-col items-center gap-2 ${
+                    selectedGenre === genre
+                      ? `bg-gradient-to-r ${colorClass} text-white shadow-lg scale-105`
+                      : "bg-zinc-800/50 hover:bg-zinc-700/50 text-zinc-300"
+                  }`}
+                >
+                  {Icon && <Icon className="w-6 h-6" />}
+                  <span className="text-sm font-medium">{genre}</span>
+                </button>
+              );
+            })}
+          </div>
+        </section>
 
-          {/* 중앙 콘텐츠 - 세부주제 */}
-          <section className="bg-gradient-to-br from-blue-900/40 via-indigo-900/40 to-purple-900/40 rounded-xl p-4 border border-blue-500/30 shadow-lg h-[70vh] overflow-y-auto">
-            {selectedGenre && PROMPT_DATA[selectedGenre] ? (
-              <div className="space-y-6">
-                {PROMPT_DATA[selectedGenre].map((subGenre, idx) => (
-                  <div key={subGenre.name}>
-                    <h3 className="text-lg font-semibold mb-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent border-b border-blue-500/50 pb-2">
-                      {subGenre.name}
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {subGenre.tags.map((tag) => (
-                        <Tag
-                          key={tag.value}
-                          label={tag.label}
-                          isSelected={selectedTags.has(tag.value)}
-                          onClick={() => handleToggleTag(tag.value)}
-                        />
-                      ))}
-                    </div>
+        {/* 광고 1: 목차 다음 */}
+        <ContentAd />
+
+        {/* 섹션 2: 세부주제 */}
+        <section className="bg-gradient-to-br from-blue-900/40 via-indigo-900/40 to-purple-900/40 rounded-xl p-6 border border-blue-500/30 shadow-lg">
+          <h2 className="text-2xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            🎨 세부 스타일 선택
+          </h2>
+          {selectedGenre && PROMPT_DATA[selectedGenre] ? (
+            <div className="space-y-6">
+              {PROMPT_DATA[selectedGenre].map((subGenre, idx) => (
+                <div key={subGenre.name}>
+                  <h3 className="text-lg font-semibold mb-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent border-b border-blue-500/50 pb-2">
+                    {subGenre.name}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {subGenre.tags.map((tag) => (
+                      <Tag
+                        key={tag.value}
+                        label={tag.label}
+                        isSelected={selectedTags.has(tag.value)}
+                        onClick={() => handleToggleTag(tag.value)}
+                      />
+                    ))}
                   </div>
-                ))}
-              </div>
-            ) : (
-              <div className="flex items-center justify-center h-full text-zinc-400">
-                <p>메뉴에서 장르를 선택하여 프롬프트를 확인하세요.</p>
-              </div>
-            )}
-          </section>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex items-center justify-center py-12 text-zinc-400">
+              <p>위에서 장르를 먼저 선택해주세요.</p>
+            </div>
+          )}
+        </section>
 
-          {/* 우측 사이드바 - 이미지 생성 */}
-          <section className="bg-gradient-to-br from-emerald-900/40 via-teal-900/40 to-cyan-900/40 rounded-xl p-4 border border-emerald-500/30 shadow-lg flex flex-col">
+        {/* 광고 2: 세부주제 다음 */}
+        <ContentAd />
+
+        {/* 섹션 3: 가사 입력 */}
+        <section className="bg-gradient-to-br from-emerald-900/40 via-teal-900/40 to-cyan-900/40 rounded-xl p-6 border border-emerald-500/30 shadow-lg">
           {/* 가사 입력 섹션 */}
           <div className="mb-6">
             <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent flex items-center gap-2">
@@ -1050,19 +1057,16 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
             </div>
           )}
         </section>
-        </div>
+
+        {/* 광고 3: 이미지 생성 섹션 다음 */}
+        <ContentAd />
       </main>
 
-      {/* 광고 섹션 */}
-      <div className="w-full max-w-[1800px] mx-auto px-4 lg:px-6 my-8">
-        <ContentAd />
-      </div>
-
       {/* 구분선 */}
-      <div className="my-16 border-t-2 border-zinc-800 w-full mx-auto px-4 lg:px-8"></div>
+      <div className="my-16 border-t-2 border-zinc-800 w-full max-w-6xl mx-auto"></div>
 
-      {/* 다른 서비스 홍보 섹션 - 전체 너비 활용 */}
-      <section className="w-full px-4 lg:px-8">
+      {/* 다른 서비스 홍보 섹션 */}
+      <section className="w-full max-w-6xl mx-auto px-4 lg:px-6">
         <RelatedServices />
       </section>
 
