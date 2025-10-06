@@ -245,7 +245,7 @@ export async function generateImage(
       .replace(/revealing|sexy|glamorous/gi, "natural");
 
     // 프롬프트 최적화 - 유튜브 썸네일 비율(16:9)과 텍스트 없는 순수 이미지로 생성
-    const optimizedPrompt = `Create a wide horizontal rectangular image in 16:9 widescreen aspect ratio, specifically 1920x1080 pixels for YouTube thumbnail. ${sanitizedPrompt}. IMPORTANT: Generate ONLY a wide horizontal rectangle image, NOT square. The image must be wider than it is tall, with landscape orientation. Pure visual image with no text, no words, no titles, no letters overlaid on the image. Professional photography, well-lit, clear focus, cinematic widescreen composition. Focus on visual elements only, absolutely NO TEXT anywhere in the image. Aspect ratio must be 16:9 horizontal landscape format.`;
+    const optimizedPrompt = `Generate a WIDESCREEN image with 16:9 aspect ratio (width:height = 16:9). DO NOT create square images. The image MUST be horizontal rectangle, much wider than tall. ${sanitizedPrompt}. Create a landscape orientation image that fills the entire 16:9 frame with no empty space, no white borders, no letterboxing. The composition should utilize the full horizontal width. Professional photography, cinematic widescreen framing, shot in landscape mode. CRITICAL: Image must be 16:9 widescreen format, NOT 1:1 square. Pure visual content with absolutely NO TEXT, no words, no titles anywhere in the image.`;
 
     parts.push({
       text: optimizedPrompt,
