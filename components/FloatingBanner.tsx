@@ -43,9 +43,10 @@ const FloatingBanner: React.FC = () => {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-50 flex justify-center bg-black bg-opacity-80 py-2 shadow-lg"
+      className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 bg-black/90 rounded-lg shadow-2xl overflow-hidden backdrop-blur-sm"
       style={{
-        minHeight: isMobile ? "60px" : "100px",
+        width: isMobile ? "320px" : "728px",
+        height: isMobile ? "50px" : "90px",
         transition: "all 0.3s ease-in-out",
       }}
     >
@@ -53,8 +54,8 @@ const FloatingBanner: React.FC = () => {
         className="adsbygoogle"
         style={{
           display: "block",
-          width: isMobile ? "320px" : "728px",
-          height: isMobile ? "50px" : "90px",
+          width: "100%",
+          height: "100%",
         }}
         data-ad-client="ca-pub-2686975437928535"
         data-ad-slot="6106251761"
