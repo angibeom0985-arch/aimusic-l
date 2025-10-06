@@ -24,8 +24,9 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       {/* 타이틀 */}
       <div className="text-center mb-12">
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-pink-400 to-orange-400 mb-4 drop-shadow-2xl filter">
-          AI 음원 가사 및 썸네일 제작
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-4 drop-shadow-2xl filter">
+          <span className="text-orange-600">A</span>
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-pink-400 to-orange-400">I 음원 가사 및 썸네일 제작</span>
         </h1>
         <p className="text-zinc-400 text-lg md:text-xl drop-shadow-lg">
           유튜브 플레이리스트 채널을 누구나 운영할 수 있게 도와드립니다.
@@ -50,8 +51,12 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
         >
           <div className="text-center relative z-10">
             <div className="text-6xl mb-4 drop-shadow-lg">🎵</div>
-            <h2 className="text-3xl font-bold text-white mb-2 drop-shadow-md">가사 생성</h2>
-            <p className="text-blue-100 drop-shadow">AI가 창의적인 가사를 작성해드립니다</p>
+            <h2 className="text-3xl font-bold text-white mb-2 drop-shadow-md">
+              가사 생성
+            </h2>
+            <p className="text-blue-100 drop-shadow">
+              AI가 창의적인 가사를 작성해드립니다
+            </p>
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </Link>
@@ -62,7 +67,9 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
         >
           <div className="text-center relative z-10">
             <div className="text-6xl mb-4 drop-shadow-lg">🖼️</div>
-            <h2 className="text-3xl font-bold text-white mb-2 drop-shadow-md">썸네일 생성</h2>
+            <h2 className="text-3xl font-bold text-white mb-2 drop-shadow-md">
+              썸네일 생성
+            </h2>
             <p className="text-orange-100 drop-shadow">
               음악에 어울리는 썸네일을 만들어드립니다
             </p>
@@ -76,7 +83,9 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
         >
           <div className="text-center relative z-10">
             <div className="text-6xl mb-4 drop-shadow-lg">📚</div>
-            <h2 className="text-3xl font-bold text-white mb-2 drop-shadow-md">API 가이드</h2>
+            <h2 className="text-3xl font-bold text-white mb-2 drop-shadow-md">
+              API 가이드
+            </h2>
             <p className="text-teal-100 drop-shadow">
               Gemini API 키 발급 방법을 안내합니다
             </p>
@@ -90,7 +99,9 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
         >
           <div className="text-center relative z-10">
             <div className="text-6xl mb-4 drop-shadow-lg">💡</div>
-            <h2 className="text-3xl font-bold text-white mb-2 drop-shadow-md">사용 방법</h2>
+            <h2 className="text-3xl font-bold text-white mb-2 drop-shadow-md">
+              사용 방법
+            </h2>
             <p className="text-blue-100 drop-shadow">
               본 사이트의 사용법을 상세히 설명합니다
             </p>

@@ -57,7 +57,9 @@ const ApiKeyManager: React.FC<ApiKeyManagerProps> = ({ onKeySet }) => {
                 d="M5 13l4 4L19 7"
               />
             </svg>
-            <span className="text-zinc-200 font-medium">API 키가 저장되었습니다</span>
+            <span className="text-zinc-200 font-medium">
+              API 키가 저장되었습니다
+            </span>
           </div>
           <button
             onClick={handleRemoveKey}
