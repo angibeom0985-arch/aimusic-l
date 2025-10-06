@@ -24,9 +24,8 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       {/* 타이틀 */}
       <div className="text-center mb-12">
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-4 drop-shadow-2xl filter">
-          <span className="text-orange-600">A</span>
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-pink-400 to-orange-400">I 음원 가사 및 썸네일 제작</span>
+        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-pink-500 drop-shadow-2xl filter">
+          AI 음원 가사 및 썸네일 제작
         </h1>
         <p className="text-zinc-400 text-lg md:text-xl drop-shadow-lg">
           유튜브 플레이리스트 채널을 누구나 운영할 수 있게 도와드립니다.

@@ -44,13 +44,12 @@ const AppContent: React.FC = () => {
       <div className="min-h-screen flex flex-col p-4 lg:px-[180px]">
         {showHeader && (
           <header className="text-center mb-8 pt-8">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight drop-shadow-2xl">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-pink-500 drop-shadow-2xl">
               <Link
                 to="/"
-                className="hover:drop-shadow-[0_0_15px_rgba(236,72,153,0.5)] transition-all duration-300"
+                className="hover:drop-shadow-[0_0_15px_rgba(251,146,60,0.6)] transition-all duration-300"
               >
-                <span className="text-orange-600">A</span>
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 via-pink-400 to-orange-400">I 음원 가사 및 썸네일 제작</span>
+                AI 음원 가사 및 썸네일 제작
               </Link>
             </h1>
             <p className="text-zinc-400 mt-2 text-shadow-lg">
