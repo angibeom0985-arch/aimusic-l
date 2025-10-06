@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ApiKeyManager from "../components/ApiKeyManager";
 import DisplayAd from "../components/DisplayAd";
+import RelatedServices from "../components/RelatedServices";
 
 const API_KEY_STORAGE = "gemini_api_key";
 
@@ -117,6 +118,11 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
       {/* 하단 광고 */}
       <div className="w-full max-w-4xl mt-8">
         <DisplayAd />
+      </div>
+
+      {/* 다른 서비스 홍보 */}
+      <div className="w-full max-w-6xl mt-8">
+        <RelatedServices />
       </div>
     </div>
   );

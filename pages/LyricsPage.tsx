@@ -6,6 +6,7 @@ import StepTheme from "../components/StepTheme";
 import StepGenerating from "../components/StepGenerating";
 import StepResult from "../components/StepResult";
 import DisplayAd from "../components/DisplayAd";
+import RelatedServices from "../components/RelatedServices";
 
 interface MainPageProps {
   apiKey: string;
@@ -201,6 +202,9 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
           </div>
         )}
       </div>
+
+      {/* 다른 서비스 홍보 */}
+      <RelatedServices />
     </div>
   );
 };

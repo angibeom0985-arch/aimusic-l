@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Card from "./Card";
 import Button from "./Button";
 import { handleCopyDownload } from "../utils/coupang";
@@ -10,12 +11,18 @@ interface StepResultProps {
 }
 
 const StepResult: React.FC<StepResultProps> = ({ lyrics, onReset, error }) => {
+  const navigate = useNavigate();
+
   const handleCopy = () => {
     handleCopyDownload(lyrics, "copy");
   };
 
   const handleDownload = () => {
     handleCopyDownload(lyrics, "download");
+  };
+
+  const goToThumbnail = () => {
+    navigate("/thumbnail");
   };
 
   return (
@@ -49,6 +56,25 @@ const StepResult: React.FC<StepResultProps> = ({ lyrics, onReset, error }) => {
           </>
         )}
       </div>
+
+      {/* 썸네일 생성 유도 섹션 */}
+      {!error && (
+        <div className="mt-12 p-6 bg-gradient-to-r from-pink-900/30 via-purple-900/30 to-blue-900/30 rounded-xl border-2 border-pink-500/30">
+          <div className="text-center mb-4">
+            <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent mb-2">
+              🎨 이제 썸네일을 만들어볼까요?
+            </h3>
+            <p className="text-zinc-400 text-sm md:text-base">
+              완성된 가사에 어울리는 멋진 썸네일을 AI로 자동 생성하세요!
+            </p>
+          </div>
+          <div className="flex justify-center">
+            <Button onClick={goToThumbnail} variant="primary">
+              🎨 썸네일 생성하러 가기
+            </Button>
+          </div>
+        </div>
+      )}
     </Card>
   );
 };

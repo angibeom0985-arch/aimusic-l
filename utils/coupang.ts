@@ -44,39 +44,82 @@ export const handleCopyDownload = (
   }, 3000);
 };
 
-// 성공 메시지 표시
+// 성공 메시지를 새창으로 표시
 const showSuccessMessage = (message: string) => {
-  const existingModal = document.getElementById("success-modal");
-  if (existingModal) {
-    existingModal.remove();
+  // 새창으로 메시지 표시
+  const messageWindow = window.open(
+    "",
+    "successMessage",
+    "width=400,height=300,left=" +
+      (screen.width / 2 - 200) +
+      ",top=" +
+      (screen.height / 2 - 150)
+  );
+
+  if (messageWindow) {
+    messageWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>알림</title>
+        <style>
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          body {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ec4899, #ef4444);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+          }
+          .message {
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            animation: pulse 1s ease-in-out infinite;
+          }
+          @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+          }
+          .countdown {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            opacity: 0.9;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="message">
+          ${message}
+          <div class="countdown" id="countdown">3초 후 닫힙니다...</div>
+        </div>
+        <script>
+          let count = 3;
+          const countdownEl = document.getElementById('countdown');
+          const interval = setInterval(() => {
+            count--;
+            if (count > 0) {
+              countdownEl.textContent = count + '초 후 닫힙니다...';
+            } else {
+              clearInterval(interval);
+              window.close();
+            }
+          }, 1000);
+        </script>
+      </body>
+      </html>
+    `);
+    messageWindow.document.close();
   }
-
-  const modal = document.createElement("div");
-  modal.id = "success-modal";
-  modal.style.cssText = `
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: linear-gradient(135deg, rgba(236, 72, 153, 0.95), rgba(239, 68, 68, 0.95));
-    color: white;
-    padding: 2rem 3rem;
-    border-radius: 1rem;
-    z-index: 10000;
-    text-align: center;
-    font-size: 1.25rem;
-    font-weight: 600;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-  `;
-  modal.textContent = message;
-  document.body.appendChild(modal);
-
-  setTimeout(() => {
-    modal.style.opacity = "0";
-    modal.style.transition = "opacity 0.3s ease";
-    setTimeout(() => {
-      modal.remove();
-    }, 300);
-  }, 2700);
 };

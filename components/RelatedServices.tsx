@@ -1,0 +1,111 @@
+import React from "react";
+import Card from "./Card";
+
+interface Service {
+  icon: string;
+  title: string;
+  description: string;
+  url: string;
+  gradient: string;
+}
+
+const services: Service[] = [
+  {
+    icon: "🎬",
+    title: "AI 음악 가사 1초 완성",
+    description: "AI 음악 가사 1초 완성",
+    url: "https://aimusic.money-hotissue.com/",
+    gradient: "from-pink-600 via-rose-500 to-red-600",
+  },
+  {
+    icon: "📹",
+    title: "숏폼/롱폼 영상 소스 무제한 생성",
+    description: "프로페셔널 영상 편집과 효과를 위한 도구를 확인해보세요",
+    url: "https://youtube-image.money-hotissue.com/",
+    gradient: "from-green-600 via-emerald-500 to-teal-600",
+  },
+  {
+    icon: "🎨",
+    title: "AI 음악 썸네일 제작",
+    description: "AI 음악 썸네일 제작",
+    url: "https://aimusic.money-hotissue.com/thumbnail",
+    gradient: "from-blue-600 via-indigo-500 to-purple-600",
+  },
+  {
+    icon: "🔥",
+    title: "떡상한 대본 비밀 파헤치고 내 걸로 만들기",
+    description: "위에서 만든 대본을 토대로 AI 영상 1분 가능",
+    url: "https://youtube-analyze.money-hotissue.com/",
+    gradient: "from-orange-600 via-amber-500 to-yellow-600",
+  },
+];
+
+const RelatedServices: React.FC = () => {
+  const handleServiceClick = (url: string) => {
+    window.open(url, "_blank");
+  };
+
+  return (
+    <div className="mt-16 mb-8">
+      {/* 제목 섹션 */}
+      <div className="text-center mb-8">
+        <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 via-orange-400 to-pink-500 bg-clip-text text-transparent mb-3"
+          style={{
+            filter: "drop-shadow(0 0 20px rgba(255, 165, 0, 0.5)) drop-shadow(0 0 40px rgba(255, 192, 203, 0.3))"
+          }}
+        >
+          🎬 더 많은 영상 제작 도구가 필요하신가요?
+        </h2>
+        <p className="text-zinc-400 text-base md:text-lg">
+          프로페셔널 영상 편집과 효과를 위한 도구들을 확인해보세요!
+        </p>
+        <p className="text-zinc-500 text-sm mt-2">
+          위에서 만든 대본을 토대로 AI 영상 1분 가능
+        </p>
+      </div>
+
+      {/* 서비스 그리드 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        {services.map((service, index) => (
+          <div
+            key={index}
+            onClick={() => handleServiceClick(service.url)}
+            className="group cursor-pointer"
+          >
+            <Card>
+              <div className="flex flex-col items-center text-center p-4 transition-all duration-300 group-hover:scale-105">
+                {/* 아이콘 */}
+                <div
+                  className={`text-6xl mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12`}
+                >
+                  {service.icon}
+                </div>
+
+                {/* 제목 */}
+                <h3
+                  className={`text-xl md:text-2xl font-bold mb-3 bg-gradient-to-r ${service.gradient} bg-clip-text text-transparent`}
+                >
+                  {service.title}
+                </h3>
+
+                {/* 설명 */}
+                <p className="text-zinc-400 text-sm md:text-base mb-4">
+                  {service.description}
+                </p>
+
+                {/* 버튼 */}
+                <button
+                  className={`w-full bg-gradient-to-r ${service.gradient} hover:shadow-lg hover:shadow-${service.gradient.split(" ")[0].split("-")[1]}/50 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md border-2 border-white/20`}
+                >
+                  바로 가기 →
+                </button>
+              </div>
+            </Card>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default RelatedServices;
