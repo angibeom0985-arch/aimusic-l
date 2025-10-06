@@ -44,24 +44,22 @@ const FloatingBanner: React.FC = () => {
       style={{
         position: "fixed",
         bottom: 0,
-        left: 0,
-        right: 0,
+        left: "50%",
+        transform: "translateX(-50%)",
         zIndex: 1000,
         backgroundColor: "#000000",
         boxShadow: "0 -2px 10px rgba(0,0,0,0.3)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "8px 0",
+        borderRadius: "8px 8px 0 0",
+        padding: "8px",
+        width: isMobile ? "328px" : "744px",
         height: isMobile ? "58px" : "106px",
       }}
     >
       <div
         ref={adRef}
         style={{
-          maxWidth: isMobile ? "320px" : "728px",
           width: "100%",
-          height: isMobile ? "50px" : "90px",
+          height: "100%",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",

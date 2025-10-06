@@ -715,7 +715,8 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       </div>
 
       {/* 가사 생성 유도 섹션 */}
-      <div className="max-w-4xl mx-auto mb-8 p-6 bg-gradient-to-br from-yellow-900/30 via-orange-900/30 to-amber-900/30 rounded-2xl border-2 border-yellow-500/50 shadow-xl backdrop-blur-sm hover:border-yellow-400/70 transition-all duration-300">
+      <div className="w-full mx-auto mb-8 px-4 lg:px-8">
+        <div className="p-6 bg-gradient-to-br from-yellow-900/30 via-orange-900/30 to-amber-900/30 rounded-2xl border-2 border-yellow-500/50 shadow-xl backdrop-blur-sm hover:border-yellow-400/70 transition-all duration-300">
         <div className="text-center">
           <div className="text-5xl mb-3">🎵</div>
           <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-amber-400 bg-clip-text text-transparent mb-2">
@@ -733,9 +734,10 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
             🎵 가사 먼저 만들러 가기 →
           </button>
         </div>
+        </div>
       </div>
 
-      <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-7xl mx-auto px-4">
+      <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full mx-auto px-4 lg:px-8">
         <div className="lg:col-span-8 grid grid-cols-1 lg:grid-cols-8 gap-6">
           <aside className="lg:col-span-3 bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-rose-900/40 rounded-xl p-4 border border-purple-500/30 shadow-lg">
             <h2 className="text-xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
@@ -1059,10 +1061,10 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       </main>
 
       {/* 구분선 */}
-      <div className="my-16 border-t-2 border-zinc-800 max-w-7xl mx-auto"></div>
+      <div className="my-16 border-t-2 border-zinc-800 w-full mx-auto px-4 lg:px-8"></div>
 
       {/* 다른 서비스 홍보 섹션 - 전체 너비 활용 */}
-      <section className="w-full px-4">
+      <section className="w-full px-4 lg:px-8">
         <RelatedServices />
       </section>
 
