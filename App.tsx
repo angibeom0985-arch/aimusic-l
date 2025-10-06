@@ -7,6 +7,9 @@ import AdminPage from "./pages/AdminPage";
 import ThumbnailPage from "./pages/ThumbnailPage";
 import HomePage from "./pages/HomePage";
 import { initContentProtection } from "./utils/contentProtection";
+import AdBlockDetector from "./components/AdBlockDetector";
+import FloatingBanner from "./components/FloatingBanner";
+import SidebarAds from "./components/SidebarAds";
 
 const API_KEY_STORAGE = "gemini_api_key";
 
@@ -23,8 +26,18 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-zinc-100 relative">
+      {/* 애드블록 감지 */}
+      <AdBlockDetector />
+
+      {/* 사이드 광고 (데스크톱 전용) */}
+      <SidebarAds />
+
+      {/* 플로팅 배너 광고 */}
+      <FloatingBanner />
+
       {/* 메인 컨텐츠 - 사이트 제목 헤더 제거됨 (2025-10-07) */}
-      <div className="min-h-screen flex flex-col p-4">
+      {/* 사이드 광고를 고려한 중앙 정렬 */}
+      <div className="min-h-screen flex flex-col p-4 lg:px-[200px]">
         <main className="w-full max-w-7xl mx-auto flex-1">
           <Routes>
             <Route
@@ -42,7 +55,7 @@ const AppContent: React.FC = () => {
           </Routes>
         </main>
 
-        <footer className="text-center mt-12 text-zinc-500 text-sm pb-24">
+        <footer className="text-center mt-12 text-zinc-500 text-sm pb-28 md:pb-32">
           <p className="mb-2">
             쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를
             제공받습니다.
@@ -56,7 +69,6 @@ const AppContent: React.FC = () => {
 
 const App: React.FC = () => {
   useEffect(() => {
-
     // 콘텐츠 보호 초기화
     initContentProtection();
 

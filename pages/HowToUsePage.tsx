@@ -1,9 +1,13 @@
 import React from "react";
+import ContentAd from "../components/ContentAd";
 
 const HowToUsePage: React.FC = () => {
   return (
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">작사의 신 사용법</h1>
+
+      {/* 광고 */}
+      <ContentAd />
 
       <div className="space-y-6 text-zinc-300">
         <section>

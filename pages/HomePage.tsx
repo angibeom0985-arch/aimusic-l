@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import ApiKeyManager from "../components/ApiKeyManager";
 import RelatedServices from "../components/RelatedServices";
+import ContentAd from "../components/ContentAd";
 
 const API_KEY_STORAGE = "gemini_api_key";
 
@@ -42,6 +43,9 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
       <div className="w-full max-w-2xl mb-12">
         <ApiKeyManager onKeySet={handleKeySet} />
       </div>
+
+      {/* 광고 */}
+      <ContentAd />
 
       {/* 메인 서비스 카드 (가사 생성 & 썸네일 생성) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mb-8">

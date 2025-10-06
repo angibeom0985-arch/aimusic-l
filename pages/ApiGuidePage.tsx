@@ -1,4 +1,5 @@
 import React from "react";
+import ContentAd from "../components/ContentAd";
 
 const ApiGuidePage: React.FC = () => {
   return (
@@ -10,6 +11,9 @@ const ApiGuidePage: React.FC = () => {
         AI 음원 가사 및 썸네일 제작을 사용하기 위해 필요한 Google Gemini API
         키를 발급받는 방법을 단계별로 안내드립니다.
       </p>
+
+      {/* 광고 */}
+      <ContentAd />
 
       {/* 보안 및 비용 안내 */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">

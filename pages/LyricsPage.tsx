@@ -7,6 +7,7 @@ import StepTheme from "../components/StepTheme";
 import StepGenerating from "../components/StepGenerating";
 import StepResult from "../components/StepResult";
 import RelatedServices from "../components/RelatedServices";
+import ContentAd from "../components/ContentAd";
 
 interface MainPageProps {
   apiKey: string;
@@ -119,6 +120,9 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
         <StepGenre onGenreSelect={handleGenreSelect} genres={INITIAL_GENRES} />
       </div>
 
+      {/* 광고 */}
+      <ContentAd />
+
       {/* 2단계: 제목 선택 */}
       <div className="scroll-mt-20" id="title-section">
         {selections.genre ? (
@@ -152,6 +156,9 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
           </div>
         )}
       </div>
+
+      {/* 광고 */}
+      <ContentAd />
 
       {/* 3단계: 주제 선택 */}
       <div className="scroll-mt-20" id="theme-section">
@@ -191,6 +198,9 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
           </div>
         )}
       </div>
+
+      {/* 광고 */}
+      <ContentAd />
 
       {/* 4단계: 가사 생성 */}
       <div className="scroll-mt-20" id="generating-section">
@@ -270,7 +280,7 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
       {(selections.genre || lyrics) && (
         <button
           onClick={handleReset}
-          className="fixed bottom-6 right-6 bg-gradient-to-r from-red-600 via-rose-600 to-pink-600 hover:from-red-700 hover:via-rose-700 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-full shadow-2xl hover:shadow-red-500/50 transition-all duration-300 hover:scale-110 z-50 flex items-center gap-2"
+          className="fixed bottom-28 md:bottom-32 right-6 bg-gradient-to-r from-red-600 via-rose-600 to-pink-600 hover:from-red-700 hover:via-rose-700 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-full shadow-2xl hover:shadow-red-500/50 transition-all duration-300 hover:scale-110 z-50 flex items-center gap-2"
           title="모든 작업 내용 초기화"
         >
           <svg

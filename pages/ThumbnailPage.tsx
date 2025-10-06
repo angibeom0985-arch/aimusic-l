@@ -14,6 +14,7 @@ import { ImageCropper } from "../components/ImageCropper";
 import { UploadIcon, CloseIcon } from "../components/icons";
 import type { CustomizationCategory } from "../types";
 import RelatedServices from "../components/RelatedServices";
+import ContentAd from "../components/ContentAd";
 
 interface ThumbnailPageProps {
   apiKey: string;
@@ -773,6 +774,11 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
             </ul>
           </aside>
 
+          {/* 광고 1: 목차와 세부주제 사이 */}
+          <div className="lg:col-span-8">
+            <ContentAd />
+          </div>
+
           <section className="lg:col-span-5 bg-gradient-to-br from-blue-900/40 via-indigo-900/40 to-purple-900/40 rounded-xl p-4 border border-blue-500/30 shadow-lg h-[70vh] overflow-y-auto">
             {selectedGenre && PROMPT_DATA[selectedGenre] ? (
               <div className="space-y-6">
@@ -800,6 +806,11 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               </div>
             )}
           </section>
+        </div>
+
+        {/* 광고 2: 세부주제와 이미지 생성 사이 */}
+        <div className="lg:col-span-12">
+          <ContentAd />
         </div>
 
         <section className="lg:col-span-4 bg-gradient-to-br from-emerald-900/40 via-teal-900/40 to-cyan-900/40 rounded-xl p-4 border border-emerald-500/30 shadow-lg flex flex-col">
