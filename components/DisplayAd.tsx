@@ -11,15 +11,15 @@ interface DisplayAdProps {
   className?: string;
 }
 
-const DisplayAd: React.FC<DisplayAdProps> = ({ 
+const DisplayAd: React.FC<DisplayAdProps> = ({
   slot = "6106251761",
-  className = ""
+  className = "",
 }) => {
   const adRef = useRef<HTMLModElement>(null);
 
   useEffect(() => {
     try {
-      if (adRef.current && !adRef.current.hasAttribute('data-ad-status')) {
+      if (adRef.current && !adRef.current.hasAttribute("data-ad-status")) {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
       }
     } catch (err) {
@@ -28,7 +28,9 @@ const DisplayAd: React.FC<DisplayAdProps> = ({
   }, []);
 
   return (
-    <div className={`w-full my-4 flex justify-center min-h-[100px] ${className}`}>
+    <div
+      className={`w-full my-4 flex justify-center min-h-[100px] ${className}`}
+    >
       <ins
         ref={adRef}
         className="adsbygoogle"
