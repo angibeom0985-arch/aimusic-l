@@ -685,11 +685,11 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     modal.textContent = message;
     document.body.appendChild(modal);
 
-    // 3초 후 쿠팡 링크 열기 및 메시지 제거
+    // 1.5초 후 쿠팡 링크 열기 및 메시지 제거 (기존 3초에서 2배 단축)
     setTimeout(() => {
       modal.remove();
       window.open("https://link.coupang.com/a/bZYkzU", "_blank");
-    }, 3000);
+    }, 1500);
   }, []);
 
   const handleDownloadImage = useCallback(() => {
