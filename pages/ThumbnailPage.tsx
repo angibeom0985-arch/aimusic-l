@@ -46,6 +46,8 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
   const [selectedBodyType, setSelectedBodyType] = useState<string | null>(null);
   const [selectedMood, setSelectedMood] = useState<string | null>(null);
   const [selectedNoise, setSelectedNoise] = useState<string | null>(null);
+  const [lyricsText, setLyricsText] = useState<string>("");
+  const lyricsFileInputRef = useRef<HTMLInputElement>(null);
 
   const allTagsInOrder = useMemo(() => {
     return Object.values(PROMPT_DATA)
@@ -242,6 +244,28 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     }
   }, []);
 
+  const handleLyricsFileUpload = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files?.[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const text = e.target?.result as string;
+          setLyricsText(text);
+        };
+        reader.readAsText(file);
+      }
+    },
+    []
+  );
+
+  const handleRemoveLyrics = useCallback(() => {
+    setLyricsText("");
+    if (lyricsFileInputRef.current) {
+      lyricsFileInputRef.current.value = "";
+    }
+  }, []);
+
   const handleCustomizationSelect = useCallback(
     (
       setter: React.Dispatch<React.SetStateAction<string | null>>,
@@ -335,7 +359,14 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
         ];
         const randomCameraStyle =
           cameraStyles[Math.floor(Math.random() * cameraStyles.length)];
-        const basePrompt = `설정과 분위기는 다음 음악 키워드에서 영감을 받았습니다: ${musicPrompt}. 이미지는 음악 플레이리스트 커버로 적합해야 합니다.`;
+        
+        let basePrompt = `설정과 분위기는 다음 음악 키워드에서 영감을 받았습니다: ${musicPrompt}. 이미지는 음악 플레이리스트 커버로 적합해야 합니다.`;
+        
+        // 가사가 있으면 가사의 분위기와 내용을 반영
+        if (lyricsText.trim()) {
+          basePrompt += ` 다음 가사의 감정과 분위기를 시각적으로 표현하세요:\n"${lyricsText.slice(0, 500)}"`;
+        }
+        
         imagePrompt = `20대 한국 여성의 깨끗하고 노이즈가 적은 사진, ${randomCameraStyle}. 이미지는 차분하고 향수를 자극하는 로파이 분위기로, 조용하고 사색적인 순간을 포착합니다. ${basePrompt}`;
       }
 
@@ -360,6 +391,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     selectedBodyType,
     selectedMood,
     selectedNoise,
+    lyricsText,
     apiKey,
   ]);
 
@@ -502,7 +534,26 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
         </p>
       </div>
 
-      <main className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      {/* 가사 생성 유도 섹션 */}
+      <div className="max-w-4xl mx-auto mb-8 p-6 bg-gradient-to-br from-pink-900/30 via-rose-900/30 to-red-900/30 rounded-2xl border-2 border-pink-500/50 shadow-xl backdrop-blur-sm hover:border-pink-400/70 transition-all duration-300">
+        <div className="text-center">
+          <div className="text-5xl mb-3">🎵</div>
+          <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-pink-400 via-rose-400 to-red-400 bg-clip-text text-transparent mb-2">
+            아직 가사 생성을 안 했다면?
+          </h3>
+          <p className="text-zinc-300 mb-4">
+            먼저 <span className="text-pink-400 font-semibold">가사를 생성</span>하고 오면 가사에 딱 맞는 썸네일을 만들 수 있어요!
+          </p>
+          <button
+            onClick={() => navigate("/lyrics")}
+            className="bg-gradient-to-r from-pink-600 via-rose-500 to-red-600 hover:from-pink-500 hover:via-rose-400 hover:to-red-500 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-pink-500/50 hover:scale-105"
+          >
+            🎵 가사 먼저 만들러 가기 →
+          </button>
+        </div>
+      </div>
+
+      <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-7xl mx-auto px-4">
         <div className="lg:col-span-8 grid grid-cols-1 lg:grid-cols-8 gap-6">
           <aside className="lg:col-span-3 bg-zinc-900 rounded-xl p-4 border border-zinc-800">
             <h2 className="text-xl font-bold mb-4 text-white">목차</h2>
@@ -560,6 +611,52 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
         </div>
 
         <section className="lg:col-span-4 bg-zinc-900 rounded-xl p-4 border border-zinc-800 flex flex-col">
+          {/* 가사 입력 섹션 */}
+          <div className="mb-6">
+            <h2 className="text-xl font-bold mb-3 text-white flex items-center gap-2">
+              🎵 가사 첨부 (선택 사항)
+            </h2>
+            {lyricsText ? (
+              <div className="relative">
+                <div className="bg-zinc-800 rounded-lg p-3 max-h-32 overflow-y-auto text-sm text-zinc-300 whitespace-pre-wrap border border-zinc-700">
+                  {lyricsText}
+                </div>
+                <button
+                  onClick={handleRemoveLyrics}
+                  className="absolute top-2 right-2 bg-red-600 hover:bg-red-500 text-white rounded-full p-1"
+                  aria-label="Remove lyrics"
+                >
+                  <CloseIcon className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <>
+                <textarea
+                  value={lyricsText}
+                  onChange={(e) => setLyricsText(e.target.value)}
+                  placeholder="가사를 직접 입력하거나 아래 버튼으로 파일을 업로드하세요..."
+                  className="w-full h-32 bg-zinc-800 border border-zinc-700 rounded-lg p-3 text-zinc-300 text-sm resize-none focus:outline-none focus:border-blue-500 transition-colors"
+                />
+                <button
+                  onClick={() => lyricsFileInputRef.current?.click()}
+                  className="mt-2 w-full py-2 border-2 border-dashed border-zinc-700 rounded-lg text-zinc-400 hover:bg-zinc-800 hover:border-zinc-600 transition-colors text-sm"
+                >
+                  📄 가사 파일 업로드 (.txt)
+                </button>
+                <input
+                  type="file"
+                  ref={lyricsFileInputRef}
+                  onChange={handleLyricsFileUpload}
+                  accept=".txt"
+                  className="hidden"
+                />
+              </>
+            )}
+            <p className="text-xs text-zinc-500 mt-2">
+              💡 가사를 첨부하면 가사의 감정과 분위기에 맞는 썸네일을 생성합니다
+            </p>
+          </div>
+
           <div className="mb-4">
             <h2 className="text-xl font-bold mb-3 text-white">
               스타일 참조 (선택 사항)
@@ -774,15 +871,15 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
             </div>
           )}
         </section>
-
-        {/* 구분선 */}
-        <div className="my-16 border-t-2 border-zinc-800"></div>
-
-        {/* 다른 서비스 홍보 섹션 */}
-        <section className="w-full">
-          <RelatedServices />
-        </section>
       </main>
+
+      {/* 구분선 */}
+      <div className="my-16 border-t-2 border-zinc-800 max-w-7xl mx-auto"></div>
+
+      {/* 다른 서비스 홍보 섹션 - 전체 너비 활용 */}
+      <section className="w-full px-4">
+        <RelatedServices />
+      </section>
     </div>
   );
 };
