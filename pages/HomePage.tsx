@@ -24,9 +24,9 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       {/* 타이틀 */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 max-w-4xl">
         <h1
-          className="text-5xl md:text-7xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-400 to-pink-500"
+          className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-400 to-pink-500"
           style={{
             filter:
               "drop-shadow(0 0 20px rgba(251, 146, 60, 0.8)) drop-shadow(0 0 40px rgba(236, 72, 153, 0.6))",
@@ -34,9 +34,25 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
         >
           AI 음원 가사 및 썸네일 제작
         </h1>
-        <p className="text-zinc-400 text-lg md:text-xl drop-shadow-lg">
+        <p className="text-zinc-300 text-xl md:text-2xl font-semibold mb-4 drop-shadow-lg">
           유튜브 플레이리스트 채널을 누구나 운영할 수 있게 도와드립니다.
         </p>
+        <div className="bg-gradient-to-r from-zinc-900/90 to-zinc-800/90 backdrop-blur-sm border border-zinc-700/50 rounded-2xl p-6 md:p-8 shadow-2xl mt-8">
+          <p className="text-zinc-300 text-base md:text-lg leading-relaxed mb-4">
+            🎵 <span className="font-bold text-orange-400">1초 만에 완성되는 AI 음악 가사</span>와 <span className="font-bold text-pink-400">감각적인 썸네일</span>로<br />
+            당신의 유튜브 음악 채널을 더 빠르게 성장시키세요!
+          </p>
+          <p className="text-zinc-400 text-sm md:text-base leading-relaxed mb-3">
+            ✨ <span className="text-zinc-300 font-semibold">장르별 맞춤 가사</span>: 발라드, 힙합, 팝, 록 등 다양한 장르의 감성적인 가사를 AI가 자동 생성<br />
+            🎨 <span className="text-zinc-300 font-semibold">클릭을 부르는 썸네일</span>: 가사 테마에 어울리는 고퀄리티 썸네일을 즉시 제작<br />
+            ⚡ <span className="text-zinc-300 font-semibold">초고속 작업 속도</span>: 복사, 다운로드 한 번으로 콘텐츠 제작 완료<br />
+            💰 <span className="text-zinc-300 font-semibold">완전 무료 사용</span>: Google Gemini API 키만 있으면 무제한 생성 가능
+          </p>
+          <p className="text-zinc-500 text-xs md:text-sm italic border-t border-zinc-700/50 pt-4 mt-4">
+            💡 매일 수십 개의 음악 콘텐츠를 업로드하는 성공한 유튜버들의 비밀 무기!<br />
+            이제 누구나 쉽게 플레이리스트 채널을 운영하고 수익을 창출할 수 있습니다.
+          </p>
+        </div>
       </div>
 
       {/* API 키 입력 섹션 */}
