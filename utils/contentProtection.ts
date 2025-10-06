@@ -93,6 +93,15 @@ export const preventShortcuts = (e: KeyboardEvent) => {
   const shift = e.shiftKey;
   const win = e.metaKey;
 
+  // 허용할 단축키 (새로고침)
+  if (
+    (ctrl && shift && key === "r") || // Ctrl+Shift+R (강력 새로고침)
+    (ctrl && key === "r") || // Ctrl+R (새로고침)
+    key === "f5" // F5 (새로고침)
+  ) {
+    return true; // 허용
+  }
+
   // 차단할 단축키 목록
   if (
     (ctrl && key === "s") || // Ctrl+S (저장)
