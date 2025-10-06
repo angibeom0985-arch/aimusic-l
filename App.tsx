@@ -3,8 +3,6 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Link,
-  useLocation,
 } from "react-router-dom";
 import LyricsPage from "./pages/LyricsPage";
 import ApiGuidePage from "./pages/ApiGuidePage";
@@ -21,7 +19,6 @@ const API_KEY_STORAGE = "gemini_api_key";
 
 const AppContent: React.FC = () => {
   const [apiKey, setApiKey] = useState("");
-  const location = useLocation();
 
   useEffect(() => {
     // API 키 불러오기
@@ -31,9 +28,6 @@ const AppContent: React.FC = () => {
     }
   }, []);
 
-  // HomePage가 아닌 경우 헤더 표시
-  const showHeader = location.pathname !== "/";
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-zinc-100 relative">
       {/* 사이드바 광고 */}
@@ -42,26 +36,6 @@ const AppContent: React.FC = () => {
 
       {/* 메인 컨텐츠 */}
       <div className="min-h-screen flex flex-col p-4 lg:px-[180px]">
-        {showHeader && (
-          <header className="text-center mb-8 pt-8">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-              <Link
-                to="/"
-                className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-400 to-pink-500 hover:from-orange-500 hover:via-orange-300 hover:to-pink-400 transition-all duration-300"
-                style={{
-                  filter:
-                    "drop-shadow(0 0 20px rgba(251, 146, 60, 0.8)) drop-shadow(0 0 40px rgba(236, 72, 153, 0.6))",
-                }}
-              >
-                AI 음원 가사 및 썸네일 제작
-              </Link>
-            </h1>
-            <p className="text-zinc-400 mt-2 text-shadow-lg">
-              유튜브 플레이리스트 채널을 누구나 운영할 수 있게 도와드립니다.
-            </p>
-          </header>
-        )}
-
         <main className="w-full max-w-7xl mx-auto flex-1">
           <Routes>
             <Route
