@@ -57,8 +57,10 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
         >
           <div className="bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800 border border-zinc-700/50 rounded-xl p-6 shadow-2xl shadow-black/50 hover:shadow-pink-500/20 transition-all duration-300 backdrop-blur-sm hover:scale-105">
             <div className="flex flex-col items-center text-center p-4">
-              <div className="text-6xl mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
-                �
+              <div className="mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
+                <svg className="w-16 h-16 text-pink-500" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                </svg>
               </div>
               <h3 className="text-xl md:text-2xl font-bold mb-3 bg-gradient-to-r from-pink-600 via-rose-500 to-red-600 bg-clip-text text-transparent">
                 AI 음악 가사 1초 완성
