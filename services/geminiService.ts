@@ -165,104 +165,13 @@ export async function generateImage(
 ): Promise<string> {
   const MAX_RETRIES = 3;
   
-  // ===== 중요: Gemini는 이미지 생성을 지원하지 않습니다 =====
-  // Hugging Face Inference API를 사용합니다 (무료)
   try {
-    console.log("=== Hugging Face Stable Diffusion API 호출 ===");
+    console.log("=== Gemini 2.5 Flash Image 모델 호출 ===");
     console.log("프롬프트:", prompt.substring(0, 200));
     
-    const HF_API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0";
-    
-    // 프롬프트 정제
-    const sanitizedPrompt = prompt
-      .replace(/노출|선정적|섹시|글래머/gi, "natural")
-      .replace(/revealing|sexy|glamorous/gi, "natural");
-    
-    const response = await fetch(HF_API_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        // Hugging Face는 무료 tier에서 API 키 없이도 작동
-      },
-      body: JSON.stringify({
-        inputs: sanitizedPrompt,
-        parameters: {
-          negative_prompt: "blurry, low quality, distorted, ugly, bad anatomy, watermark, text",
-          num_inference_steps: 30,
-          guidance_scale: 7.5,
-        }
-      }),
-    });
-    
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("HF API 오류:", response.status, errorText);
-      
-      // 모델 로딩 중이면 재시도
-      if (response.status === 503 && retryCount < MAX_RETRIES) {
-        console.log(`모델 로딩 중, 재시도... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 5000)); // 5초 대기
-        return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
-      }
-      
-      throw new Error(`이미지 생성 API 오류: ${response.status}`);
-    }
-    
-    // Blob으로 이미지 데이터 받기
-    const blob = await response.blob();
-    
-    // Blob을 base64로 변환
-    const base64 = await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const result = reader.result as string;
-        resolve(result);
-      };
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
-    });
-    
-    console.log("✅ 이미지 생성 성공!");
-    return base64;
-    
-  } catch (error: any) {
-    console.error("=== 이미지 생성 오류 ===");
-    console.error(error);
-    
-    // 네트워크 오류면 재시도
-    if (retryCount < MAX_RETRIES) {
-      const isRetryable = 
-        error.message?.includes("network") ||
-        error.message?.includes("timeout") ||
-        error.message?.includes("fetch");
-      
-      if (isRetryable) {
-        console.log(`네트워크 오류, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 3000 * (retryCount + 1)));
-        return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
-      }
-    }
-    
-    // Hugging Face 실패 시 Gemini로 텍스트 설명 생성 (임시 방편)
-    throw new Error(
-      "이미지 생성에 실패했습니다. 잠시 후 다시 시도해주세요. (Stable Diffusion 모델 로딩 중일 수 있습니다)"
-    );
-  }
-}
-
-// 기존 Gemini 이미지 생성 함수 (백업 - 작동하지 않음)
-async function generateImageWithGemini(
-  prompt: string,
-  referenceImage: string | null = null,
-  apiKey: string,
-  retryCount: number = 0
-): Promise<string> {
-  const MAX_RETRIES = 3;
-  
-  try {
     const genAI = getAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-exp",
+      model: "gemini-2.5-flash-image",
       generationConfig: {
         temperature: 0.9,
         topP: 0.95,
@@ -276,98 +185,81 @@ async function generateImageWithGemini(
     if (referenceImage) {
       try {
         const imageParts = referenceImage.split(",");
-        if (imageParts.length !== 2) {
-          throw new Error("잘못된 이미지 형식입니다.");
+        if (imageParts.length === 2) {
+          const mimeType = imageParts[0].split(":")[1].split(";")[0];
+          const data = imageParts[1];
+          parts.push({
+            inlineData: {
+              mimeType,
+              data,
+            },
+          });
+          console.log("참조 이미지 추가됨");
         }
-        const mimeType = imageParts[0].split(":")[1].split(";")[0];
-        const data = imageParts[1];
-        parts.push({
-          inlineData: {
-            mimeType,
-            data,
-          },
-        });
       } catch (imgError) {
         console.error("참조 이미지 처리 오류:", imgError);
-        // 참조 이미지에 문제가 있어도 계속 진행
       }
     }
 
-    // 프롬프트 정제 (안전 필터 회피)
+    // 프롬프트 정제
     const sanitizedPrompt = prompt
-      .replace(/노출|선정적|섹시|글래머/gi, "자연스러운")
+      .replace(/노출|선정적|섹시|글래머/gi, "natural")
       .replace(/revealing|sexy|glamorous/gi, "natural");
 
-    // 프롬프트 최적화: 더 명확하고 구체적으로
-    const optimizedPrompt = `Create a realistic portrait photograph for a music album cover. ${sanitizedPrompt}. High quality, professional photography, well-lit, clear focus, suitable for music streaming platform.`;
+    // 프롬프트 최적화
+    const optimizedPrompt = `Create a high-quality portrait photograph for a music album cover. ${sanitizedPrompt}. Professional photography, well-lit, clear focus, suitable for music streaming platform.`;
 
     parts.push({ 
       text: optimizedPrompt
     });
 
     console.log(`이미지 생성 시도 ${retryCount + 1}/${MAX_RETRIES + 1}`);
-    console.log("프롬프트 길이:", optimizedPrompt.length);
-    console.log("프롬프트 미리보기:", optimizedPrompt.substring(0, 150) + "...");
     
     const result = await model.generateContent(parts);
     const response = result.response;
     
     console.log("API 응답 받음");
-    console.log("promptFeedback:", JSON.stringify(response.promptFeedback, null, 2));
 
     // 안전 필터 체크
     if (response.promptFeedback?.blockReason) {
+      console.error("안전 필터 차단:", response.promptFeedback.blockReason);
       throw new Error(
-        `콘텐츠가 안전 필터에 의해 차단되었습니다. 다른 스타일을 선택해주세요. (이유: ${response.promptFeedback.blockReason})`
+        `콘텐츠가 안전 필터에 의해 차단되었습니다. 다른 스타일을 선택해주세요.`
       );
     }
 
     const candidates = response.candidates;
 
     if (!candidates || candidates.length === 0) {
-      console.error("=== 후보가 없음 ===");
-      console.error("전체 응답:", JSON.stringify(response, null, 2));
-      console.error("promptFeedback:", JSON.stringify(response.promptFeedback, null, 2));
+      console.error("후보가 없음");
       
-      // 재시도 로직
       if (retryCount < MAX_RETRIES) {
         console.log(`재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1))); // 지수 백오프
+        await new Promise(resolve => setTimeout(resolve, 2000 * (retryCount + 1)));
         return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
       }
       
-      throw new Error(
-        "이미지 생성에 실패했습니다. 프롬프트를 수정하거나 다른 옵션을 선택해주세요."
-      );
+      throw new Error("이미지 생성에 실패했습니다. 다른 스타일을 시도해주세요.");
     }
-    
-    console.log(`후보 개수: ${candidates.length}`);
 
     const candidate = candidates[0];
-    console.log("후보 finishReason:", candidate.finishReason);
-    console.log("후보 safetyRatings:", JSON.stringify(candidate.safetyRatings, null, 2));
+    console.log("finishReason:", candidate.finishReason);
     
     // 완료 이유 확인
     if (candidate.finishReason && candidate.finishReason !== "STOP") {
-      console.warn(`=== 비정상 종료: ${candidate.finishReason} ===`);
-      console.warn("전체 후보 정보:", JSON.stringify(candidate, null, 2));
+      console.warn(`비정상 종료: ${candidate.finishReason}`);
       
       if (candidate.finishReason === "SAFETY") {
-        throw new Error(
-          "안전 설정으로 인해 이미지 생성이 차단되었습니다. 더 일반적인 스타일을 선택해주세요."
-        );
+        throw new Error("안전 설정으로 인해 이미지 생성이 차단되었습니다.");
       }
       
       if (candidate.finishReason === "RECITATION") {
-        throw new Error(
-          "저작권 문제로 이미지 생성이 차단되었습니다. 다른 스타일을 시도해주세요."
-        );
+        throw new Error("저작권 문제로 이미지 생성이 차단되었습니다.");
       }
       
-      // 재시도
       if (retryCount < MAX_RETRIES) {
         console.log(`재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+        await new Promise(resolve => setTimeout(resolve, 2000 * (retryCount + 1)));
         return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
       }
     }
@@ -378,24 +270,21 @@ async function generateImageWithGemini(
     console.log("콘텐츠 파트 개수:", contentParts?.length || 0);
 
     if (!contentParts || contentParts.length === 0) {
-      console.error("=== 콘텐츠 파트가 없음 ===");
-      console.error("전체 콘텐츠:", JSON.stringify(content, null, 2));
-      console.error("전체 후보:", JSON.stringify(candidate, null, 2));
+      console.error("콘텐츠 파트가 없음");
       
-      // 재시도
       if (retryCount < MAX_RETRIES) {
         console.log(`재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+        await new Promise(resolve => setTimeout(resolve, 2000 * (retryCount + 1)));
         return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
       }
       
-      throw new Error("이미지 데이터가 생성되지 않았습니다. 다시 시도해주세요.");
+      throw new Error("이미지 데이터가 생성되지 않았습니다.");
     }
 
     // 이미지 데이터 추출
     for (let i = 0; i < contentParts.length; i++) {
       const part = contentParts[i];
-      console.log(`파트 ${i}:`, part.inlineData ? "이미지 데이터 존재" : "텍스트 또는 기타");
+      console.log(`파트 ${i}:`, part.inlineData ? "이미지 데이터 존재" : "텍스트");
       
       if (part.inlineData) {
         const base64ImageBytes: string = part.inlineData.data;
@@ -408,7 +297,6 @@ async function generateImageWithGemini(
         
         console.log("✅ 이미지 생성 성공!");
         console.log("이미지 타입:", mimeType);
-        console.log("이미지 데이터 길이:", base64ImageBytes.length);
         return `data:${mimeType};base64,${base64ImageBytes}`;
       }
     }
@@ -416,35 +304,32 @@ async function generateImageWithGemini(
     // 이미지가 없을 경우 재시도
     if (retryCount < MAX_RETRIES) {
       console.log(`이미지 없음, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-      await new Promise(resolve => setTimeout(resolve, 1000 * (retryCount + 1)));
+      await new Promise(resolve => setTimeout(resolve, 2000 * (retryCount + 1)));
       return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
     }
 
-    throw new Error(
-      "응답에 이미지가 포함되지 않았습니다. 다른 태그를 선택하거나 다시 시도해주세요."
-    );
+    throw new Error("응답에 이미지가 포함되지 않았습니다.");
     
-  } catch (error) {
-    console.error("이미지 생성 오류:", error);
+  } catch (error: any) {
+    console.error("=== 이미지 생성 오류 ===");
+    console.error(error);
     
-    // 재시도 가능한 오류인 경우
-    if (error instanceof Error) {
+    // 재시도 가능한 오류
+    if (retryCount < MAX_RETRIES) {
       const isRetryable = 
-        error.message.includes("network") ||
-        error.message.includes("timeout") ||
-        error.message.includes("ECONNREFUSED") ||
-        error.message.includes("ETIMEDOUT");
+        error.message?.includes("network") ||
+        error.message?.includes("timeout") ||
+        error.message?.includes("ECONNREFUSED") ||
+        error.message?.includes("ETIMEDOUT");
       
-      if (isRetryable && retryCount < MAX_RETRIES) {
+      if (isRetryable) {
         console.log(`네트워크 오류, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 2000 * (retryCount + 1)));
+        await new Promise(resolve => setTimeout(resolve, 3000 * (retryCount + 1)));
         return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
       }
-      
-      throw error;
     }
     
-    throw new Error("이미지 생성 중 예상치 못한 오류가 발생했습니다.");
+    throw error;
   }
 }
 
@@ -456,9 +341,11 @@ export async function upscaleImage(
   const MAX_RETRIES = 2;
   
   try {
+    console.log("=== Gemini 2.5 Flash Image - 이미지 업스케일 ===");
+    
     const genAI = getAI(apiKey);
     const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-exp",
+      model: "gemini-2.5-flash-image",
       generationConfig: {
         temperature: 0.4, // 낮은 온도로 일관성 유지
         topP: 0.9,
