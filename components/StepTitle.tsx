@@ -104,7 +104,11 @@ const StepTitle: React.FC<StepTitleProps> = ({
               className="flex-grow bg-zinc-800 border border-zinc-700 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 w-full"
               aria-label="직접 제목 입력"
             />
-            <Button type="submit" disabled={!customTitle.trim()} className="whitespace-nowrap">
+            <Button
+              type="submit"
+              disabled={!customTitle.trim()}
+              className="whitespace-nowrap"
+            >
               선택
             </Button>
           </form>

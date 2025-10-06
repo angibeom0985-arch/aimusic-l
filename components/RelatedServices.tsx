@@ -49,9 +49,11 @@ const RelatedServices: React.FC = () => {
     <div className="mt-16 mb-8">
       {/* 제목 섹션 */}
       <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 via-orange-400 to-pink-500 bg-clip-text text-transparent mb-3"
+        <h2
+          className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-orange-600 via-orange-400 to-pink-500 bg-clip-text text-transparent mb-3"
           style={{
-            filter: "drop-shadow(0 0 20px rgba(255, 165, 0, 0.5)) drop-shadow(0 0 40px rgba(255, 192, 203, 0.3))"
+            filter:
+              "drop-shadow(0 0 20px rgba(255, 165, 0, 0.5)) drop-shadow(0 0 40px rgba(255, 192, 203, 0.3))",
           }}
         >
           🎬 더 많은 영상 제작 도구가 필요하신가요?
@@ -95,7 +97,11 @@ const RelatedServices: React.FC = () => {
 
                 {/* 버튼 */}
                 <button
-                  className={`w-full bg-gradient-to-r ${service.gradient} hover:shadow-lg hover:shadow-${service.gradient.split(" ")[0].split("-")[1]}/50 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md border-2 border-white/20`}
+                  className={`w-full bg-gradient-to-r ${
+                    service.gradient
+                  } hover:shadow-lg hover:shadow-${
+                    service.gradient.split(" ")[0].split("-")[1]
+                  }/50 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md border-2 border-white/20`}
                 >
                   바로 가기 →
                 </button>

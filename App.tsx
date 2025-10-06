@@ -49,7 +49,8 @@ const AppContent: React.FC = () => {
                 to="/"
                 className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-400 to-pink-500 hover:from-orange-500 hover:via-orange-300 hover:to-pink-400 transition-all duration-300"
                 style={{
-                  filter: 'drop-shadow(0 0 20px rgba(251, 146, 60, 0.8)) drop-shadow(0 0 40px rgba(236, 72, 153, 0.6))'
+                  filter:
+                    "drop-shadow(0 0 20px rgba(251, 146, 60, 0.8)) drop-shadow(0 0 40px rgba(236, 72, 153, 0.6))",
                 }}
               >
                 AI 음원 가사 및 썸네일 제작

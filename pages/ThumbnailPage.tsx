@@ -747,7 +747,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               </div>
               <div className="flex justify-center">
                 <button
-                  onClick={() => window.location.href = "/lyrics"}
+                  onClick={() => (window.location.href = "/lyrics")}
                   className="bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 hover:from-green-700 hover:via-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
                 >
                   🎵 가사 생성하러 가기
