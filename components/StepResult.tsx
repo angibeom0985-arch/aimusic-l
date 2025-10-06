@@ -56,7 +56,7 @@ const StepResult: React.FC<StepResultProps> = ({ lyrics, onReset, error }) => {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    
+
     showMessageAndOpenCoupang("✅ 다운로드가 완료되었습니다!");
   };
 

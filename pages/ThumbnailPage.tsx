@@ -8,9 +8,8 @@ import React, {
 import { useNavigate } from "react-router-dom";
 import { PROMPT_DATA, GENRE_ICONS } from "../constants";
 import { Tag } from "../components/Tag";
-import { generateImage, upscaleImage } from "../services/geminiService";
+import { generateImage, upscaleImage, translateLyricsToEnglish } from "../services/geminiService";
 import { LoadingSpinner } from "../components/LoadingSpinner";
-import { ImageCropper } from "../components/ImageCropper";
 import { UploadIcon, CloseIcon } from "../components/icons";
 import type { CustomizationCategory } from "../types";
 import RelatedServices from "../components/RelatedServices";
@@ -66,9 +65,9 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isCroppingModalOpen, setIsCroppingModalOpen] =
-    useState<boolean>(false);
   const [isUpscaling, setIsUpscaling] = useState<boolean>(false);
+  const [showUpscaleInput, setShowUpscaleInput] = useState<boolean>(false);
+  const [upscaleDirection, setUpscaleDirection] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -355,7 +354,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
   useEffect(() => {
     const handleWindowPaste = (event: ClipboardEvent) => {
-      if (uploadedImage || isCroppingModalOpen) {
+      if (uploadedImage) {
         return;
       }
 
@@ -383,7 +382,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     return () => {
       window.removeEventListener("paste", handleWindowPaste);
     };
-  }, [uploadedImage, isCroppingModalOpen]);
+  }, [uploadedImage]);
 
   const handleToggleTag = useCallback((tag: string) => {
     setSelectedTags((prev) => {
@@ -496,18 +495,15 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
         let generatedPrompt = `Create a new photo inspired by the reference image style. `;
 
         const descriptions = [];
-        if (selectedPose)
-          descriptions.push(`Pose: ${selectedPose}`);
+        if (selectedPose) descriptions.push(`Pose: ${selectedPose}`);
         if (selectedExpression)
           descriptions.push(`Expression: ${selectedExpression}`);
         if (selectedBackground)
           descriptions.push(`Background: ${selectedBackground}`);
-        if (selectedOutfit)
-          descriptions.push(`Outfit: ${selectedOutfit}`);
+        if (selectedOutfit) descriptions.push(`Outfit: ${selectedOutfit}`);
         if (selectedBodyType)
           descriptions.push(`Body type: ${selectedBodyType}`);
-        if (selectedMood)
-          descriptions.push(`Mood: ${selectedMood}`);
+        if (selectedMood) descriptions.push(`Mood: ${selectedMood}`);
 
         // 커스터마이징 옵션이 있으면 추가
         if (descriptions.length > 0) {
@@ -545,7 +541,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           setIsLoading(false);
           return;
         }
-        
+
         const cameraStyles = [
           "professional camera",
           "natural lighting",
@@ -558,10 +554,17 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
         let basePrompt = `Music playlist cover art. Style keywords: ${musicPrompt}`;
 
-        // 가사가 있으면 가사의 분위기와 내용을 반영
+        // 가사가 있으면 가사를 영어로 번역해서 분위기와 내용을 반영
         if (lyricsText.trim()) {
-          const lyricsPreview = lyricsText.slice(0, 300).replace(/\n/g, ' ');
-          basePrompt += `. Mood from lyrics: "${lyricsPreview}"`;
+          try {
+            const translatedLyrics = await translateLyricsToEnglish(lyricsText, apiKey);
+            const lyricsPreview = translatedLyrics.slice(0, 300).replace(/\n/g, " ");
+            basePrompt += `. Mood and atmosphere from lyrics: "${lyricsPreview}"`;
+          } catch (translateError) {
+            // 번역 실패 시 원본 가사 사용
+            const lyricsPreview = lyricsText.slice(0, 300).replace(/\n/g, " ");
+            basePrompt += `. Mood from lyrics: "${lyricsPreview}"`;
+          }
         }
 
         imagePrompt = `Portrait photo of a young Korean woman, ${randomCameraStyle}, calm and emotional atmosphere. ${basePrompt}. Create a high-quality, professional image.`;
@@ -573,27 +576,42 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       setError(null); // 성공 시 에러 초기화
     } catch (err) {
       console.error("이미지 생성 실패:", err);
-      
+
       let errorMessage = "알 수 없는 오류가 발생했습니다.";
-      
+
       if (err instanceof Error) {
         errorMessage = err.message;
-        
+
         // 사용자 친화적인 에러 메시지로 변환
         if (errorMessage.includes("API key")) {
           errorMessage = "API 키가 유효하지 않습니다. 설정을 확인해주세요.";
-        } else if (errorMessage.includes("안전 필터") || errorMessage.includes("SAFETY")) {
-          errorMessage = "선택한 스타일 조합이 제한되었습니다. 다른 태그를 선택해주세요.";
+        } else if (
+          errorMessage.includes("안전 필터") ||
+          errorMessage.includes("SAFETY")
+        ) {
+          errorMessage =
+            "선택한 스타일 조합이 제한되었습니다. 다른 태그를 선택해주세요.";
         } else if (errorMessage.includes("차단")) {
-          errorMessage = "콘텐츠가 차단되었습니다. 더 일반적인 스타일을 선택해주세요.";
-        } else if (errorMessage.includes("network") || errorMessage.includes("timeout")) {
-          errorMessage = "네트워크 오류가 발생했습니다. 인터넷 연결을 확인하고 다시 시도해주세요.";
-        } else if (errorMessage.includes("quota") || errorMessage.includes("limit")) {
-          errorMessage = "API 사용량 한도에 도달했습니다. 잠시 후 다시 시도해주세요.";
+          errorMessage =
+            "콘텐츠가 차단되었습니다. 더 일반적인 스타일을 선택해주세요.";
+        } else if (
+          errorMessage.includes("network") ||
+          errorMessage.includes("timeout")
+        ) {
+          errorMessage =
+            "네트워크 오류가 발생했습니다. 인터넷 연결을 확인하고 다시 시도해주세요.";
+        } else if (
+          errorMessage.includes("quota") ||
+          errorMessage.includes("limit")
+        ) {
+          errorMessage =
+            "API 사용량 한도에 도달했습니다. 잠시 후 다시 시도해주세요.";
         }
       }
-      
-      setError(`❌ ${errorMessage}\n\n💡 다른 태그 조합을 시도하거나, 참조 이미지 없이 생성해보세요.`);
+
+      setError(
+        `❌ ${errorMessage}\n\n💡 다른 태그 조합을 시도하거나, 참조 이미지 없이 생성해보세요.`
+      );
     } finally {
       setIsLoading(false);
     }
@@ -654,29 +672,29 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     showMessageAndOpenCoupang("✅ 다운로드가 완료되었습니다!");
   }, [generatedImage, showMessageAndOpenCoupang]);
 
-  const handleCropTo16_9 = useCallback(() => {
+  const handleUpscaleImage = useCallback(() => {
     if (!generatedImage) return;
-    showMessageAndOpenCoupang("✂️ 16:9 비율로 다시 생성하겠습니다!");
-    setIsCroppingModalOpen(true);
-  }, [generatedImage, showMessageAndOpenCoupang]);
+    setShowUpscaleInput(true);
+  }, [generatedImage]);
 
-  const handleConfirmCrop = (croppedImage: string) => {
-    setGeneratedImage(croppedImage);
-    setIsCroppingModalOpen(false);
-  };
+  const handleUpscaleWithDirection = useCallback(async () => {
+    if (!generatedImage || !upscaleDirection.trim()) return;
 
-  const handleCancelCrop = () => {
-    setIsCroppingModalOpen(false);
-  };
-
-  const handleUpscaleImage = useCallback(async () => {
-    if (!generatedImage) return;
-    showMessageAndOpenCoupang("⬆️ 업스케일해서 새로 이미지를 생성하겠습니다!");
     setIsUpscaling(true);
     setError(null);
+    setShowUpscaleInput(false);
+
+    // 쿠팡 링크를 새창으로 열기
+    window.open("https://link.coupang.com/a/bZYkzU", "_blank");
+
     try {
-      const upscaledImageUrl = await upscaleImage(generatedImage, apiKey);
+      const upscaledImageUrl = await upscaleImage(
+        generatedImage,
+        apiKey,
+        upscaleDirection
+      );
       setGeneratedImage(upscaledImageUrl);
+      setUpscaleDirection("");
     } catch (err) {
       const errorMessage =
         err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.";
@@ -685,13 +703,10 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     } finally {
       setIsUpscaling(false);
     }
-  }, [generatedImage, apiKey, showMessageAndOpenCoupang]);
+  }, [generatedImage, apiKey, upscaleDirection]);
 
   const canGenerate =
-    !isLoading &&
-    !isUpscaling &&
-    !isCroppingModalOpen &&
-    (selectedTags.size > 0 || !!uploadedImage);
+    !isLoading && !isUpscaling && (selectedTags.size > 0 || !!uploadedImage);
 
   if (!apiKey) {
     return (
@@ -714,14 +729,6 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
   return (
     <div className="w-full">
-      {isCroppingModalOpen && generatedImage && (
-        <ImageCropper
-          imageUrl={generatedImage}
-          onCrop={handleConfirmCrop}
-          onCancel={handleCancelCrop}
-        />
-      )}
-
       {/* 페이지 헤더 */}
       <div className="text-center pt-8 pb-4 mb-6">
         <h1
@@ -768,7 +775,8 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
             📚 장르 선택
           </h2>
           <p className="text-zinc-400 text-sm mb-4">
-            원하는 음악 장르를 클릭하세요. 선택한 장르에 맞는 다양한 스타일 태그가 아래에 나타납니다.
+            원하는 음악 장르를 클릭하세요. 선택한 장르에 맞는 다양한 스타일
+            태그가 아래에 나타납니다.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {Object.keys(PROMPT_DATA).map((genre, index) => {
@@ -811,7 +819,8 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
             🎨 세부 스타일 선택
           </h2>
           <p className="text-zinc-400 text-sm mb-4">
-            원하는 스타일 태그를 여러 개 선택하세요. 선택한 태그들을 조합하여 AI가 썸네일을 생성합니다. (3-5개 추천)
+            원하는 스타일 태그를 여러 개 선택하세요. 선택한 태그들을 조합하여
+            AI가 썸네일을 생성합니다. (3-5개 추천)
           </p>
           {selectedGenre && PROMPT_DATA[selectedGenre] ? (
             <div className="space-y-6">
@@ -985,7 +994,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   </div>
                 );
               })}
-              
+
               {/* 사용자 직접 입력 칸 */}
               <div className="mt-4">
                 <h3 className="text-lg font-semibold mb-2 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
@@ -1037,37 +1046,48 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
             </div>
             <div className="mt-4 flex flex-col gap-2">
               <button
-                onClick={handleCropTo16_9}
-                disabled={
-                  !generatedImage ||
-                  isLoading ||
-                  isUpscaling ||
-                  isCroppingModalOpen
-                }
-                className="w-full bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-500 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-purple-500/50 hover:scale-105"
-              >
-                ✂️ 16:9로 자르기
-              </button>
-              <button
                 onClick={handleUpscaleImage}
-                disabled={
-                  !generatedImage ||
-                  isLoading ||
-                  isUpscaling ||
-                  isCroppingModalOpen
-                }
+                disabled={!generatedImage || isLoading || isUpscaling}
                 className="w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-green-500/50 hover:scale-105"
               >
                 {isUpscaling ? "⏳ 업스케일링..." : "⬆️ 업스케일"}
               </button>
+              
+              {/* 업스케일 방향 입력 UI */}
+              {showUpscaleInput && (
+                <div className="bg-zinc-800 border border-zinc-700 rounded-lg p-4 mt-2">
+                  <label htmlFor="upscaleDirection" className="block text-sm font-medium text-zinc-300 mb-2">
+                    원하는 방향을 입력하세요:
+                  </label>
+                  <textarea
+                    id="upscaleDirection"
+                    value={upscaleDirection}
+                    onChange={(e) => setUpscaleDirection(e.target.value)}
+                    placeholder="예: 더 밝고 화려하게, 색상을 더 진하게, 배경을 더 선명하게..."
+                    className="w-full h-20 px-3 py-2 bg-zinc-900 border border-zinc-600 rounded-md text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
+                    rows={3}
+                  />
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      onClick={handleUpscaleWithDirection}
+                      disabled={!upscaleDirection.trim() || isUpscaling}
+                      className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-zinc-700 disabled:to-zinc-700 disabled:text-zinc-400 text-white font-bold py-2 px-4 rounded-full transition-all duration-300"
+                    >
+                      ✨ 진행
+                    </button>
+                    <button
+                      onClick={() => setShowUpscaleInput(false)}
+                      className="flex-1 bg-zinc-600 hover:bg-zinc-500 text-white font-bold py-2 px-4 rounded-full transition-all duration-300"
+                    >
+                      취소
+                    </button>
+                  </div>
+                </div>
+              )}
+              
               <button
                 onClick={handleDownloadImage}
-                disabled={
-                  !generatedImage ||
-                  isLoading ||
-                  isUpscaling ||
-                  isCroppingModalOpen
-                }
+                disabled={!generatedImage || isLoading || isUpscaling}
                 className="w-full bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500 hover:from-blue-600 hover:via-sky-600 hover:to-cyan-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-blue-500/50 hover:scale-105"
               >
                 💾 다운로드

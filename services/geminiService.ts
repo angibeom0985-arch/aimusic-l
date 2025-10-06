@@ -155,6 +155,44 @@ export const generateLyrics = async (
   }
 };
 
+// ==================== Translation Functions ====================
+
+export const translateLyricsToEnglish = async (
+  lyrics: string,
+  apiKey: string
+): Promise<string> => {
+  try {
+    console.log("=== 가사 영어 번역 시작 ===");
+
+    if (!lyrics.trim()) {
+      return "";
+    }
+
+    const genAI = getAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.0-flash-exp",
+      generationConfig: {
+        temperature: 0.7,
+        topP: 0.9,
+        topK: 40,
+      },
+    });
+
+    const result = await model.generateContent(
+      `Translate the following Korean song lyrics to English. Keep the emotional meaning and mood of the lyrics. Provide only the translation, without any additional explanation or notes:\n\n${lyrics}`
+    );
+
+    const response = result.response;
+    const translatedText = response.text();
+    console.log("가사 번역 완료");
+    return translatedText;
+  } catch (error) {
+    console.error("가사 번역 오류:", error);
+    // 번역 실패 시 원본 가사 반환
+    return lyrics;
+  }
+};
+
 // ==================== Thumbnail Generator Functions ====================
 
 export async function generateImage(
@@ -164,11 +202,11 @@ export async function generateImage(
   retryCount: number = 0
 ): Promise<string> {
   const MAX_RETRIES = 3;
-  
+
   try {
     console.log("=== Gemini 2.5 Flash Image 모델 호출 ===");
     console.log("프롬프트:", prompt.substring(0, 200));
-    
+
     const genAI = getAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash-image",
@@ -206,18 +244,18 @@ export async function generateImage(
       .replace(/노출|선정적|섹시|글래머/gi, "natural")
       .replace(/revealing|sexy|glamorous/gi, "natural");
 
-    // 프롬프트 최적화
-    const optimizedPrompt = `Create a high-quality portrait photograph for a music album cover. ${sanitizedPrompt}. Professional photography, well-lit, clear focus, suitable for music streaming platform.`;
+    // 프롬프트 최적화 - 유튜브 썸네일 비율(16:9)과 텍스트 없는 순수 이미지로 생성
+    const optimizedPrompt = `Create a high-quality YouTube thumbnail image with 16:9 aspect ratio (1920x1080). ${sanitizedPrompt}. Pure visual image with no text, no words, no titles, no letters overlaid on the image. Professional photography, well-lit, clear focus, cinematic composition, suitable for YouTube thumbnail. Focus on visual elements only, absolutely NO TEXT anywhere in the image.`;
 
-    parts.push({ 
-      text: optimizedPrompt
+    parts.push({
+      text: optimizedPrompt,
     });
 
     console.log(`이미지 생성 시도 ${retryCount + 1}/${MAX_RETRIES + 1}`);
-    
+
     const result = await model.generateContent(parts);
     const response = result.response;
-    
+
     console.log("API 응답 받음");
 
     // 안전 필터 체크
@@ -232,69 +270,80 @@ export async function generateImage(
 
     if (!candidates || candidates.length === 0) {
       console.error("후보가 없음");
-      
+
       if (retryCount < MAX_RETRIES) {
         console.log(`재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 2000 * (retryCount + 1)));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 2000 * (retryCount + 1))
+        );
         return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
       }
-      
-      throw new Error("이미지 생성에 실패했습니다. 다른 스타일을 시도해주세요.");
+
+      throw new Error(
+        "이미지 생성에 실패했습니다. 다른 스타일을 시도해주세요."
+      );
     }
 
     const candidate = candidates[0];
     console.log("finishReason:", candidate.finishReason);
-    
+
     // 완료 이유 확인
     if (candidate.finishReason && candidate.finishReason !== "STOP") {
       console.warn(`비정상 종료: ${candidate.finishReason}`);
-      
+
       if (candidate.finishReason === "SAFETY") {
         throw new Error("안전 설정으로 인해 이미지 생성이 차단되었습니다.");
       }
-      
+
       if (candidate.finishReason === "RECITATION") {
         throw new Error("저작권 문제로 이미지 생성이 차단되었습니다.");
       }
-      
+
       if (retryCount < MAX_RETRIES) {
         console.log(`재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 2000 * (retryCount + 1)));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 2000 * (retryCount + 1))
+        );
         return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
       }
     }
 
     const content = candidate.content;
     const contentParts = content?.parts;
-    
+
     console.log("콘텐츠 파트 개수:", contentParts?.length || 0);
 
     if (!contentParts || contentParts.length === 0) {
       console.error("콘텐츠 파트가 없음");
-      
+
       if (retryCount < MAX_RETRIES) {
         console.log(`재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 2000 * (retryCount + 1)));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 2000 * (retryCount + 1))
+        );
         return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
       }
-      
+
       throw new Error("이미지 데이터가 생성되지 않았습니다.");
     }
 
     // 이미지 데이터 추출
     for (let i = 0; i < contentParts.length; i++) {
       const part = contentParts[i];
-      console.log(`파트 ${i}:`, part.inlineData ? "이미지 데이터 존재" : "텍스트");
-      
+      console.log(
+        `파트 ${i}:`,
+        part.inlineData ? "이미지 데이터 존재" : "텍스트"
+      );
+
       if (part.inlineData) {
         const base64ImageBytes: string = part.inlineData.data;
         const mimeType = part.inlineData.mimeType;
-        
+
         if (!base64ImageBytes) {
           console.error("이미지 데이터가 비어있음");
           continue;
         }
-        
+
         console.log("✅ 이미지 생성 성공!");
         console.log("이미지 타입:", mimeType);
         return `data:${mimeType};base64,${base64ImageBytes}`;
@@ -303,32 +352,39 @@ export async function generateImage(
 
     // 이미지가 없을 경우 재시도
     if (retryCount < MAX_RETRIES) {
-      console.log(`이미지 없음, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-      await new Promise(resolve => setTimeout(resolve, 2000 * (retryCount + 1)));
+      console.log(
+        `이미지 없음, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`
+      );
+      await new Promise((resolve) =>
+        setTimeout(resolve, 2000 * (retryCount + 1))
+      );
       return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
     }
 
     throw new Error("응답에 이미지가 포함되지 않았습니다.");
-    
   } catch (error: any) {
     console.error("=== 이미지 생성 오류 ===");
     console.error(error);
-    
+
     // 재시도 가능한 오류
     if (retryCount < MAX_RETRIES) {
-      const isRetryable = 
+      const isRetryable =
         error.message?.includes("network") ||
         error.message?.includes("timeout") ||
         error.message?.includes("ECONNREFUSED") ||
         error.message?.includes("ETIMEDOUT");
-      
+
       if (isRetryable) {
-        console.log(`네트워크 오류, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 3000 * (retryCount + 1)));
+        console.log(
+          `네트워크 오류, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`
+        );
+        await new Promise((resolve) =>
+          setTimeout(resolve, 3000 * (retryCount + 1))
+        );
         return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
       }
     }
-    
+
     throw error;
   }
 }
@@ -336,13 +392,15 @@ export async function generateImage(
 export async function upscaleImage(
   base64ImageData: string,
   apiKey: string,
+  direction: string = "",
   retryCount: number = 0
 ): Promise<string> {
   const MAX_RETRIES = 2;
-  
+
   try {
     console.log("=== Gemini 2.5 Flash Image - 이미지 업스케일 ===");
-    
+    console.log("방향:", direction || "기본");
+
     const genAI = getAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash-image",
@@ -362,6 +420,12 @@ export async function upscaleImage(
 
     console.log(`업스케일 시도 ${retryCount + 1}/${MAX_RETRIES + 1}`);
 
+    // 방향 지시사항 추가
+    let directionText = "";
+    if (direction.trim()) {
+      directionText = ` Focus on the ${direction} area and enhance it.`;
+    }
+
     const result = await model.generateContent([
       {
         inlineData: {
@@ -370,7 +434,7 @@ export async function upscaleImage(
         },
       },
       {
-        text: "Upscale this image to higher resolution. Enhance details and sharpness while maintaining the original composition and colors. Create a professional quality image. The image must be generated.",
+        text: `Upscale this image to higher resolution (1280x720, 16:9 aspect ratio). Enhance details and sharpness while maintaining the original composition and colors.${directionText} Create a professional quality image suitable for YouTube thumbnail. NO TEXT OR WATERMARKS. The image must be generated.`,
       },
     ]);
 
@@ -387,28 +451,30 @@ export async function upscaleImage(
 
     if (!candidates || candidates.length === 0) {
       console.error("업스케일 응답에 후보가 없음:", response);
-      
+
       // 재시도
       if (retryCount < MAX_RETRIES) {
         console.log(`재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 1500 * (retryCount + 1)));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 1500 * (retryCount + 1))
+        );
         return upscaleImage(base64ImageData, apiKey, retryCount + 1);
       }
-      
-      throw new Error(
-        "업스케일에 실패했습니다. 다시 시도해주세요."
-      );
+
+      throw new Error("업스케일에 실패했습니다. 다시 시도해주세요.");
     }
 
     const candidate = candidates[0];
-    
+
     // 완료 이유 확인
     if (candidate.finishReason && candidate.finishReason !== "STOP") {
       console.warn(`비정상 종료: ${candidate.finishReason}`);
-      
+
       if (retryCount < MAX_RETRIES) {
         console.log(`재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 1500 * (retryCount + 1)));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 1500 * (retryCount + 1))
+        );
         return upscaleImage(base64ImageData, apiKey, retryCount + 1);
       }
     }
@@ -418,14 +484,16 @@ export async function upscaleImage(
 
     if (!responseParts || responseParts.length === 0) {
       console.error("업스케일 콘텐츠 파트가 없음:", content);
-      
+
       // 재시도
       if (retryCount < MAX_RETRIES) {
         console.log(`재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 1500 * (retryCount + 1)));
+        await new Promise((resolve) =>
+          setTimeout(resolve, 1500 * (retryCount + 1))
+        );
         return upscaleImage(base64ImageData, apiKey, retryCount + 1);
       }
-      
+
       throw new Error("업스케일된 이미지 데이터가 없습니다.");
     }
 
@@ -434,12 +502,12 @@ export async function upscaleImage(
       if (part.inlineData) {
         const base64ImageBytes: string = part.inlineData.data;
         const responseMimeType = part.inlineData.mimeType;
-        
+
         if (!base64ImageBytes) {
           console.error("업스케일 이미지 데이터가 비어있음");
           continue;
         }
-        
+
         console.log("✅ 업스케일 성공!");
         return `data:${responseMimeType};base64,${base64ImageBytes}`;
       }
@@ -447,34 +515,41 @@ export async function upscaleImage(
 
     // 이미지가 없을 경우 재시도
     if (retryCount < MAX_RETRIES) {
-      console.log(`이미지 없음, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-      await new Promise(resolve => setTimeout(resolve, 1500 * (retryCount + 1)));
+      console.log(
+        `이미지 없음, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`
+      );
+      await new Promise((resolve) =>
+        setTimeout(resolve, 1500 * (retryCount + 1))
+      );
       return upscaleImage(base64ImageData, apiKey, retryCount + 1);
     }
 
     throw new Error(
       "업스케일된 이미지를 생성하지 못했습니다. 다시 시도해주세요."
     );
-    
   } catch (error) {
     console.error("업스케일 오류:", error);
-    
+
     // 재시도 가능한 오류인 경우
     if (error instanceof Error) {
-      const isRetryable = 
+      const isRetryable =
         error.message.includes("network") ||
         error.message.includes("timeout") ||
         error.message.includes("ECONNREFUSED");
-      
+
       if (isRetryable && retryCount < MAX_RETRIES) {
-        console.log(`네트워크 오류, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
-        await new Promise(resolve => setTimeout(resolve, 2000 * (retryCount + 1)));
+        console.log(
+          `네트워크 오류, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`
+        );
+        await new Promise((resolve) =>
+          setTimeout(resolve, 2000 * (retryCount + 1))
+        );
         return upscaleImage(base64ImageData, apiKey, retryCount + 1);
       }
-      
+
       throw error;
     }
-    
+
     throw new Error("업스케일 중 예상치 못한 오류가 발생했습니다.");
   }
 }
