@@ -2,6 +2,11 @@
 
 // 드래그 방지 (우회 프로그램 방어 강화)
 export const preventDrag = (e: Event) => {
+  // input, textarea는 드래그 허용
+  const target = e.target as HTMLElement;
+  if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
+    return true;
+  }
   e.preventDefault();
   e.stopPropagation();
   e.stopImmediatePropagation();
@@ -10,6 +15,11 @@ export const preventDrag = (e: Event) => {
 
 // 우클릭 방지 (우회 프로그램 방어 강화)
 export const preventContextMenu = (e: Event) => {
+  // input, textarea는 우클릭 허용
+  const target = e.target as HTMLElement;
+  if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
+    return true;
+  }
   e.preventDefault();
   e.stopPropagation();
   e.stopImmediatePropagation();
@@ -18,6 +28,11 @@ export const preventContextMenu = (e: Event) => {
 
 // 텍스트 선택 방지 (추가)
 export const preventSelection = (e: Event) => {
+  // input, textarea는 선택 허용
+  const target = e.target as HTMLElement;
+  if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") {
+    return true;
+  }
   e.preventDefault();
   e.stopPropagation();
   e.stopImmediatePropagation();
