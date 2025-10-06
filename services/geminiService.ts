@@ -96,7 +96,20 @@ export const generateLyrics = async (
   apiKey: string
 ): Promise<string> => {
   try {
+    console.log("=== 가사 생성 시작 ===");
+    console.log("장르:", genre);
+    console.log("제목:", title);
+    console.log("테마:", theme);
+    console.log("API 키 존재 여부:", !!apiKey);
+    console.log("API 키 길이:", apiKey?.length);
+    
+    if (!apiKey) {
+      throw new Error("API 키가 입력되지 않았습니다. 메인 페이지에서 API 키를 입력해주세요.");
+    }
+
     const ai = getAI(apiKey);
+    console.log("AI 인스턴스 생성 완료");
+    
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: `당신은 전문 작사가입니다. ${genre} 장르의 한국 노래 가사를 작성해주세요. 노래 제목은 '${title}'이고 주요 테마는 '${theme}'입니다. 가사는 반드시 한국어로 작성해야 합니다. [Verse 1], [Chorus], [Verse 2], [Chorus], [Bridge], [Chorus], [Outro]와 같은 마커를 사용하여 노래 구조를 명확하게 표시해주세요. 가사는 감성적이고 창의적이며 지정된 장르와 테마에 잘 맞아야 합니다.`,
@@ -105,10 +118,20 @@ export const generateLyrics = async (
       },
     });
 
-    return response.text.trim();
-  } catch (error) {
+    console.log("가사 생성 완료");
+    const lyrics = response.text.trim();
+    console.log("가사 길이:", lyrics.length);
+    return lyrics;
+  } catch (error: any) {
     console.error("가사 생성 오류:", error);
-    throw new Error("AI로부터 가사를 생성하는데 실패했습니다.");
+    console.error("오류 메시지:", error?.message);
+    console.error("오류 상세:", error?.stack);
+    
+    if (error?.message?.includes("API_KEY_INVALID") || error?.message?.includes("API key")) {
+      throw new Error("API 키가 유효하지 않습니다. API 키를 다시 확인해주세요.");
+    }
+    
+    throw new Error(`가사 생성에 실패했습니다: ${error?.message || "알 수 없는 오류"}`);
   }
 };
 
