@@ -22,14 +22,6 @@ export const INITIAL_GENRES: string[] = [
   "시티팝",
 ];
 
-export const COUPANG_LINKS: string[] = [
-  "https://link.coupang.com/a/cUVNWY",
-  "https://link.coupang.com/a/cUVNXR",
-  "https://link.coupang.com/a/cUVNYk",
-  "https://link.coupang.com/a/cUVNY1",
-  "https://link.coupang.com/a/cUVN47",
-];
-
 export const ADMIN_CREDENTIALS = {
   username: "akb0811",
   password: "rlqja0985!",

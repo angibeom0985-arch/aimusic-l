@@ -2,7 +2,6 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "./Card";
 import Button from "./Button";
-import { handleCopyDownload } from "../utils/coupang";
 
 interface StepResultProps {
   lyrics: string;
@@ -14,11 +13,20 @@ const StepResult: React.FC<StepResultProps> = ({ lyrics, onReset, error }) => {
   const navigate = useNavigate();
 
   const handleCopy = () => {
-    handleCopyDownload(lyrics, "copy");
+    navigator.clipboard.writeText(lyrics);
+    alert("가사가 클립보드에 복사되었습니다!");
   };
 
   const handleDownload = () => {
-    handleCopyDownload(lyrics, "download");
+    const blob = new Blob([lyrics], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "lyrics.txt";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const goToThumbnail = () => {

@@ -6,10 +6,7 @@ import HowToUsePage from "./pages/HowToUsePage";
 import AdminPage from "./pages/AdminPage";
 import ThumbnailPage from "./pages/ThumbnailPage";
 import HomePage from "./pages/HomePage";
-import SidebarAd from "./components/SidebarAd";
-import FloatingBanner from "./components/FloatingBanner";
 import { initContentProtection } from "./utils/contentProtection";
-import { initAdBlockerDetection } from "./utils/adBlockDetector";
 
 const API_KEY_STORAGE = "gemini_api_key";
 
@@ -26,12 +23,8 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-950 via-zinc-900 to-zinc-950 text-zinc-100 relative">
-      {/* 사이드바 광고 */}
-      <SidebarAd position="left" />
-      <SidebarAd position="right" />
-
       {/* 메인 컨텐츠 - 사이트 제목 헤더 제거됨 (2025-10-07) */}
-      <div className="min-h-screen flex flex-col p-4 lg:px-[180px]">
+      <div className="min-h-screen flex flex-col p-4">
         <main className="w-full max-w-7xl mx-auto flex-1">
           <Routes>
             <Route
@@ -57,17 +50,12 @@ const AppContent: React.FC = () => {
           <p>&copy; 2025 AI 음원 가사 및 썸네일 제작. All rights reserved.</p>
         </footer>
       </div>
-
-      {/* 플로팅 배너 */}
-      <FloatingBanner />
     </div>
   );
 };
 
 const App: React.FC = () => {
   useEffect(() => {
-    // AdBlocker 감지
-    initAdBlockerDetection();
 
     // 콘텐츠 보호 초기화
     initContentProtection();

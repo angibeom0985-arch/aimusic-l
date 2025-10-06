@@ -13,7 +13,6 @@ import { LoadingSpinner } from "../components/LoadingSpinner";
 import { ImageCropper } from "../components/ImageCropper";
 import { UploadIcon, CloseIcon } from "../components/icons";
 import type { CustomizationCategory } from "../types";
-import DisplayAd from "../components/DisplayAd";
 import RelatedServices from "../components/RelatedServices";
 
 interface ThumbnailPageProps {
@@ -622,20 +621,6 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     setTimeout(() => {
       modal.remove();
     }, 2000);
-
-    // 3초 후 쿠팡 링크로 이동
-    setTimeout(() => {
-      const coupangLinks = [
-        "https://link.coupang.com/a/cUVNWY",
-        "https://link.coupang.com/a/cUVNXR",
-        "https://link.coupang.com/a/cUVNYk",
-        "https://link.coupang.com/a/cUVNY1",
-        "https://link.coupang.com/a/cUVN47",
-      ];
-      const randomLink =
-        coupangLinks[Math.floor(Math.random() * coupangLinks.length)];
-      window.location.href = randomLink;
-    }, 3000);
   }, [generatedImage]);
 
   const handleCropTo16_9 = useCallback(() => {
@@ -814,8 +799,6 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                 <p>메뉴에서 장르를 선택하여 프롬프트를 확인하세요.</p>
               </div>
             )}
-
-            <DisplayAd slot="3145678904" />
           </section>
         </div>
 
@@ -1032,8 +1015,6 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                 💾 다운로드
               </button>
             </div>
-
-            <DisplayAd slot="3145678905" />
           </div>
 
           {/* 가사 생성 유도 섹션 */}

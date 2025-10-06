@@ -1,5 +1,4 @@
 import React from "react";
-import DisplayAd from "../components/DisplayAd";
 
 const ApiGuidePage: React.FC = () => {
   return (
@@ -36,8 +35,6 @@ const ApiGuidePage: React.FC = () => {
         </div>
       </div>
 
-      <DisplayAd slot="3145678913" />
-
       <div className="space-y-8 text-zinc-300">
         {/* 1단계: Google AI Studio 접속 */}
         <section className="bg-zinc-800/50 rounded-lg p-6 shadow-lg">
@@ -68,8 +65,6 @@ const ApiGuidePage: React.FC = () => {
           </p>
         </section>
 
-        <DisplayAd slot="3145678914" />
-
         {/* 2단계: 프로젝트 만들기 1 */}
         <section className="bg-zinc-800/50 rounded-lg p-6 shadow-lg">
           <h2 className="text-2xl font-semibold mb-4 text-pink-400 flex items-center gap-2">
@@ -99,8 +94,6 @@ const ApiGuidePage: React.FC = () => {
           </div>
         </section>
 
-        <DisplayAd slot="3145678915" />
-
         {/* 3단계: 프로젝트 만들기 2 */}
         <section className="bg-zinc-800/50 rounded-lg p-6 shadow-lg">
           <h2 className="text-2xl font-semibold mb-4 text-pink-400 flex items-center gap-2">
@@ -115,8 +108,6 @@ const ApiGuidePage: React.FC = () => {
             ✅ '프로젝트 이름'은 본인이 구별하기 쉬운 단어로 작성
           </p>
         </section>
-
-        <DisplayAd slot="3145678916" />
 
         {/* 4단계: 새 키 생성 */}
         <section className="bg-zinc-800/50 rounded-lg p-6 shadow-lg">
@@ -135,8 +126,6 @@ const ApiGuidePage: React.FC = () => {
             ⚠️ '가져온 프로젝트 선택'은 아까 만든 프로젝트 선택
           </p>
         </section>
-
-        <DisplayAd slot="3145678917" />
 
         {/* 5단계: API 키 생성 완료 */}
         <section className="bg-zinc-800/50 rounded-lg p-6 shadow-lg">
@@ -164,8 +153,6 @@ const ApiGuidePage: React.FC = () => {
             </p>
           </div>
         </section>
-
-        <DisplayAd slot="3145678918" />
 
         {/* 6단계: 웹사이트에 API 키 입력 */}
         <section className="bg-zinc-800/50 rounded-lg p-6 shadow-lg">
@@ -196,8 +183,6 @@ const ApiGuidePage: React.FC = () => {
           </div>
         </section>
 
-        <DisplayAd slot="3145678919" />
-
         {/* 7단계: 결제 설정 */}
         <section className="bg-zinc-800/50 rounded-lg p-6 shadow-lg">
           <h2 className="text-2xl font-semibold mb-4 text-pink-400 flex items-center gap-2">
@@ -215,8 +200,6 @@ const ApiGuidePage: React.FC = () => {
             ❌ '결제 설정'한다고 해서, 바로 결제되는 거 아니니 안심하세요.
           </p>
         </section>
-
-        <DisplayAd slot="3145678920" />
 
         {/* 8단계: 결제 설정 페이지 */}
         <section className="bg-zinc-800/50 rounded-lg p-6 shadow-lg">
@@ -247,8 +230,6 @@ const ApiGuidePage: React.FC = () => {
             </ul>
           </div>
         </section>
-
-        <DisplayAd slot="3145678921" />
 
         {/* FAQ */}
         <section className="bg-gradient-to-br from-purple-900/20 to-blue-900/20 border border-purple-500/30 rounded-lg p-6 shadow-lg">
@@ -287,8 +268,6 @@ const ApiGuidePage: React.FC = () => {
             </div>
           </div>
         </section>
-
-        <DisplayAd slot="3145678922" />
 
         {/* 관련 문서 */}
         <section className="bg-zinc-800/50 rounded-lg p-6 shadow-lg">

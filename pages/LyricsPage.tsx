@@ -6,7 +6,6 @@ import StepTitle from "../components/StepTitle";
 import StepTheme from "../components/StepTheme";
 import StepGenerating from "../components/StepGenerating";
 import StepResult from "../components/StepResult";
-import DisplayAd from "../components/DisplayAd";
 import RelatedServices from "../components/RelatedServices";
 
 interface MainPageProps {
@@ -120,9 +119,6 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
         <StepGenre onGenreSelect={handleGenreSelect} genres={INITIAL_GENRES} />
       </div>
 
-      {/* 광고 1: 장르와 제목 사이 */}
-      <DisplayAd slot="3145678901" />
-
       {/* 2단계: 제목 선택 */}
       <div className="scroll-mt-20" id="title-section">
         {selections.genre ? (
@@ -156,9 +152,6 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
           </div>
         )}
       </div>
-
-      {/* 광고 2: 제목과 주제 사이 */}
-      <DisplayAd slot="3145678902" />
 
       {/* 3단계: 주제 선택 */}
       <div className="scroll-mt-20" id="theme-section">
@@ -198,9 +191,6 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
           </div>
         )}
       </div>
-
-      {/* 광고 3: 주제와 가사 완성 사이 */}
-      <DisplayAd slot="3145678903" />
 
       {/* 4단계: 가사 생성 */}
       <div className="scroll-mt-20" id="generating-section">
@@ -269,6 +259,9 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
           </div>
         )}
       </div>
+
+      {/* 구분선 */}
+      <div className="my-16 border-t-2 border-zinc-800"></div>
 
       {/* 다른 서비스 홍보 */}
       <RelatedServices />
