@@ -494,46 +494,42 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           return;
         }
 
-        let customPrompt = `제공된 이미지를 참조하여 **정확히 동일한 인물**의 새로운 사진을 생성하고, 얼굴 특징과 정체성을 완벽하게 보존하세요. `;
+        let customPrompt = `참조 이미지의 스타일과 분위기를 따르되, 새로운 구도의 이미지를 생성하세요. `;
 
         const descriptions = [];
         if (selectedPose)
-          descriptions.push(`인물은 ${selectedPose} 자세를 취하고 있습니다.`);
+          descriptions.push(`포즈: ${selectedPose}`);
         if (selectedExpression)
-          descriptions.push(`표정은 ${selectedExpression}입니다.`);
+          descriptions.push(`표정: ${selectedExpression}`);
         if (selectedBackground)
-          descriptions.push(`배경은 ${selectedBackground}입니다.`);
+          descriptions.push(`배경: ${selectedBackground}`);
         if (selectedOutfit)
-          descriptions.push(`의상은 ${selectedOutfit}입니다.`);
+          descriptions.push(`의상: ${selectedOutfit}`);
         if (selectedBodyType)
-          descriptions.push(`몸매는 ${selectedBodyType}입니다.`);
+          descriptions.push(`체형: ${selectedBodyType}`);
         if (selectedMood)
-          descriptions.push(`이미지는 ${selectedMood} 분위기입니다.`);
+          descriptions.push(`분위기: ${selectedMood}`);
 
-        customPrompt += descriptions.join(" ");
+        customPrompt += descriptions.join(", ");
 
         const cameraStyles = [
-          "DSLR 카메라 사진",
-          "iPhone 카메라로 촬영",
-          "부드러운 그레인이 있는 35mm 필름 사진",
-          "폴라로이드 사진 스타일",
-          "단렌즈가 장착된 미러리스 카메라로 촬영",
+          "프로페셔널 카메라",
+          "자연스러운 조명",
+          "영화 같은 스타일",
+          "깔끔한 구도",
+          "미니멀한 배경",
         ];
         const randomCameraStyle =
           cameraStyles[Math.floor(Math.random() * cameraStyles.length)];
 
         const noiseValue = selectedNoise || "low noise";
-        let finalStylePrompt = `스타일은 ${
-          noiseValue === "low noise" ? "깨끗하고 " : ""
-        }${noiseValue} 사진처럼, ${randomCameraStyle}처럼 연출하세요.`;
+        let finalStylePrompt = `촬영 스타일: ${randomCameraStyle}`;
 
         if (!selectedMood) {
-          finalStylePrompt =
-            `이미지는 차분하고 향수를 자극하는 로파이 분위기를 가져야 합니다. ` +
-            finalStylePrompt;
+          finalStylePrompt += `, 차분하고 감성적인 분위기`;
         }
 
-        customPrompt += ` ${finalStylePrompt}`;
+        customPrompt += `. ${finalStylePrompt}. 음악 플레이리스트 커버로 적합한 이미지를 만들어주세요.`;
 
         imagePrompt = customPrompt;
       } else {
@@ -542,36 +538,55 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           setIsLoading(false);
           return;
         }
+        
         const cameraStyles = [
-          "DSLR 카메라 사진",
-          "iPhone 카메라로 촬영",
-          "부드러운 그레인이 있는 35mm 필름 사진",
-          "폴라로이드 사진 스타일",
-          "단렌즈가 장착된 미러리스 카메라로 촬영",
+          "프로페셔널 카메라",
+          "자연스러운 조명",
+          "영화 같은 스타일",
+          "깔끔한 구도",
+          "아티스틱한 구성",
         ];
         const randomCameraStyle =
           cameraStyles[Math.floor(Math.random() * cameraStyles.length)];
 
-        let basePrompt = `설정과 분위기는 다음 음악 키워드에서 영감을 받았습니다: ${musicPrompt}. 이미지는 음악 플레이리스트 커버로 적합해야 합니다.`;
+        let basePrompt = `음악 플레이리스트 커버 아트. 스타일 키워드: ${musicPrompt}`;
 
         // 가사가 있으면 가사의 분위기와 내용을 반영
         if (lyricsText.trim()) {
-          basePrompt += ` 다음 가사의 감정과 분위기를 시각적으로 표현하세요:\n"${lyricsText.slice(
-            0,
-            500
-          )}"`;
+          const lyricsPreview = lyricsText.slice(0, 300).replace(/\n/g, ' ');
+          basePrompt += `. 가사의 분위기: "${lyricsPreview}"`;
         }
 
-        imagePrompt = `20대 한국 여성의 깨끗하고 노이즈가 적은 사진, ${randomCameraStyle}. 이미지는 차분하고 향수를 자극하는 로파이 분위기로, 조용하고 사색적인 순간을 포착합니다. ${basePrompt}`;
+        imagePrompt = `한국의 젊은 여성 인물 사진, ${randomCameraStyle}, 차분하고 감성적인 분위기. ${basePrompt}. 고품질 이미지를 생성해주세요.`;
       }
 
+      console.log("이미지 생성 프롬프트:", imagePrompt);
       const imageUrl = await generateImage(imagePrompt, uploadedImage, apiKey);
       setGeneratedImage(imageUrl);
+      setError(null); // 성공 시 에러 초기화
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.";
-      setError(`이미지 생성에 실패했습니다. ${errorMessage}`);
-      console.error(err);
+      console.error("이미지 생성 실패:", err);
+      
+      let errorMessage = "알 수 없는 오류가 발생했습니다.";
+      
+      if (err instanceof Error) {
+        errorMessage = err.message;
+        
+        // 사용자 친화적인 에러 메시지로 변환
+        if (errorMessage.includes("API key")) {
+          errorMessage = "API 키가 유효하지 않습니다. 설정을 확인해주세요.";
+        } else if (errorMessage.includes("안전 필터") || errorMessage.includes("SAFETY")) {
+          errorMessage = "선택한 스타일 조합이 제한되었습니다. 다른 태그를 선택해주세요.";
+        } else if (errorMessage.includes("차단")) {
+          errorMessage = "콘텐츠가 차단되었습니다. 더 일반적인 스타일을 선택해주세요.";
+        } else if (errorMessage.includes("network") || errorMessage.includes("timeout")) {
+          errorMessage = "네트워크 오류가 발생했습니다. 인터넷 연결을 확인하고 다시 시도해주세요.";
+        } else if (errorMessage.includes("quota") || errorMessage.includes("limit")) {
+          errorMessage = "API 사용량 한도에 도달했습니다. 잠시 후 다시 시도해주세요.";
+        }
+      }
+      
+      setError(`❌ ${errorMessage}\n\n💡 다른 태그 조합을 시도하거나, 참조 이미지 없이 생성해보세요.`);
     } finally {
       setIsLoading(false);
     }
