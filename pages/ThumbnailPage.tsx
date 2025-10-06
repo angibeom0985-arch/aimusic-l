@@ -5,6 +5,7 @@ import React, {
   useRef,
   useEffect,
 } from "react";
+import { useNavigate } from "react-router-dom";
 import { PROMPT_DATA, GENRE_ICONS } from "../constants";
 import { Tag } from "../components/Tag";
 import { generateImage, upscaleImage } from "../services/geminiService";
@@ -20,6 +21,7 @@ interface ThumbnailPageProps {
 }
 
 const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
+  const navigate = useNavigate();
   const [selectedGenre, setSelectedGenre] = useState<string | null>(
     Object.keys(PROMPT_DATA)[0]
   );
@@ -488,6 +490,22 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
         />
       )}
 
+      {/* 페이지 헤더 */}
+      <div className="text-center pt-8 pb-4 mb-6">
+        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent mb-4">
+          🎨 AI 음악 썸네일 제작
+        </h1>
+        <p className="text-zinc-400 text-lg mb-6">
+          태그를 선택하고 AI가 생성한 고퀄리티 썸네일을 다운로드하세요
+        </p>
+        <button
+          onClick={() => navigate("/")}
+          className="bg-gradient-to-r from-zinc-700 to-zinc-600 hover:from-zinc-600 hover:to-zinc-500 text-white px-6 py-2 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+        >
+          🏠 홈으로 돌아가기
+        </button>
+      </div>
+
       <main className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         <div className="lg:col-span-8 grid grid-cols-1 lg:grid-cols-8 gap-6">
           <aside className="lg:col-span-3 bg-zinc-900 rounded-xl p-4 border border-zinc-800">
@@ -759,11 +777,14 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               </div>
             </div>
           )}
+        </section>
 
-          {/* 다른 서비스 홍보 */}
-          <div className="mt-12">
-            <RelatedServices />
-          </div>
+        {/* 구분선 */}
+        <div className="my-16 border-t-2 border-zinc-800"></div>
+
+        {/* 다른 서비스 홍보 섹션 */}
+        <section className="w-full">
+          <RelatedServices />
         </section>
       </main>
     </div>
