@@ -16,10 +16,10 @@ const DisplayAd: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full my-4 flex justify-center">
+    <div className="w-full my-4 flex justify-center min-h-[100px]">
       <ins
         className="adsbygoogle"
-        style={{ display: "block" }}
+        style={{ display: "block", minHeight: "100px" }}
         data-ad-client="ca-pub-2686975437928535"
         data-ad-slot="6106251761"
         data-ad-format="auto"
