@@ -16,11 +16,28 @@ const DisplayAd: React.FC<DisplayAdProps> = ({
   className = "",
 }) => {
   const adRef = useRef<HTMLModElement>(null);
+  const adLoadedRef = useRef(false);
 
   useEffect(() => {
     try {
-      if (adRef.current && !adRef.current.hasAttribute("data-ad-status")) {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      // 이미 로드된 광고인지 확인
+      if (
+        adRef.current &&
+        !adRef.current.hasAttribute("data-ad-status") &&
+        !adLoadedRef.current
+      ) {
+        adLoadedRef.current = true;
+        
+        // 약간의 지연을 두고 광고 로드
+        const timeoutId = setTimeout(() => {
+          try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+          } catch (err) {
+            console.error("Ad push error:", err);
+          }
+        }, 100);
+
+        return () => clearTimeout(timeoutId);
       }
     } catch (err) {
       console.error("Ad loading error:", err);

@@ -121,7 +121,7 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
       </div>
 
       {/* 광고 1: 장르와 제목 사이 */}
-      <DisplayAd />
+      <DisplayAd slot="3145678901" />
 
       {/* 2단계: 제목 선택 */}
       <div className="scroll-mt-20" id="title-section">
@@ -158,7 +158,7 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
       </div>
 
       {/* 광고 2: 제목과 주제 사이 */}
-      <DisplayAd />
+      <DisplayAd slot="3145678902" />
 
       {/* 3단계: 주제 선택 */}
       <div className="scroll-mt-20" id="theme-section">
@@ -200,7 +200,7 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
       </div>
 
       {/* 광고 3: 주제와 가사 완성 사이 */}
-      <DisplayAd />
+      <DisplayAd slot="3145678903" />
 
       {/* 4단계: 가사 생성 */}
       <div className="scroll-mt-20" id="generating-section">

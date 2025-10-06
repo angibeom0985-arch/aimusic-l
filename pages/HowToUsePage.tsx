@@ -6,7 +6,7 @@ const HowToUsePage: React.FC = () => {
     <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">작사의 신 사용법</h1>
 
-      <DisplayAd />
+      <DisplayAd slot="3145678906" />
 
       <div className="space-y-6 text-zinc-300">
         <section>
@@ -25,7 +25,7 @@ const HowToUsePage: React.FC = () => {
           </a>
         </section>
 
-        <DisplayAd />
+        <DisplayAd slot="3145678907" />
 
         <section>
           <h2 className="text-2xl font-semibold mb-4 text-pink-400">
@@ -47,7 +47,7 @@ const HowToUsePage: React.FC = () => {
           </ul>
         </section>
 
-        <DisplayAd />
+        <DisplayAd slot="3145678908" />
 
         <section>
           <h2 className="text-2xl font-semibold mb-4 text-pink-400">
@@ -67,7 +67,7 @@ const HowToUsePage: React.FC = () => {
           </div>
         </section>
 
-        <DisplayAd />
+        <DisplayAd slot="3145678909" />
 
         <section>
           <h2 className="text-2xl font-semibold mb-4 text-pink-400">
@@ -84,7 +84,7 @@ const HowToUsePage: React.FC = () => {
           </div>
         </section>
 
-        <DisplayAd />
+        <DisplayAd slot="3145678910" />
 
         <section>
           <h2 className="text-2xl font-semibold mb-4 text-pink-400">
@@ -102,7 +102,7 @@ const HowToUsePage: React.FC = () => {
           </div>
         </section>
 
-        <DisplayAd />
+        <DisplayAd slot="3145678911" />
 
         <section>
           <h2 className="text-2xl font-semibold mb-4 text-pink-400">
@@ -166,7 +166,7 @@ const HowToUsePage: React.FC = () => {
         </section>
       </div>
 
-      <DisplayAd />
+      <DisplayAd slot="3145678912" />
 
       <div className="mt-8 text-center">
         <a

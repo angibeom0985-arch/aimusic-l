@@ -722,20 +722,20 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       </div>
 
       {/* 가사 생성 유도 섹션 */}
-      <div className="max-w-4xl mx-auto mb-8 p-6 bg-gradient-to-br from-pink-900/30 via-rose-900/30 to-red-900/30 rounded-2xl border-2 border-pink-500/50 shadow-xl backdrop-blur-sm hover:border-pink-400/70 transition-all duration-300">
+      <div className="max-w-4xl mx-auto mb-8 p-6 bg-gradient-to-br from-yellow-900/30 via-orange-900/30 to-amber-900/30 rounded-2xl border-2 border-yellow-500/50 shadow-xl backdrop-blur-sm hover:border-yellow-400/70 transition-all duration-300">
         <div className="text-center">
           <div className="text-5xl mb-3">🎵</div>
-          <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-pink-400 via-rose-400 to-red-400 bg-clip-text text-transparent mb-2">
+          <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-amber-400 bg-clip-text text-transparent mb-2">
             아직 가사 생성을 안 했다면?
           </h3>
           <p className="text-zinc-300 mb-4">
             먼저{" "}
-            <span className="text-pink-400 font-semibold">가사를 생성</span>하고
+            <span className="text-yellow-400 font-semibold">가사를 생성</span>하고
             오면 가사에 딱 맞는 썸네일을 만들 수 있어요!
           </p>
           <button
             onClick={() => navigate("/lyrics")}
-            className="bg-gradient-to-r from-pink-600 via-rose-500 to-red-600 hover:from-pink-500 hover:via-rose-400 hover:to-red-500 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-pink-500/50 hover:scale-105"
+            className="bg-gradient-to-r from-yellow-600 via-orange-500 to-amber-600 hover:from-yellow-500 hover:via-orange-400 hover:to-amber-500 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-yellow-500/50 hover:scale-105"
           >
             🎵 가사 먼저 만들러 가기 →
           </button>
@@ -806,7 +806,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               </div>
             )}
 
-            <DisplayAd />
+            <DisplayAd slot="3145678904" />
           </section>
         </div>
 
@@ -1021,7 +1021,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               </button>
             </div>
 
-            <DisplayAd />
+            <DisplayAd slot="3145678905" />
           </div>
 
           {/* 가사 생성 유도 섹션 */}
