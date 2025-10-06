@@ -63,7 +63,7 @@ const StepGenre: React.FC<StepGenreProps> = ({ genres, onGenreSelect }) => {
           className="flex-grow bg-zinc-800 border border-zinc-700 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 w-full"
           aria-label="직접 장르 입력"
         />
-        <Button type="submit" disabled={!customGenre.trim()}>
+        <Button type="submit" disabled={!customGenre.trim()} className="whitespace-nowrap">
           선택
         </Button>
       </form>

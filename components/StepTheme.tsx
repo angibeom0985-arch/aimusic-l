@@ -70,7 +70,7 @@ const StepTheme: React.FC<StepThemeProps> = ({
         </div>
       ) : (
         <>
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {themes.map((theme, index) => {
               const colors = [
                 "from-rose-600/20 to-pink-600/20 hover:from-rose-600/30 hover:to-pink-600/30 border-rose-600/50",
@@ -104,7 +104,7 @@ const StepTheme: React.FC<StepThemeProps> = ({
               className="flex-grow bg-zinc-800 border border-zinc-700 rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500 w-full"
               aria-label="직접 주제 입력"
             />
-            <Button type="submit" disabled={!customTheme.trim()}>
+            <Button type="submit" disabled={!customTheme.trim()} className="whitespace-nowrap">
               선택
             </Button>
           </form>
