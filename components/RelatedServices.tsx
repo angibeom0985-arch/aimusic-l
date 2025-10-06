@@ -11,25 +11,11 @@ interface Service {
 
 const services: Service[] = [
   {
-    icon: "🎬",
-    title: "AI 음악 가사 1초 완성",
-    description: "AI 음악 가사 1초 완성",
-    url: "https://aimusic.money-hotissue.com/",
-    gradient: "from-pink-600 via-rose-500 to-red-600",
-  },
-  {
     icon: "📹",
     title: "숏폼/롱폼 영상 소스 무제한 생성",
     description: "프로페셔널 영상 편집과 효과를 위한 도구를 확인해보세요",
     url: "https://youtube-image.money-hotissue.com/",
     gradient: "from-green-600 via-emerald-500 to-teal-600",
-  },
-  {
-    icon: "🎨",
-    title: "AI 음악 썸네일 제작",
-    description: "AI 음악 썸네일 제작",
-    url: "https://aimusic.money-hotissue.com/thumbnail",
-    gradient: "from-blue-600 via-indigo-500 to-purple-600",
   },
   {
     icon: "🔥",

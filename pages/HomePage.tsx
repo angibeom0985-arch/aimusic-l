@@ -49,43 +49,55 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
         <DisplayAd />
       </div>
 
-      {/* 메인 버튼 그리드 (1x2) */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+      {/* 메인 서비스 카드 (가사 생성 & 썸네일 생성) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mb-8">
         <Link
           to="/lyrics"
-          className="group relative overflow-hidden bg-gradient-to-br from-purple-600 via-purple-500 to-blue-600 hover:from-purple-700 hover:via-purple-600 hover:to-blue-700 rounded-2xl p-8 transition-all duration-300 shadow-2xl shadow-purple-500/50 hover:shadow-purple-500/70 hover:scale-105 border border-purple-400/20"
+          className="group cursor-pointer"
         >
-          <div className="text-center relative z-10">
-            <div className="text-6xl mb-4 drop-shadow-lg">🎵</div>
-            <h2 className="text-3xl font-bold text-white mb-2 drop-shadow-md">
-              가사 생성
-            </h2>
-            <p className="text-blue-100 drop-shadow">
-              AI가 창의적인 가사를 작성해드립니다
-            </p>
+          <div className="bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800 border border-zinc-700/50 rounded-xl p-6 shadow-2xl shadow-black/50 hover:shadow-pink-500/20 transition-all duration-300 backdrop-blur-sm hover:scale-105">
+            <div className="flex flex-col items-center text-center p-4">
+              <div className="text-6xl mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
+                �
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold mb-3 bg-gradient-to-r from-pink-600 via-rose-500 to-red-600 bg-clip-text text-transparent">
+                AI 음악 가사 1초 완성
+              </h3>
+              <p className="text-zinc-400 text-sm md:text-base mb-4">
+                AI 음악 가사 1초 완성
+              </p>
+              <button className="w-full bg-gradient-to-r from-pink-600 via-rose-500 to-red-600 hover:shadow-lg hover:shadow-pink/50 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md border-2 border-white/20">
+                바로 가기 →
+              </button>
+            </div>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </Link>
 
         <Link
           to="/thumbnail"
-          className="group relative overflow-hidden bg-gradient-to-br from-pink-600 via-rose-500 to-orange-600 hover:from-pink-700 hover:via-rose-600 hover:to-orange-700 rounded-2xl p-8 transition-all duration-300 shadow-2xl shadow-pink-500/50 hover:shadow-pink-500/70 hover:scale-105 border border-pink-400/20"
+          className="group cursor-pointer"
         >
-          <div className="text-center relative z-10">
-            <div className="text-6xl mb-4 drop-shadow-lg">🖼️</div>
-            <h2 className="text-3xl font-bold text-white mb-2 drop-shadow-md">
-              썸네일 생성
-            </h2>
-            <p className="text-orange-100 drop-shadow">
-              음악에 어울리는 썸네일을 만들어드립니다
-            </p>
+          <div className="bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800 border border-zinc-700/50 rounded-xl p-6 shadow-2xl shadow-black/50 hover:shadow-pink-500/20 transition-all duration-300 backdrop-blur-sm hover:scale-105">
+            <div className="flex flex-col items-center text-center p-4">
+              <div className="text-6xl mb-4 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12">
+                🎨
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold mb-3 bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 bg-clip-text text-transparent">
+                AI 음악 썸네일 제작
+              </h3>
+              <p className="text-zinc-400 text-sm md:text-base mb-4">
+                AI 음악 썸네일 제작
+              </p>
+              <button className="w-full bg-gradient-to-r from-blue-600 via-indigo-500 to-purple-600 hover:shadow-lg hover:shadow-blue/50 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 shadow-md border-2 border-white/20">
+                바로 가기 →
+              </button>
+            </div>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </Link>
       </div>
 
-      {/* 하단 광고 */}
-      <div className="w-full max-w-4xl mt-8">
+      {/* 광고 */}
+      <div className="w-full max-w-4xl mb-8">
         <DisplayAd />
       </div>
 

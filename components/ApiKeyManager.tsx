@@ -39,39 +39,6 @@ const ApiKeyManager: React.FC<ApiKeyManagerProps> = ({ onKeySet }) => {
     onKeySet("");
   };
 
-  if (savedKey) {
-    return (
-      <div className="bg-gradient-to-r from-green-900/30 via-emerald-900/30 to-teal-900/30 border border-green-500/30 rounded-lg p-4 mb-4 shadow-lg shadow-green-500/20">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <svg
-              className="w-5 h-5 text-green-400 drop-shadow-lg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            <span className="text-zinc-200 font-medium">
-              API 키가 저장되었습니다
-            </span>
-          </div>
-          <button
-            onClick={handleRemoveKey}
-            className="text-sm text-red-400 hover:text-red-300 transition-all hover:scale-105 font-medium"
-          >
-            삭제
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -82,8 +49,11 @@ const ApiKeyManager: React.FC<ApiKeyManagerProps> = ({ onKeySet }) => {
       </label>
       <input
         type="text"
-        value={apiKey}
-        onChange={(e) => setApiKey(e.target.value)}
+        value={savedKey || apiKey}
+        onChange={(e) => {
+          setApiKey(e.target.value);
+          setSavedKey(null); // 수정 시 savedKey 초기화
+        }}
         placeholder="API 키를 입력하세요"
         className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-pink-500 mb-3"
         required
@@ -98,12 +68,23 @@ const ApiKeyManager: React.FC<ApiKeyManagerProps> = ({ onKeySet }) => {
           />
           기억하기
         </label>
-        <button
-          type="submit"
-          className="px-4 py-2 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
-        >
-          저장
-        </button>
+        <div className="flex gap-2">
+          {savedKey && (
+            <button
+              type="button"
+              onClick={handleRemoveKey}
+              className="px-4 py-2 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
+            >
+              삭제
+            </button>
+          )}
+          <button
+            type="submit"
+            className="px-4 py-2 bg-gradient-to-r from-pink-500 to-orange-400 text-white rounded-lg font-medium hover:opacity-90 transition-opacity"
+          >
+            저장
+          </button>
+        </div>
       </div>
       <p className="text-xs text-zinc-500 mt-3">
         API 키가 없으신가요?{" "}
