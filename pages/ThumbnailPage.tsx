@@ -909,7 +909,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                 <img
                   src={uploadedImage}
                   alt="Uploaded reference"
-                  className="w-full object-cover max-h-40"
+                  className="w-full object-contain max-h-80 bg-zinc-900"
                 />
                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                   <button
