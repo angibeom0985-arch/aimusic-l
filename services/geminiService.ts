@@ -204,14 +204,22 @@ export async function generateImage(
       .replace(/노출|선정적|섹시|글래머/gi, "자연스러운")
       .replace(/revealing|sexy|glamorous/gi, "natural");
 
+    // 프롬프트 최적화: 더 명확하고 구체적으로
+    const optimizedPrompt = `Create a realistic portrait photograph for a music album cover. ${sanitizedPrompt}. High quality, professional photography, well-lit, clear focus, suitable for music streaming platform.`;
+
     parts.push({ 
-      text: `${sanitizedPrompt}\n\nIMPORTANT: Generate a high-quality image. This is for a music playlist cover art. The image must be created.` 
+      text: optimizedPrompt
     });
 
     console.log(`이미지 생성 시도 ${retryCount + 1}/${MAX_RETRIES + 1}`);
+    console.log("프롬프트 길이:", optimizedPrompt.length);
+    console.log("프롬프트 미리보기:", optimizedPrompt.substring(0, 150) + "...");
     
     const result = await model.generateContent(parts);
     const response = result.response;
+    
+    console.log("API 응답 받음");
+    console.log("promptFeedback:", JSON.stringify(response.promptFeedback, null, 2));
 
     // 안전 필터 체크
     if (response.promptFeedback?.blockReason) {
@@ -223,7 +231,9 @@ export async function generateImage(
     const candidates = response.candidates;
 
     if (!candidates || candidates.length === 0) {
-      console.error("응답에 후보가 없음:", response);
+      console.error("=== 후보가 없음 ===");
+      console.error("전체 응답:", JSON.stringify(response, null, 2));
+      console.error("promptFeedback:", JSON.stringify(response.promptFeedback, null, 2));
       
       // 재시도 로직
       if (retryCount < MAX_RETRIES) {
@@ -233,19 +243,30 @@ export async function generateImage(
       }
       
       throw new Error(
-        "이미지 생성에 실패했습니다. 다른 태그 조합을 시도해주세요."
+        "이미지 생성에 실패했습니다. 프롬프트를 수정하거나 다른 옵션을 선택해주세요."
       );
     }
+    
+    console.log(`후보 개수: ${candidates.length}`);
 
     const candidate = candidates[0];
+    console.log("후보 finishReason:", candidate.finishReason);
+    console.log("후보 safetyRatings:", JSON.stringify(candidate.safetyRatings, null, 2));
     
     // 완료 이유 확인
     if (candidate.finishReason && candidate.finishReason !== "STOP") {
-      console.warn(`비정상 종료: ${candidate.finishReason}`);
+      console.warn(`=== 비정상 종료: ${candidate.finishReason} ===`);
+      console.warn("전체 후보 정보:", JSON.stringify(candidate, null, 2));
       
       if (candidate.finishReason === "SAFETY") {
         throw new Error(
           "안전 설정으로 인해 이미지 생성이 차단되었습니다. 더 일반적인 스타일을 선택해주세요."
+        );
+      }
+      
+      if (candidate.finishReason === "RECITATION") {
+        throw new Error(
+          "저작권 문제로 이미지 생성이 차단되었습니다. 다른 스타일을 시도해주세요."
         );
       }
       
@@ -259,9 +280,13 @@ export async function generateImage(
 
     const content = candidate.content;
     const contentParts = content?.parts;
+    
+    console.log("콘텐츠 파트 개수:", contentParts?.length || 0);
 
     if (!contentParts || contentParts.length === 0) {
-      console.error("콘텐츠 파트가 없음:", content);
+      console.error("=== 콘텐츠 파트가 없음 ===");
+      console.error("전체 콘텐츠:", JSON.stringify(content, null, 2));
+      console.error("전체 후보:", JSON.stringify(candidate, null, 2));
       
       // 재시도
       if (retryCount < MAX_RETRIES) {
@@ -274,7 +299,10 @@ export async function generateImage(
     }
 
     // 이미지 데이터 추출
-    for (const part of contentParts) {
+    for (let i = 0; i < contentParts.length; i++) {
+      const part = contentParts[i];
+      console.log(`파트 ${i}:`, part.inlineData ? "이미지 데이터 존재" : "텍스트 또는 기타");
+      
       if (part.inlineData) {
         const base64ImageBytes: string = part.inlineData.data;
         const mimeType = part.inlineData.mimeType;
@@ -285,6 +313,8 @@ export async function generateImage(
         }
         
         console.log("✅ 이미지 생성 성공!");
+        console.log("이미지 타입:", mimeType);
+        console.log("이미지 데이터 길이:", base64ImageBytes.length);
         return `data:${mimeType};base64,${base64ImageBytes}`;
       }
     }

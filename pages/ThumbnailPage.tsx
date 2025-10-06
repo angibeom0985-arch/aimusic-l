@@ -183,6 +183,19 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     return "";
   });
 
+  const [customPrompt, setCustomPrompt] = useState<string>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.customPrompt || "";
+      } catch (e) {
+        return "";
+      }
+    }
+    return "";
+  });
+
   const lyricsFileInputRef = useRef<HTMLInputElement>(null);
 
   // 상태가 변경될 때마다 localStorage에 저장
@@ -199,6 +212,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       selectedMood,
       selectedNoise,
       lyricsText,
+      customPrompt,
     };
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [
@@ -213,6 +227,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     selectedMood,
     selectedNoise,
     lyricsText,
+    customPrompt,
   ]);
 
   const allTagsInOrder = useMemo(() => {
@@ -478,7 +493,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       let imagePrompt = "";
 
       if (uploadedImage) {
-        let customPrompt = `Create a new photo inspired by the reference image style. `;
+        let generatedPrompt = `Create a new photo inspired by the reference image style. `;
 
         const descriptions = [];
         if (selectedPose)
@@ -496,7 +511,12 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
         // 커스터마이징 옵션이 있으면 추가
         if (descriptions.length > 0) {
-          customPrompt += descriptions.join(", ") + ". ";
+          generatedPrompt += descriptions.join(", ") + ". ";
+        }
+
+        // 사용자 직접 입력 텍스트가 있으면 추가
+        if (customPrompt.trim()) {
+          generatedPrompt += `${customPrompt.trim()}. `;
         }
 
         const cameraStyles = [
@@ -516,9 +536,9 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           finalStylePrompt += `, calm and emotional atmosphere`;
         }
 
-        customPrompt += `${finalStylePrompt}. Create a high-quality image suitable for music playlist cover art.`;
+        generatedPrompt += `${finalStylePrompt}. Create a high-quality image suitable for music playlist cover art.`;
 
-        imagePrompt = customPrompt;
+        imagePrompt = generatedPrompt;
       } else {
         if (selectedTags.size === 0) {
           setError("생성할 태그를 하나 이상 선택하세요.");
@@ -965,6 +985,22 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   </div>
                 );
               })}
+              
+              {/* 사용자 직접 입력 칸 */}
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold mb-2 bg-gradient-to-r from-cyan-500 to-blue-500 bg-clip-text text-transparent">
+                  직접 입력
+                </h3>
+                <textarea
+                  value={customPrompt}
+                  onChange={(e) => setCustomPrompt(e.target.value)}
+                  placeholder="원하는 스타일이나 특징을 직접 입력하세요 (예: holding a guitar, sunset background, vintage filter)"
+                  className="w-full px-4 py-3 bg-zinc-900 border border-zinc-700 rounded-lg text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-y min-h-[80px]"
+                />
+                <p className="text-xs text-zinc-500 mt-1">
+                  💡 영어로 입력하면 더 정확한 결과를 얻을 수 있습니다
+                </p>
+              </div>
             </div>
           )}
 
