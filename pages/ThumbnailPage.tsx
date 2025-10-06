@@ -711,7 +711,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
   }, [generatedImage]);
 
   const handleUpscaleWithDirection = useCallback(async () => {
-    if (!generatedImage || !upscaleDirection.trim()) return;
+    if (!generatedImage) return;
 
     setIsUpscaling(true);
     setError(null);
@@ -1096,20 +1096,20 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                     htmlFor="upscaleDirection"
                     className="block text-sm font-medium text-zinc-300 mb-2"
                   >
-                    원하는 방향을 입력하세요:
+                    원하는 방향을 입력하세요 (선택사항):
                   </label>
                   <textarea
                     id="upscaleDirection"
                     value={upscaleDirection}
                     onChange={(e) => setUpscaleDirection(e.target.value)}
-                    placeholder="예: 더 밝고 화려하게, 색상을 더 진하게, 배경을 더 선명하게..."
+                    placeholder="선택사항: 더 밝고 화려하게, 색상을 더 진하게, 배경을 더 선명하게... (입력하지 않아도 업스케일 가능)"
                     className="w-full h-20 px-3 py-2 bg-zinc-900 border border-zinc-600 rounded-md text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none"
                     rows={3}
                   />
                   <div className="flex gap-2 mt-3">
                     <button
                       onClick={handleUpscaleWithDirection}
-                      disabled={!upscaleDirection.trim() || isUpscaling}
+                      disabled={isUpscaling}
                       className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-zinc-700 disabled:to-zinc-700 disabled:text-zinc-400 text-white font-bold py-2 px-4 rounded-full transition-all duration-300"
                     >
                       ✨ 진행
