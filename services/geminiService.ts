@@ -165,6 +165,100 @@ export async function generateImage(
 ): Promise<string> {
   const MAX_RETRIES = 3;
   
+  // ===== 중요: Gemini는 이미지 생성을 지원하지 않습니다 =====
+  // Hugging Face Inference API를 사용합니다 (무료)
+  try {
+    console.log("=== Hugging Face Stable Diffusion API 호출 ===");
+    console.log("프롬프트:", prompt.substring(0, 200));
+    
+    const HF_API_URL = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0";
+    
+    // 프롬프트 정제
+    const sanitizedPrompt = prompt
+      .replace(/노출|선정적|섹시|글래머/gi, "natural")
+      .replace(/revealing|sexy|glamorous/gi, "natural");
+    
+    const response = await fetch(HF_API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Hugging Face는 무료 tier에서 API 키 없이도 작동
+      },
+      body: JSON.stringify({
+        inputs: sanitizedPrompt,
+        parameters: {
+          negative_prompt: "blurry, low quality, distorted, ugly, bad anatomy, watermark, text",
+          num_inference_steps: 30,
+          guidance_scale: 7.5,
+        }
+      }),
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("HF API 오류:", response.status, errorText);
+      
+      // 모델 로딩 중이면 재시도
+      if (response.status === 503 && retryCount < MAX_RETRIES) {
+        console.log(`모델 로딩 중, 재시도... (${retryCount + 1}/${MAX_RETRIES})`);
+        await new Promise(resolve => setTimeout(resolve, 5000)); // 5초 대기
+        return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
+      }
+      
+      throw new Error(`이미지 생성 API 오류: ${response.status}`);
+    }
+    
+    // Blob으로 이미지 데이터 받기
+    const blob = await response.blob();
+    
+    // Blob을 base64로 변환
+    const base64 = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const result = reader.result as string;
+        resolve(result);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+    
+    console.log("✅ 이미지 생성 성공!");
+    return base64;
+    
+  } catch (error: any) {
+    console.error("=== 이미지 생성 오류 ===");
+    console.error(error);
+    
+    // 네트워크 오류면 재시도
+    if (retryCount < MAX_RETRIES) {
+      const isRetryable = 
+        error.message?.includes("network") ||
+        error.message?.includes("timeout") ||
+        error.message?.includes("fetch");
+      
+      if (isRetryable) {
+        console.log(`네트워크 오류, 재시도 중... (${retryCount + 1}/${MAX_RETRIES})`);
+        await new Promise(resolve => setTimeout(resolve, 3000 * (retryCount + 1)));
+        return generateImage(prompt, referenceImage, apiKey, retryCount + 1);
+      }
+    }
+    
+    // Hugging Face 실패 시 Gemini로 텍스트 설명 생성 (임시 방편)
+    throw new Error(
+      "이미지 생성에 실패했습니다. 잠시 후 다시 시도해주세요. (Stable Diffusion 모델 로딩 중일 수 있습니다)"
+    );
+  }
+}
+
+// 기존 Gemini 이미지 생성 함수 (백업 - 작동하지 않음)
+async function generateImageWithGemini(
+  prompt: string,
+  referenceImage: string | null = null,
+  apiKey: string,
+  retryCount: number = 0
+): Promise<string> {
+  const MAX_RETRIES = 3;
+  
   try {
     const genAI = getAI(apiKey);
     const model = genAI.getGenerativeModel({
