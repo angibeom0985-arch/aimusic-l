@@ -24,7 +24,12 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
     <div className="min-h-screen flex flex-col items-center justify-center p-4">
       {/* 타이틀 */}
       <div className="text-center mb-12">
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-pink-500 drop-shadow-2xl filter">
+        <h1 
+          className="text-5xl md:text-7xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-400 to-pink-500"
+          style={{
+            filter: 'drop-shadow(0 0 20px rgba(251, 146, 60, 0.8)) drop-shadow(0 0 40px rgba(236, 72, 153, 0.6))'
+          }}
+        >
           AI 음원 가사 및 썸네일 제작
         </h1>
         <p className="text-zinc-400 text-lg md:text-xl drop-shadow-lg">

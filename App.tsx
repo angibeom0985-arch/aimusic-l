@@ -44,16 +44,19 @@ const AppContent: React.FC = () => {
       <div className="min-h-screen flex flex-col p-4 lg:px-[180px]">
         {showHeader && (
           <header className="text-center mb-8 pt-8">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-pink-500 drop-shadow-2xl">
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
               <Link
                 to="/"
-                className="hover:drop-shadow-[0_0_15px_rgba(251,146,60,0.6)] transition-all duration-300"
+                className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-400 to-pink-500 hover:from-orange-500 hover:via-orange-300 hover:to-pink-400 transition-all duration-300"
+                style={{
+                  filter: 'drop-shadow(0 0 20px rgba(251, 146, 60, 0.8)) drop-shadow(0 0 40px rgba(236, 72, 153, 0.6))'
+                }}
               >
                 AI 음원 가사 및 썸네일 제작
               </Link>
             </h1>
             <p className="text-zinc-400 mt-2 text-shadow-lg">
-              AI로 당신의 음악에 생명을 불어넣으세요
+              유튜브 플레이리스트 채널을 누구나 운영할 수 있게 도와드립니다.
             </p>
           </header>
         )}
