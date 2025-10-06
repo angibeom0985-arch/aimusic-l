@@ -359,14 +359,17 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
         ];
         const randomCameraStyle =
           cameraStyles[Math.floor(Math.random() * cameraStyles.length)];
-        
+
         let basePrompt = `설정과 분위기는 다음 음악 키워드에서 영감을 받았습니다: ${musicPrompt}. 이미지는 음악 플레이리스트 커버로 적합해야 합니다.`;
-        
+
         // 가사가 있으면 가사의 분위기와 내용을 반영
         if (lyricsText.trim()) {
-          basePrompt += ` 다음 가사의 감정과 분위기를 시각적으로 표현하세요:\n"${lyricsText.slice(0, 500)}"`;
+          basePrompt += ` 다음 가사의 감정과 분위기를 시각적으로 표현하세요:\n"${lyricsText.slice(
+            0,
+            500
+          )}"`;
         }
-        
+
         imagePrompt = `20대 한국 여성의 깨끗하고 노이즈가 적은 사진, ${randomCameraStyle}. 이미지는 차분하고 향수를 자극하는 로파이 분위기로, 조용하고 사색적인 순간을 포착합니다. ${basePrompt}`;
       }
 
@@ -524,9 +527,13 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
       {/* 페이지 헤더 */}
       <div className="text-center pt-8 pb-4 mb-6">
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent mb-4" style={{
-          textShadow: '0 0 20px rgba(99, 102, 241, 0.5), 0 0 40px rgba(99, 102, 241, 0.3), 0 0 60px rgba(99, 102, 241, 0.2)'
-        }}>
+        <h1
+          className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent mb-4"
+          style={{
+            textShadow:
+              "0 0 20px rgba(99, 102, 241, 0.5), 0 0 40px rgba(99, 102, 241, 0.3), 0 0 60px rgba(99, 102, 241, 0.2)",
+          }}
+        >
           🎨 AI 음악 썸네일 제작
         </h1>
         <p className="text-zinc-400 text-lg mb-6">
@@ -542,7 +549,9 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
             아직 가사 생성을 안 했다면?
           </h3>
           <p className="text-zinc-300 mb-4">
-            먼저 <span className="text-pink-400 font-semibold">가사를 생성</span>하고 오면 가사에 딱 맞는 썸네일을 만들 수 있어요!
+            먼저{" "}
+            <span className="text-pink-400 font-semibold">가사를 생성</span>하고
+            오면 가사에 딱 맞는 썸네일을 만들 수 있어요!
           </p>
           <button
             onClick={() => navigate("/lyrics")}
@@ -555,19 +564,30 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
       <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-7xl mx-auto px-4">
         <div className="lg:col-span-8 grid grid-cols-1 lg:grid-cols-8 gap-6">
-          <aside className="lg:col-span-3 bg-zinc-900 rounded-xl p-4 border border-zinc-800">
-            <h2 className="text-xl font-bold mb-4 text-white">목차</h2>
+          <aside className="lg:col-span-3 bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-rose-900/40 rounded-xl p-4 border border-purple-500/30 shadow-lg">
+            <h2 className="text-xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">목차</h2>
             <ul className="space-y-2">
-              {Object.keys(PROMPT_DATA).map((genre) => {
+              {Object.keys(PROMPT_DATA).map((genre, index) => {
                 const Icon = GENRE_ICONS[genre];
+                const colors = [
+                  "from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500",
+                  "from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500",
+                  "from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500",
+                  "from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500",
+                  "from-yellow-600 to-orange-600 hover:from-yellow-500 hover:to-orange-500",
+                  "from-red-600 to-pink-600 hover:from-red-500 hover:to-pink-500",
+                  "from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500",
+                  "from-teal-600 to-green-600 hover:from-teal-500 hover:to-green-500",
+                ];
+                const colorClass = colors[index % colors.length];
                 return (
                   <li key={genre}>
                     <button
                       onClick={() => setSelectedGenre(genre)}
                       className={`w-full text-left p-3 rounded-lg transition-all duration-200 flex items-center gap-3 ${
                         selectedGenre === genre
-                          ? "bg-zinc-800"
-                          : "bg-transparent hover:bg-zinc-800"
+                          ? `bg-gradient-to-r ${colorClass} text-white shadow-lg scale-105`
+                          : "bg-zinc-800/50 hover:bg-zinc-700/50 text-zinc-300"
                       }`}
                     >
                       {Icon && <Icon className="w-5 h-5" />}
@@ -579,12 +599,12 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
             </ul>
           </aside>
 
-          <section className="lg:col-span-5 bg-zinc-900 rounded-xl p-4 border border-zinc-800 h-[70vh] overflow-y-auto">
+          <section className="lg:col-span-5 bg-gradient-to-br from-blue-900/40 via-indigo-900/40 to-purple-900/40 rounded-xl p-4 border border-blue-500/30 shadow-lg h-[70vh] overflow-y-auto">
             {selectedGenre && PROMPT_DATA[selectedGenre] ? (
               <div className="space-y-6">
-                {PROMPT_DATA[selectedGenre].map((subGenre) => (
+                {PROMPT_DATA[selectedGenre].map((subGenre, idx) => (
                   <div key={subGenre.name}>
-                    <h3 className="text-lg font-semibold mb-3 text-white border-b border-zinc-700 pb-2">
+                    <h3 className="text-lg font-semibold mb-3 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent border-b border-blue-500/50 pb-2">
                       {subGenre.name}
                     </h3>
                     <div className="flex flex-wrap gap-2">
@@ -610,10 +630,10 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           </section>
         </div>
 
-        <section className="lg:col-span-4 bg-zinc-900 rounded-xl p-4 border border-zinc-800 flex flex-col">
+        <section className="lg:col-span-4 bg-gradient-to-br from-emerald-900/40 via-teal-900/40 to-cyan-900/40 rounded-xl p-4 border border-emerald-500/30 shadow-lg flex flex-col">
           {/* 가사 입력 섹션 */}
           <div className="mb-6">
-            <h2 className="text-xl font-bold mb-3 text-white flex items-center gap-2">
+            <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent flex items-center gap-2">
               🎵 가사 첨부 (선택 사항)
             </h2>
             {lyricsText ? (
@@ -639,7 +659,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                 />
                 <button
                   onClick={() => lyricsFileInputRef.current?.click()}
-                  className="mt-2 w-full py-2 border-2 border-dashed border-zinc-700 rounded-lg text-zinc-400 hover:bg-zinc-800 hover:border-zinc-600 transition-colors text-sm"
+                  className="mt-2 w-full py-2 border-2 border-dashed border-emerald-500/50 rounded-lg bg-gradient-to-r from-emerald-900/30 to-teal-900/30 text-emerald-300 hover:from-emerald-800/50 hover:to-teal-800/50 hover:border-emerald-400/70 transition-all duration-300 text-sm font-semibold shadow-md hover:shadow-emerald-500/30"
                 >
                   📄 가사 파일 업로드 (.txt)
                 </button>
@@ -658,7 +678,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           </div>
 
           <div className="mb-4">
-            <h2 className="text-xl font-bold mb-3 text-white">
+            <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
               스타일 참조 (선택 사항)
             </h2>
             {uploadedImage ? (
@@ -705,29 +725,40 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
           {uploadedImage && (
             <div className="mb-4 space-y-4">
-              <h2 className="text-xl font-bold text-white">
+              <h2 className="text-xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
                 이미지 커스터마이징
               </h2>
-              {Object.values(CUSTOMIZATION_OPTIONS).map((category) => (
-                <div key={category.title}>
-                  <h3 className="text-lg font-semibold mb-2 text-zinc-300">
-                    {category.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {category.options.map((option) => (
-                      <button
-                        key={option.en}
-                        onClick={() =>
-                          handleCustomizationSelect(
-                            category.setter,
-                            option.en,
-                            category.state
-                          )
-                        }
-                        className={`px-3 py-1 rounded-full text-sm font-medium cursor-pointer transition-all duration-200 shadow-md ${
-                          category.state === option.en
-                            ? "bg-gradient-to-r from-pink-500 to-orange-500 text-white"
-                            : "bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
+              {Object.values(CUSTOMIZATION_OPTIONS).map((category, catIdx) => {
+                const categoryColors = [
+                  "from-pink-500 to-rose-500",
+                  "from-purple-500 to-indigo-500",
+                  "from-blue-500 to-cyan-500",
+                  "from-green-500 to-emerald-500",
+                  "from-yellow-500 to-orange-500",
+                  "from-red-500 to-pink-500",
+                  "from-indigo-500 to-purple-500",
+                ];
+                const colorClass = categoryColors[catIdx % categoryColors.length];
+                return (
+                  <div key={category.title}>
+                    <h3 className={`text-lg font-semibold mb-2 bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>
+                      {category.title}
+                    </h3>
+                    <div className="flex flex-wrap gap-2">
+                      {category.options.map((option) => (
+                        <button
+                          key={option.en}
+                          onClick={() =>
+                            handleCustomizationSelect(
+                              category.setter,
+                              option.en,
+                              category.state
+                            )
+                          }
+                          className={`px-3 py-1 rounded-full text-sm font-medium cursor-pointer transition-all duration-200 shadow-md ${
+                            category.state === option.en
+                              ? `bg-gradient-to-r ${colorClass} text-white shadow-lg scale-105`
+                              : "bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
                         }`}
                       >
                         {option.ko}
@@ -735,12 +766,13 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                     ))}
                   </div>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
 
           <div>
-            <h2 className="text-xl font-bold mb-4 text-white">
+            <h2 className="text-xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
               프롬프트 및 이미지
             </h2>
             <div className="bg-black p-4 rounded-lg min-h-[100px] border border-zinc-800 mb-4">
@@ -771,14 +803,14 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               <button
                 onClick={handleCopyToClipboard}
                 disabled={!musicPrompt}
-                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
+                className="w-full bg-gradient-to-r from-blue-500 via-cyan-500 to-teal-500 hover:from-blue-600 hover:via-cyan-600 hover:to-teal-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-cyan-500/50 hover:scale-105"
               >
                 📋 프롬프트 복사
               </button>
               <button
                 onClick={handleGenerate}
                 disabled={!canGenerate}
-                className="w-full bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
+                className="w-full bg-gradient-to-r from-pink-500 via-rose-500 to-orange-500 hover:from-pink-600 hover:via-rose-600 hover:to-orange-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-pink-500/50 hover:scale-105 animate-pulse"
               >
                 {isLoading ? "⏳ 생성 중..." : "✨ 이미지 생성"}
               </button>
@@ -812,7 +844,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   isUpscaling ||
                   isCroppingModalOpen
                 }
-                className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 text-sm shadow-md hover:shadow-lg"
+                className="w-full bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-500 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 text-sm shadow-lg hover:shadow-purple-500/50 hover:scale-105"
               >
                 ✂️ 16:9로 자르기
               </button>
@@ -824,7 +856,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   isUpscaling ||
                   isCroppingModalOpen
                 }
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
+                className="w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-green-500/50 hover:scale-105"
               >
                 {isUpscaling ? "⏳ 업스케일링..." : "⬆️ 업스케일"}
               </button>
@@ -836,7 +868,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   isUpscaling ||
                   isCroppingModalOpen
                 }
-                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-md hover:shadow-lg"
+                className="w-full bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500 hover:from-blue-600 hover:via-sky-600 hover:to-cyan-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-blue-500/50 hover:scale-105"
               >
                 💾 다운로드
               </button>
@@ -854,10 +886,12 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   완벽한 썸네일이 완성되었어요! 🎉
                 </h3>
                 <p className="text-lg text-zinc-300 font-semibold mb-2">
-                  이제 감동적인 <span className="text-green-400">가사</span>만 있으면 끝!
+                  이제 감동적인 <span className="text-green-400">가사</span>만
+                  있으면 끝!
                 </p>
                 <p className="text-zinc-400 text-sm md:text-base">
-                  ✨ AI가 당신의 썸네일에 어울리는 완벽한 가사를 1초 만에 생성해드립니다
+                  ✨ AI가 당신의 썸네일에 어울리는 완벽한 가사를 1초 만에
+                  생성해드립니다
                 </p>
               </div>
               <div className="flex justify-center">

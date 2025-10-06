@@ -66,15 +66,17 @@ const StepResult: React.FC<StepResultProps> = ({ lyrics, onReset, error }) => {
               완벽한 가사가 완성되었어요! �
             </h3>
             <p className="text-lg text-zinc-300 font-semibold mb-2">
-              이제 눈길을 사로잡는 <span className="text-pink-400">썸네일</span>만 있으면 끝!
+              이제 눈길을 사로잡는 <span className="text-pink-400">썸네일</span>
+              만 있으면 끝!
             </p>
             <p className="text-zinc-400 text-sm md:text-base">
-              ✨ AI가 당신의 가사에 딱 맞는 고퀄리티 썸네일을 1초 만에 생성해드립니다
+              ✨ AI가 당신의 가사에 딱 맞는 고퀄리티 썸네일을 1초 만에
+              생성해드립니다
             </p>
           </div>
           <div className="flex justify-center">
-            <Button 
-              onClick={goToThumbnail} 
+            <Button
+              onClick={goToThumbnail}
               variant="primary"
               className="text-lg px-8 py-4 shadow-xl hover:shadow-pink-500/50 animate-pulse"
             >

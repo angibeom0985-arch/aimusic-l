@@ -52,9 +52,13 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
     <div className="w-full max-w-4xl mx-auto space-y-6 pb-8">
       {/* 페이지 헤더 */}
       <div className="text-center pt-8 pb-4">
-        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 bg-clip-text text-transparent mb-4" style={{
-          textShadow: '0 0 20px rgba(236, 72, 153, 0.5), 0 0 40px rgba(236, 72, 153, 0.3), 0 0 60px rgba(236, 72, 153, 0.2)'
-        }}>
+        <h1
+          className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-500 via-rose-500 to-red-500 bg-clip-text text-transparent mb-4"
+          style={{
+            textShadow:
+              "0 0 20px rgba(236, 72, 153, 0.5), 0 0 40px rgba(236, 72, 153, 0.3), 0 0 60px rgba(236, 72, 153, 0.2)",
+          }}
+        >
           🎵 AI 음악 가사 1초 완성
         </h1>
         <p className="text-zinc-400 text-lg mb-6">
