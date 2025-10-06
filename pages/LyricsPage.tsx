@@ -17,7 +17,7 @@ const STORAGE_KEY = "lyrics_page_state";
 
 const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
   const navigate = useNavigate();
-  
+
   // localStorage에서 저장된 상태 복원
   const [selections, setSelections] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -31,7 +31,7 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
     }
     return { genre: "", title: "", theme: "" };
   });
-  
+
   const [lyrics, setLyrics] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -44,10 +44,10 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
     }
     return "";
   });
-  
+
   const [error, setError] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  
+
   const [showResult, setShowResult] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {

@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LyricsPage from "./pages/LyricsPage";
 import ApiGuidePage from "./pages/ApiGuidePage";
 import HowToUsePage from "./pages/HowToUsePage";

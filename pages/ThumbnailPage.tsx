@@ -24,7 +24,7 @@ const STORAGE_KEY = "thumbnail_page_state";
 
 const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
   const navigate = useNavigate();
-  
+
   // localStorage에서 저장된 상태 복원
   const [selectedGenre, setSelectedGenre] = useState<string | null>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -38,7 +38,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     }
     return Object.keys(PROMPT_DATA)[0];
   });
-  
+
   const [selectedTags, setSelectedTags] = useState<Set<string>>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -51,7 +51,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     }
     return new Set();
   });
-  
+
   const [generatedImage, setGeneratedImage] = useState<string | null>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -64,9 +64,10 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     }
     return null;
   });
-  
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isCroppingModalOpen, setIsCroppingModalOpen] = useState<boolean>(false);
+  const [isCroppingModalOpen, setIsCroppingModalOpen] =
+    useState<boolean>(false);
   const [isUpscaling, setIsUpscaling] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
@@ -84,33 +85,37 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     }
     return null;
   });
-  
-  const [selectedExpression, setSelectedExpression] = useState<string | null>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return parsed.selectedExpression || null;
-      } catch (e) {
-        return null;
+
+  const [selectedExpression, setSelectedExpression] = useState<string | null>(
+    () => {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          return parsed.selectedExpression || null;
+        } catch (e) {
+          return null;
+        }
       }
+      return null;
     }
-    return null;
-  });
-  
-  const [selectedBackground, setSelectedBackground] = useState<string | null>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return parsed.selectedBackground || null;
-      } catch (e) {
-        return null;
+  );
+
+  const [selectedBackground, setSelectedBackground] = useState<string | null>(
+    () => {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          return parsed.selectedBackground || null;
+        } catch (e) {
+          return null;
+        }
       }
+      return null;
     }
-    return null;
-  });
-  
+  );
+
   const [selectedOutfit, setSelectedOutfit] = useState<string | null>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -123,20 +128,22 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     }
     return null;
   });
-  
-  const [selectedBodyType, setSelectedBodyType] = useState<string | null>(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        return parsed.selectedBodyType || null;
-      } catch (e) {
-        return null;
+
+  const [selectedBodyType, setSelectedBodyType] = useState<string | null>(
+    () => {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          return parsed.selectedBodyType || null;
+        } catch (e) {
+          return null;
+        }
       }
+      return null;
     }
-    return null;
-  });
-  
+  );
+
   const [selectedMood, setSelectedMood] = useState<string | null>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -149,7 +156,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     }
     return null;
   });
-  
+
   const [selectedNoise, setSelectedNoise] = useState<string | null>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -162,7 +169,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     }
     return null;
   });
-  
+
   const [lyricsText, setLyricsText] = useState<string>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -175,7 +182,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     }
     return "";
   });
-  
+
   const lyricsFileInputRef = useRef<HTMLInputElement>(null);
 
   // 상태가 변경될 때마다 localStorage에 저장
@@ -730,8 +737,8 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           </h3>
           <p className="text-zinc-300 mb-4">
             먼저{" "}
-            <span className="text-yellow-400 font-semibold">가사를 생성</span>하고
-            오면 가사에 딱 맞는 썸네일을 만들 수 있어요!
+            <span className="text-yellow-400 font-semibold">가사를 생성</span>
+            하고 오면 가사에 딱 맞는 썸네일을 만들 수 있어요!
           </p>
           <button
             onClick={() => navigate("/lyrics")}
@@ -745,7 +752,9 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 max-w-7xl mx-auto px-4">
         <div className="lg:col-span-8 grid grid-cols-1 lg:grid-cols-8 gap-6">
           <aside className="lg:col-span-3 bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-rose-900/40 rounded-xl p-4 border border-purple-500/30 shadow-lg">
-            <h2 className="text-xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">목차</h2>
+            <h2 className="text-xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+              목차
+            </h2>
             <ul className="space-y-2">
               {Object.keys(PROMPT_DATA).map((genre, index) => {
                 const Icon = GENRE_ICONS[genre];
@@ -918,10 +927,13 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   "from-red-500 to-pink-500",
                   "from-indigo-500 to-purple-500",
                 ];
-                const colorClass = categoryColors[catIdx % categoryColors.length];
+                const colorClass =
+                  categoryColors[catIdx % categoryColors.length];
                 return (
                   <div key={category.title}>
-                    <h3 className={`text-lg font-semibold mb-2 bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}>
+                    <h3
+                      className={`text-lg font-semibold mb-2 bg-gradient-to-r ${colorClass} bg-clip-text text-transparent`}
+                    >
                       {category.title}
                     </h3>
                     <div className="flex flex-wrap gap-2">
@@ -939,13 +951,13 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                             category.state === option.en
                               ? `bg-gradient-to-r ${colorClass} text-white shadow-lg scale-105`
                               : "bg-zinc-800 text-zinc-200 hover:bg-zinc-700"
-                        }`}
-                      >
-                        {option.ko}
-                      </button>
-                    ))}
+                          }`}
+                        >
+                          {option.ko}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
                 );
               })}
             </div>

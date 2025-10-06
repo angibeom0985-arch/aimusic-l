@@ -27,34 +27,35 @@ const DisplayAd: React.FC<DisplayAdProps> = ({
         !adLoadedRef.current
       ) {
         adLoadedRef.current = true;
-        
+
         // 약간의 지연을 두고 광고 로드
         const timeoutId = setTimeout(() => {
           try {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
           } catch (err) {
-            console.error("Ad push error:", err);
+            console.error("Display ad error:", err);
           }
-        }, 100);
+        }, 300);
 
         return () => clearTimeout(timeoutId);
       }
     } catch (err) {
-      console.error("Ad loading error:", err);
+      console.error("Display ad loading error:", err);
     }
   }, []);
 
   return (
     <div
-      className={`w-full my-4 flex justify-center min-h-[100px] ${className}`}
+      className={`w-full my-6 flex justify-center ${className}`}
+      style={{ minHeight: "280px" }}
     >
       <ins
         ref={adRef}
         className="adsbygoogle"
-        style={{ display: "block", minHeight: "100px" }}
+        style={{ display: "block", width: "100%", minHeight: "250px" }}
         data-ad-client="ca-pub-2686975437928535"
         data-ad-slot={slot}
-        data-ad-format="auto"
+        data-ad-format="horizontal"
         data-full-width-responsive="true"
       />
     </div>
