@@ -20,34 +20,193 @@ interface ThumbnailPageProps {
   apiKey: string;
 }
 
+const STORAGE_KEY = "thumbnail_page_state";
+
 const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
   const navigate = useNavigate();
-  const [selectedGenre, setSelectedGenre] = useState<string | null>(
-    Object.keys(PROMPT_DATA)[0]
-  );
-  const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
-  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  
+  // localStorage에서 저장된 상태 복원
+  const [selectedGenre, setSelectedGenre] = useState<string | null>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.selectedGenre || Object.keys(PROMPT_DATA)[0];
+      } catch (e) {
+        return Object.keys(PROMPT_DATA)[0];
+      }
+    }
+    return Object.keys(PROMPT_DATA)[0];
+  });
+  
+  const [selectedTags, setSelectedTags] = useState<Set<string>>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return new Set(parsed.selectedTags || []);
+      } catch (e) {
+        return new Set();
+      }
+    }
+    return new Set();
+  });
+  
+  const [generatedImage, setGeneratedImage] = useState<string | null>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.generatedImage || null;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  });
+  
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isCroppingModalOpen, setIsCroppingModalOpen] =
-    useState<boolean>(false);
+  const [isCroppingModalOpen, setIsCroppingModalOpen] = useState<boolean>(false);
   const [isUpscaling, setIsUpscaling] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [selectedPose, setSelectedPose] = useState<string | null>(null);
-  const [selectedExpression, setSelectedExpression] = useState<string | null>(
-    null
-  );
-  const [selectedBackground, setSelectedBackground] = useState<string | null>(
-    null
-  );
-  const [selectedOutfit, setSelectedOutfit] = useState<string | null>(null);
-  const [selectedBodyType, setSelectedBodyType] = useState<string | null>(null);
-  const [selectedMood, setSelectedMood] = useState<string | null>(null);
-  const [selectedNoise, setSelectedNoise] = useState<string | null>(null);
-  const [lyricsText, setLyricsText] = useState<string>("");
+  const [selectedPose, setSelectedPose] = useState<string | null>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.selectedPose || null;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  });
+  
+  const [selectedExpression, setSelectedExpression] = useState<string | null>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.selectedExpression || null;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  });
+  
+  const [selectedBackground, setSelectedBackground] = useState<string | null>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.selectedBackground || null;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  });
+  
+  const [selectedOutfit, setSelectedOutfit] = useState<string | null>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.selectedOutfit || null;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  });
+  
+  const [selectedBodyType, setSelectedBodyType] = useState<string | null>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.selectedBodyType || null;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  });
+  
+  const [selectedMood, setSelectedMood] = useState<string | null>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.selectedMood || null;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  });
+  
+  const [selectedNoise, setSelectedNoise] = useState<string | null>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.selectedNoise || null;
+      } catch (e) {
+        return null;
+      }
+    }
+    return null;
+  });
+  
+  const [lyricsText, setLyricsText] = useState<string>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.lyricsText || "";
+      } catch (e) {
+        return "";
+      }
+    }
+    return "";
+  });
+  
   const lyricsFileInputRef = useRef<HTMLInputElement>(null);
+
+  // 상태가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    const state = {
+      selectedGenre,
+      selectedTags: Array.from(selectedTags),
+      generatedImage,
+      selectedPose,
+      selectedExpression,
+      selectedBackground,
+      selectedOutfit,
+      selectedBodyType,
+      selectedMood,
+      selectedNoise,
+      lyricsText,
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }, [
+    selectedGenre,
+    selectedTags,
+    generatedImage,
+    selectedPose,
+    selectedExpression,
+    selectedBackground,
+    selectedOutfit,
+    selectedBodyType,
+    selectedMood,
+    selectedNoise,
+    lyricsText,
+  ]);
 
   const allTagsInOrder = useMemo(() => {
     return Object.values(PROMPT_DATA)
@@ -263,6 +422,32 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     setLyricsText("");
     if (lyricsFileInputRef.current) {
       lyricsFileInputRef.current.value = "";
+    }
+  }, []);
+
+  const handleReset = useCallback(() => {
+    if (confirm("모든 작업 내용이 초기화됩니다. 계속하시겠습니까?")) {
+      setSelectedGenre(Object.keys(PROMPT_DATA)[0]);
+      setSelectedTags(new Set());
+      setGeneratedImage(null);
+      setUploadedImage(null);
+      setSelectedPose(null);
+      setSelectedExpression(null);
+      setSelectedBackground(null);
+      setSelectedOutfit(null);
+      setSelectedBodyType(null);
+      setSelectedMood(null);
+      setSelectedNoise(null);
+      setLyricsText("");
+      setError(null);
+      localStorage.removeItem(STORAGE_KEY);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      if (lyricsFileInputRef.current) {
+        lyricsFileInputRef.current.value = "";
+      }
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, []);
 
@@ -914,6 +1099,30 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       <section className="w-full px-4">
         <RelatedServices />
       </section>
+
+      {/* 플로팅 초기화 버튼 */}
+      {(selectedTags.size > 0 || generatedImage || lyricsText) && (
+        <button
+          onClick={handleReset}
+          className="fixed bottom-6 right-6 bg-gradient-to-r from-red-600 via-rose-600 to-pink-600 hover:from-red-700 hover:via-rose-700 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-full shadow-2xl hover:shadow-red-500/50 transition-all duration-300 hover:scale-110 z-50 flex items-center gap-2"
+          title="모든 작업 내용 초기화"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+          초기화
+        </button>
+      )}
     </div>
   );
 };

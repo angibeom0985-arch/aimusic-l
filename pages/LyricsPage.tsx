@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { INITIAL_GENRES } from "../constants";
 import StepGenre from "../components/StepGenre";
@@ -13,25 +13,74 @@ interface MainPageProps {
   apiKey: string;
 }
 
+const STORAGE_KEY = "lyrics_page_state";
+
 const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
   const navigate = useNavigate();
-  const [selections, setSelections] = useState({
-    genre: "",
-    title: "",
-    theme: "",
+  
+  // localStorage에서 저장된 상태 복원
+  const [selections, setSelections] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.selections || { genre: "", title: "", theme: "" };
+      } catch (e) {
+        return { genre: "", title: "", theme: "" };
+      }
+    }
+    return { genre: "", title: "", theme: "" };
   });
-  const [lyrics, setLyrics] = useState("");
+  
+  const [lyrics, setLyrics] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.lyrics || "";
+      } catch (e) {
+        return "";
+      }
+    }
+    return "";
+  });
+  
   const [error, setError] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [showResult, setShowResult] = useState(false);
+  
+  const [showResult, setShowResult] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return parsed.showResult || false;
+      } catch (e) {
+        return false;
+      }
+    }
+    return false;
+  });
+
+  // 상태가 변경될 때마다 localStorage에 저장
+  useEffect(() => {
+    const state = {
+      selections,
+      lyrics,
+      showResult,
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }, [selections, lyrics, showResult]);
 
   const handleReset = useCallback(() => {
-    setSelections({ genre: "", title: "", theme: "" });
-    setLyrics("");
-    setError(null);
-    setIsGenerating(false);
-    setShowResult(false);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (confirm("모든 작업 내용이 초기화됩니다. 계속하시겠습니까?")) {
+      setSelections({ genre: "", title: "", theme: "" });
+      setLyrics("");
+      setError(null);
+      setIsGenerating(false);
+      setShowResult(false);
+      localStorage.removeItem(STORAGE_KEY);
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   }, []);
 
   const handleGenreSelect = (genre: string) => {
@@ -223,6 +272,30 @@ const MainPage: React.FC<MainPageProps> = ({ apiKey }) => {
 
       {/* 다른 서비스 홍보 */}
       <RelatedServices />
+
+      {/* 플로팅 초기화 버튼 */}
+      {(selections.genre || lyrics) && (
+        <button
+          onClick={handleReset}
+          className="fixed bottom-6 right-6 bg-gradient-to-r from-red-600 via-rose-600 to-pink-600 hover:from-red-700 hover:via-rose-700 hover:to-pink-700 text-white font-bold py-3 px-6 rounded-full shadow-2xl hover:shadow-red-500/50 transition-all duration-300 hover:scale-110 z-50 flex items-center gap-2"
+          title="모든 작업 내용 초기화"
+        >
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+          초기화
+        </button>
+      )}
     </div>
   );
 };
