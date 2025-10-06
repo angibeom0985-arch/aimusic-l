@@ -30,7 +30,7 @@ const AppContent: React.FC = () => {
       <SidebarAd position="left" />
       <SidebarAd position="right" />
 
-      {/* 메인 컨텐츠 */}
+      {/* 메인 컨텐츠 - 사이트 제목 헤더 제거됨 (2025-10-07) */}
       <div className="min-h-screen flex flex-col p-4 lg:px-[180px]">
         <main className="w-full max-w-7xl mx-auto flex-1">
           <Routes>
