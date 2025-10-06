@@ -8,7 +8,11 @@ import React, {
 import { useNavigate } from "react-router-dom";
 import { PROMPT_DATA, GENRE_ICONS } from "../constants";
 import { Tag } from "../components/Tag";
-import { generateImage, upscaleImage, translateLyricsToEnglish } from "../services/geminiService";
+import {
+  generateImage,
+  upscaleImage,
+  translateLyricsToEnglish,
+} from "../services/geminiService";
 import { LoadingSpinner } from "../components/LoadingSpinner";
 import { UploadIcon, CloseIcon } from "../components/icons";
 import type { CustomizationCategory } from "../types";
@@ -557,8 +561,13 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
         // 가사가 있으면 가사를 영어로 번역해서 분위기와 내용을 반영
         if (lyricsText.trim()) {
           try {
-            const translatedLyrics = await translateLyricsToEnglish(lyricsText, apiKey);
-            const lyricsPreview = translatedLyrics.slice(0, 300).replace(/\n/g, " ");
+            const translatedLyrics = await translateLyricsToEnglish(
+              lyricsText,
+              apiKey
+            );
+            const lyricsPreview = translatedLyrics
+              .slice(0, 300)
+              .replace(/\n/g, " ");
             basePrompt += `. Mood and atmosphere from lyrics: "${lyricsPreview}"`;
           } catch (translateError) {
             // 번역 실패 시 원본 가사 사용
@@ -1027,7 +1036,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           </div>
 
           <div className="flex-grow flex flex-col justify-end">
-            <div className="flex items-center justify-center bg-black rounded-lg border border-zinc-800 aspect-video">
+            <div className="flex items-center justify-center bg-black rounded-lg border border-zinc-800 aspect-video min-h-[300px]">
               {isLoading || isUpscaling ? (
                 <LoadingSpinner />
               ) : error ? (
@@ -1036,11 +1045,12 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                 <img
                   src={generatedImage}
                   alt="Generated"
-                  className="w-full h-full object-cover rounded-lg"
+                  className="w-full h-full object-contain rounded-lg"
                 />
               ) : (
                 <div className="text-center text-zinc-400">
                   <p>이미지가 여기에 표시됩니다</p>
+                  <p className="text-sm text-zinc-500 mt-2">16:9 유튜브 썸네일 비율</p>
                 </div>
               )}
             </div>
@@ -1052,11 +1062,14 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               >
                 {isUpscaling ? "⏳ 업스케일링..." : "⬆️ 업스케일"}
               </button>
-              
+
               {/* 업스케일 방향 입력 UI */}
               {showUpscaleInput && (
                 <div className="bg-zinc-800 border border-zinc-700 rounded-lg p-4 mt-2">
-                  <label htmlFor="upscaleDirection" className="block text-sm font-medium text-zinc-300 mb-2">
+                  <label
+                    htmlFor="upscaleDirection"
+                    className="block text-sm font-medium text-zinc-300 mb-2"
+                  >
                     원하는 방향을 입력하세요:
                   </label>
                   <textarea
@@ -1084,7 +1097,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   </div>
                 </div>
               )}
-              
+
               <button
                 onClick={handleDownloadImage}
                 disabled={!generatedImage || isLoading || isUpscaling}
