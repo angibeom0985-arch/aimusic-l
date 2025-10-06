@@ -736,21 +736,25 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
           {/* 가사 생성 유도 섹션 */}
           {generatedImage && (
-            <div className="mt-12 p-6 bg-gradient-to-r from-green-900/30 via-blue-900/30 to-purple-900/30 rounded-xl border-2 border-green-500/30">
-              <div className="text-center mb-4">
-                <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
-                  🎵 썸네일 완성! 이제 가사를 만들어볼까요?
+            <div className="mt-12 p-8 bg-gradient-to-br from-green-900/40 via-blue-900/40 to-purple-900/40 rounded-2xl border-2 border-green-500/50 shadow-2xl backdrop-blur-sm hover:border-green-400/70 transition-all duration-300">
+              <div className="text-center mb-6">
+                <div className="text-6xl mb-4 animate-bounce">🎵</div>
+                <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-400 via-blue-400 to-purple-400 bg-clip-text text-transparent mb-3">
+                  완벽한 썸네일이 완성되었어요! 🎉
                 </h3>
+                <p className="text-lg text-zinc-300 font-semibold mb-2">
+                  이제 감동적인 <span className="text-green-400">가사</span>만 있으면 끝!
+                </p>
                 <p className="text-zinc-400 text-sm md:text-base">
-                  멋진 썸네일에 어울리는 완벽한 가사를 AI로 자동 생성하세요!
+                  ✨ AI가 당신의 썸네일에 어울리는 완벽한 가사를 1초 만에 생성해드립니다
                 </p>
               </div>
               <div className="flex justify-center">
                 <button
                   onClick={() => (window.location.href = "/lyrics")}
-                  className="bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 hover:from-green-700 hover:via-blue-700 hover:to-purple-700 text-white font-bold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105"
+                  className="bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 hover:from-green-700 hover:via-blue-700 hover:to-purple-700 text-white font-bold text-lg py-4 px-8 rounded-full transition-all duration-300 shadow-xl hover:shadow-green-500/50 hover:scale-105 animate-pulse"
                 >
-                  🎵 가사 생성하러 가기
+                  🎵 지금 바로 가사 만들기 →
                 </button>
               </div>
             </div>

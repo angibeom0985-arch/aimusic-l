@@ -59,18 +59,26 @@ const StepResult: React.FC<StepResultProps> = ({ lyrics, onReset, error }) => {
 
       {/* 썸네일 생성 유도 섹션 */}
       {!error && (
-        <div className="mt-12 p-6 bg-gradient-to-r from-pink-900/30 via-purple-900/30 to-blue-900/30 rounded-xl border-2 border-pink-500/30">
-          <div className="text-center mb-4">
-            <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent mb-2">
-              🎨 이제 썸네일을 만들어볼까요?
+        <div className="mt-12 p-8 bg-gradient-to-br from-pink-900/40 via-purple-900/40 to-blue-900/40 rounded-2xl border-2 border-pink-500/50 shadow-2xl backdrop-blur-sm hover:border-pink-400/70 transition-all duration-300">
+          <div className="text-center mb-6">
+            <div className="text-6xl mb-4 animate-bounce">🎨</div>
+            <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 bg-clip-text text-transparent mb-3">
+              완벽한 가사가 완성되었어요! �
             </h3>
+            <p className="text-lg text-zinc-300 font-semibold mb-2">
+              이제 눈길을 사로잡는 <span className="text-pink-400">썸네일</span>만 있으면 끝!
+            </p>
             <p className="text-zinc-400 text-sm md:text-base">
-              완성된 가사에 어울리는 멋진 썸네일을 AI로 자동 생성하세요!
+              ✨ AI가 당신의 가사에 딱 맞는 고퀄리티 썸네일을 1초 만에 생성해드립니다
             </p>
           </div>
           <div className="flex justify-center">
-            <Button onClick={goToThumbnail} variant="primary">
-              🎨 썸네일 생성하러 가기
+            <Button 
+              onClick={goToThumbnail} 
+              variant="primary"
+              className="text-lg px-8 py-4 shadow-xl hover:shadow-pink-500/50 animate-pulse"
+            >
+              🎨 지금 바로 썸네일 만들기 →
             </Button>
           </div>
         </div>
