@@ -64,6 +64,9 @@ const HowToUsePage: React.FC = () => {
           </div>
         </section>
 
+        {/* 광고 */}
+        <ContentAd />
+
         <section>
           <h2 className="text-2xl font-semibold mb-4 text-pink-400">
             4. 테마 선택
@@ -117,6 +120,9 @@ const HowToUsePage: React.FC = () => {
             </p>
           </div>
         </section>
+
+        {/* 광고 */}
+        <ContentAd />
 
         <section>
           <h2 className="text-2xl font-semibold mb-4 text-pink-400">

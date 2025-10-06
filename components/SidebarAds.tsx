@@ -9,17 +9,17 @@ const SidebarAds: React.FC = () => {
       try {
         // 왼쪽 광고 초기화
         if (leftAdRef.current) {
-          const leftIns = leftAdRef.current.querySelector('.adsbygoogle');
-          if (leftIns && !leftIns.getAttribute('data-adsbygoogle-status')) {
+          const leftIns = leftAdRef.current.querySelector(".adsbygoogle");
+          if (leftIns && !leftIns.getAttribute("data-adsbygoogle-status")) {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
           }
         }
-        
+
         // 오른쪽 광고 초기화 (약간의 지연)
         setTimeout(() => {
           if (rightAdRef.current) {
-            const rightIns = rightAdRef.current.querySelector('.adsbygoogle');
-            if (rightIns && !rightIns.getAttribute('data-adsbygoogle-status')) {
+            const rightIns = rightAdRef.current.querySelector(".adsbygoogle");
+            if (rightIns && !rightIns.getAttribute("data-adsbygoogle-status")) {
               (window.adsbygoogle = window.adsbygoogle || []).push({});
             }
           }

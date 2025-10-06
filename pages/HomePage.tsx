@@ -94,6 +94,9 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
         </Link>
       </div>
 
+      {/* 광고 */}
+      <ContentAd />
+
       {/* 다른 서비스 홍보 */}
       <div className="w-full max-w-6xl mt-8">
         <RelatedServices />

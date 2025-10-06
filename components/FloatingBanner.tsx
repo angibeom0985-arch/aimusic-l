@@ -20,8 +20,8 @@ const FloatingBanner: React.FC = () => {
     const loadAd = () => {
       try {
         if (adRef.current) {
-          const ins = adRef.current.querySelector('.adsbygoogle');
-          if (ins && !ins.getAttribute('data-adsbygoogle-status')) {
+          const ins = adRef.current.querySelector(".adsbygoogle");
+          if (ins && !ins.getAttribute("data-adsbygoogle-status")) {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
           }
         }

@@ -717,29 +717,30 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       {/* 가사 생성 유도 섹션 */}
       <div className="w-full mx-auto mb-8 px-4 lg:px-8">
         <div className="p-6 bg-gradient-to-br from-yellow-900/30 via-orange-900/30 to-amber-900/30 rounded-2xl border-2 border-yellow-500/50 shadow-xl backdrop-blur-sm hover:border-yellow-400/70 transition-all duration-300">
-        <div className="text-center">
-          <div className="text-5xl mb-3">🎵</div>
-          <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-amber-400 bg-clip-text text-transparent mb-2">
-            아직 가사 생성을 안 했다면?
-          </h3>
-          <p className="text-zinc-300 mb-4">
-            먼저{" "}
-            <span className="text-yellow-400 font-semibold">가사를 생성</span>
-            하고 오면 가사에 딱 맞는 썸네일을 만들 수 있어요!
-          </p>
-          <button
-            onClick={() => navigate("/lyrics")}
-            className="bg-gradient-to-r from-yellow-600 via-orange-500 to-amber-600 hover:from-yellow-500 hover:via-orange-400 hover:to-amber-500 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-yellow-500/50 hover:scale-105"
-          >
-            🎵 가사 먼저 만들러 가기 →
-          </button>
-        </div>
+          <div className="text-center">
+            <div className="text-5xl mb-3">🎵</div>
+            <h3 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-amber-400 bg-clip-text text-transparent mb-2">
+              아직 가사 생성을 안 했다면?
+            </h3>
+            <p className="text-zinc-300 mb-4">
+              먼저{" "}
+              <span className="text-yellow-400 font-semibold">가사를 생성</span>
+              하고 오면 가사에 딱 맞는 썸네일을 만들 수 있어요!
+            </p>
+            <button
+              onClick={() => navigate("/lyrics")}
+              className="bg-gradient-to-r from-yellow-600 via-orange-500 to-amber-600 hover:from-yellow-500 hover:via-orange-400 hover:to-amber-500 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-yellow-500/50 hover:scale-105"
+            >
+              🎵 가사 먼저 만들러 가기 →
+            </button>
+          </div>
         </div>
       </div>
 
-      <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 w-full mx-auto px-4 lg:px-8">
-        <div className="lg:col-span-8 grid grid-cols-1 lg:grid-cols-8 gap-6">
-          <aside className="lg:col-span-3 bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-rose-900/40 rounded-xl p-4 border border-purple-500/30 shadow-lg">
+      <main className="w-full max-w-[1800px] mx-auto px-4 lg:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr_380px] gap-4 lg:gap-6">
+          {/* 좌측 사이드바 - 목차 */}
+          <aside className="bg-gradient-to-br from-purple-900/40 via-pink-900/40 to-rose-900/40 rounded-xl p-4 border border-purple-500/30 shadow-lg">
             <h2 className="text-xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               목차
             </h2>
@@ -776,12 +777,8 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
             </ul>
           </aside>
 
-          {/* 광고 1: 목차와 세부주제 사이 */}
-          <div className="lg:col-span-8">
-            <ContentAd />
-          </div>
-
-          <section className="lg:col-span-5 bg-gradient-to-br from-blue-900/40 via-indigo-900/40 to-purple-900/40 rounded-xl p-4 border border-blue-500/30 shadow-lg h-[70vh] overflow-y-auto">
+          {/* 중앙 콘텐츠 - 세부주제 */}
+          <section className="bg-gradient-to-br from-blue-900/40 via-indigo-900/40 to-purple-900/40 rounded-xl p-4 border border-blue-500/30 shadow-lg h-[70vh] overflow-y-auto">
             {selectedGenre && PROMPT_DATA[selectedGenre] ? (
               <div className="space-y-6">
                 {PROMPT_DATA[selectedGenre].map((subGenre, idx) => (
@@ -808,14 +805,9 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               </div>
             )}
           </section>
-        </div>
 
-        {/* 광고 2: 세부주제와 이미지 생성 사이 */}
-        <div className="lg:col-span-12">
-          <ContentAd />
-        </div>
-
-        <section className="lg:col-span-4 bg-gradient-to-br from-emerald-900/40 via-teal-900/40 to-cyan-900/40 rounded-xl p-4 border border-emerald-500/30 shadow-lg flex flex-col">
+          {/* 우측 사이드바 - 이미지 생성 */}
+          <section className="bg-gradient-to-br from-emerald-900/40 via-teal-900/40 to-cyan-900/40 rounded-xl p-4 border border-emerald-500/30 shadow-lg flex flex-col">
           {/* 가사 입력 섹션 */}
           <div className="mb-6">
             <h2 className="text-xl font-bold mb-3 bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent flex items-center gap-2">
@@ -1058,7 +1050,13 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
             </div>
           )}
         </section>
+        </div>
       </main>
+
+      {/* 광고 섹션 */}
+      <div className="w-full max-w-[1800px] mx-auto px-4 lg:px-6 my-8">
+        <ContentAd />
+      </div>
 
       {/* 구분선 */}
       <div className="my-16 border-t-2 border-zinc-800 w-full mx-auto px-4 lg:px-8"></div>

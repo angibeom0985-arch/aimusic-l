@@ -5,44 +5,62 @@ interface ContentAdProps {
   style?: React.CSSProperties;
 }
 
+declare global {
+  interface Window {
+    adsbygoogle: any[];
+  }
+}
+
 const ContentAd: React.FC<ContentAdProps> = ({
   className = "",
   style = {},
 }) => {
   const adRef = useRef<HTMLDivElement>(null);
+  const adInitialized = useRef(false);
 
   useEffect(() => {
-    const loadAd = () => {
+    // 광고가 이미 초기화되었으면 스킵
+    if (adInitialized.current) return;
+
+    const initAd = () => {
       try {
-        if (adRef.current) {
-          const ins = adRef.current.querySelector('.adsbygoogle');
-          if (ins && !ins.getAttribute('data-adsbygoogle-status')) {
+        if (typeof window !== "undefined" && adRef.current) {
+          const ins = adRef.current.querySelector("ins.adsbygoogle");
+          
+          if (ins && !ins.getAttribute("data-adsbygoogle-status")) {
+            // adsbygoogle 배열 초기화 및 광고 푸시
             (window.adsbygoogle = window.adsbygoogle || []).push({});
+            adInitialized.current = true;
+            console.log("✅ ContentAd: 광고 초기화 완료");
           }
         }
       } catch (error) {
-        console.error("ContentAd error:", error);
+        console.error("❌ ContentAd 초기화 오류:", error);
       }
     };
 
-    // AdSense 스크립트 로드 대기
-    if (window.adsbygoogle) {
-      loadAd();
-    } else {
-      const timer = setTimeout(loadAd, 300);
-      return () => clearTimeout(timer);
-    }
+    // 즉시 실행 + 약간의 지연 후 재시도 (안전장치)
+    initAd();
+    const timeoutId = setTimeout(initAd, 300);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return (
     <div
       ref={adRef}
-      className={`my-6 flex justify-center ${className}`}
-      style={style}
+      className={`my-8 w-full flex justify-center items-center ${className}`}
+      style={{ minHeight: "280px", ...style }}
     >
       <ins
         className="adsbygoogle"
-        style={{ display: "block" }}
+        style={{ 
+          display: "block",
+          width: "100%",
+          minHeight: "280px"
+        }}
         data-ad-client="ca-pub-2686975437928535"
         data-ad-slot="6106251761"
         data-ad-format="auto"
