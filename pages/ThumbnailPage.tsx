@@ -250,11 +250,14 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       pose: {
         title: "포즈",
         options: [
-          { en: "standing", ko: "서서" },
-          { en: "sitting", ko: "앉아서" },
-          { en: "lying down", ko: "누워서" },
-          { en: "walking", ko: "걷는 중" },
-          { en: "a close-up shot", ko: "클로즈업" },
+          { en: "standing confidently", ko: "당당하게 서서" },
+          { en: "sitting comfortably", ko: "편안하게 앉아서" },
+          { en: "leaning against a wall", ko: "벽에 기대어" },
+          { en: "walking naturally", ko: "자연스럽게 걷는" },
+          { en: "a close-up portrait", ko: "클로즈업 초상" },
+          { en: "looking over shoulder", ko: "뒤돌아보는" },
+          { en: "arms crossed", ko: "팔짱끼고" },
+          { en: "hands in pockets", ko: "주머니에 손 넣고" },
         ],
         state: selectedPose,
         setter: setSelectedPose,
@@ -262,11 +265,14 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       expression: {
         title: "표정",
         options: [
-          { en: "smiling", ko: "웃는 표정" },
-          { en: "a neutral expression", ko: "무표정" },
-          { en: "a sad expression", ko: "슬픈 표정" },
-          { en: "a surprised expression", ko: "놀란 표정" },
-          { en: "winking", ko: "윙크" },
+          { en: "smiling warmly", ko: "따뜻한 미소" },
+          { en: "a confident expression", ko: "자신감 있는 표정" },
+          { en: "a peaceful expression", ko: "평온한 표정" },
+          { en: "a thoughtful look", ko: "생각에 잠긴 표정" },
+          { en: "a gentle smile", ko: "부드러운 미소" },
+          { en: "looking curious", ko: "호기심 어린 표정" },
+          { en: "a dreamy expression", ko: "몽환적인 표정" },
+          { en: "a focused look", ko: "집중하는 표정" },
         ],
         state: selectedExpression,
         setter: setSelectedExpression,
@@ -274,12 +280,16 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       background: {
         title: "배경",
         options: [
-          { en: "in a cozy cafe", ko: "카페" },
-          { en: "on a sunny beach", ko: "해변" },
-          { en: "on a busy city street at night", ko: "도시 거리" },
-          { en: "in a lush green forest", ko: "숲" },
-          { en: "in a cozy, dimly lit room", ko: "아늑한 방" },
-          { en: "inside a car", ko: "차 안" },
+          { en: "in a modern cafe with plants", ko: "식물이 있는 모던 카페" },
+          { en: "on a beautiful mountain peak", ko: "아름다운 산 정상" },
+          { en: "in a vibrant city at golden hour", ko: "골든아워 도시" },
+          { en: "in a magical forest with sunlight", ko: "햇살 비치는 숲" },
+          { en: "in a cozy library with books", ko: "책으로 가득한 도서관" },
+          { en: "in a modern minimalist room", ko: "미니멀한 현대적 방" },
+          { en: "on a rooftop with city view", ko: "도시 전망 옥상" },
+          { en: "in an art gallery", ko: "아트 갤러리" },
+          { en: "beside a peaceful lake", ko: "평온한 호수" },
+          { en: "in a flower field", ko: "꽃밭" },
         ],
         state: selectedBackground,
         setter: setSelectedBackground,
@@ -287,36 +297,51 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       outfit: {
         title: "의상",
         options: [
-          { en: "a revealing outfit", ko: "노출 있는 의상" },
-          { en: "a one-piece dress", ko: "원피스" },
-          { en: "an off-the-shoulder top", ko: "오프숄더" },
-          { en: "a casual t-shirt and jeans", ko: "캐주얼" },
-          { en: "a formal suit", ko: "정장" },
+          { en: "a stylish casual outfit", ko: "세련된 캐주얼" },
+          { en: "a elegant dress", ko: "우아한 드레스" },
+          { en: "a professional blazer", ko: "전문적인 블레이저" },
+          { en: "a cozy sweater", ko: "아늑한 스웨터" },
+          { en: "a modern business attire", ko: "현대적 비즈니스 룩" },
+          { en: "a vintage style outfit", ko: "빈티지 스타일" },
+          { en: "a sporty athletic wear", ko: "스포티한 운동복" },
+          { en: "a bohemian style dress", ko: "보헤미안 드레스" },
+          { en: "a minimalist outfit", ko: "미니멀 의상" },
         ],
         state: selectedOutfit,
         setter: setSelectedOutfit,
       },
-      bodyType: {
-        title: "몸매",
+      style: {
+        title: "스타일",
         options: [
-          { en: "a glamorous figure", ko: "글래머" },
-          { en: "a slender figure", ko: "슬랜더" },
-          { en: "an athletic build", ko: "운동형" },
+          { en: "natural and authentic", ko: "자연스럽고 진실된" },
+          { en: "artistic and creative", ko: "예술적이고 창의적인" },
+          { en: "professional and polished", ko: "전문적이고 세련된" },
+          { en: "warm and friendly", ko: "따뜻하고 친근한" },
+          { en: "elegant and sophisticated", ko: "우아하고 세련된" },
         ],
         state: selectedBodyType,
         setter: setSelectedBodyType,
       },
-      mood: {
-        title: "분위기",
-        options: [{ en: "a lofi mood", ko: "로파이 무드" }],
+      lighting: {
+        title: "조명",
+        options: [
+          { en: "soft natural lighting", ko: "부드러운 자연광" },
+          { en: "golden hour lighting", ko: "골든아워 조명" },
+          { en: "dramatic cinematic lighting", ko: "드라마틱한 영화적 조명" },
+          { en: "warm indoor lighting", ko: "따뜻한 실내 조명" },
+          { en: "bright daylight", ko: "밝은 낮빛" },
+          { en: "moody atmospheric lighting", ko: "무드있는 분위기 조명" },
+        ],
         state: selectedMood,
         setter: setSelectedMood,
       },
-      noise: {
-        title: "노이즈",
+      quality: {
+        title: "품질",
         options: [
-          { en: "low noise", ko: "Low Noise" },
-          { en: "heavy noise", ko: "Heavy Noise" },
+          { en: "ultra high definition", ko: "초고해상도" },
+          { en: "professional photography quality", ko: "전문 사진 품질" },
+          { en: "cinematic quality", ko: "영화적 품질" },
+          { en: "magazine cover quality", ko: "잡지 표지 품질" },
         ],
         state: selectedNoise,
         setter: setSelectedNoise,
@@ -339,9 +364,9 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       selectedExpression && `표정: ${selectedExpression}`,
       selectedBackground && `배경: ${selectedBackground}`,
       selectedOutfit && `의상: ${selectedOutfit}`,
-      selectedBodyType && `몸매: ${selectedBodyType}`,
-      selectedMood && `분위기: ${selectedMood}`,
-      selectedNoise && `노이즈: ${selectedNoise}`,
+      selectedBodyType && `스타일: ${selectedBodyType}`,
+      selectedMood && `조명: ${selectedMood}`,
+      selectedNoise && `품질: ${selectedNoise}`,
     ]
       .filter(Boolean)
       .join(", ");
@@ -506,8 +531,9 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           descriptions.push(`Background: ${selectedBackground}`);
         if (selectedOutfit) descriptions.push(`Outfit: ${selectedOutfit}`);
         if (selectedBodyType)
-          descriptions.push(`Body type: ${selectedBodyType}`);
-        if (selectedMood) descriptions.push(`Mood: ${selectedMood}`);
+          descriptions.push(`Style: ${selectedBodyType}`);
+        if (selectedMood) descriptions.push(`Lighting: ${selectedMood}`);
+        if (selectedNoise) descriptions.push(`Quality: ${selectedNoise}`);
 
         // 커스터마이징 옵션이 있으면 추가
         if (descriptions.length > 0) {
@@ -524,12 +550,11 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
           "natural lighting",
           "cinematic style",
           "clean composition",
-          "minimal background",
+          "artistic framing",
         ];
         const randomCameraStyle =
           cameraStyles[Math.floor(Math.random() * cameraStyles.length)];
 
-        const noiseValue = selectedNoise || "low noise";
         let finalStylePrompt = `Shot with ${randomCameraStyle}`;
 
         if (!selectedMood) {
