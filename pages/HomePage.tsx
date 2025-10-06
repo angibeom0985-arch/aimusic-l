@@ -44,9 +44,9 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
         <ApiKeyManager onKeySet={handleKeySet} />
       </div>
 
-      {/* 광고 */}
+      {/* 광고 1 */}
       <div className="w-full max-w-4xl mb-8">
-        <DisplayAd />
+        <DisplayAd slot="6106251761" />
       </div>
 
       {/* 메인 서비스 카드 (가사 생성 & 썸네일 생성) */}
@@ -96,9 +96,9 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
         </Link>
       </div>
 
-      {/* 광고 */}
+      {/* 광고 2 (다른 슬롯 ID 사용) */}
       <div className="w-full max-w-4xl mb-8">
-        <DisplayAd />
+        <DisplayAd slot="6712949943" />
       </div>
 
       {/* 다른 서비스 홍보 */}
