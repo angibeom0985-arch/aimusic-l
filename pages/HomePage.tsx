@@ -26,7 +26,7 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
       {/* 타이틀 */}
       <div className="text-center mb-12 max-w-4xl">
         <h1
-          className="text-5xl md:text-7xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-400 to-pink-500"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-400 to-pink-500"
           style={{
             filter:
               "drop-shadow(0 0 20px rgba(251, 146, 60, 0.8)) drop-shadow(0 0 40px rgba(236, 72, 153, 0.6))",
@@ -34,7 +34,7 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
         >
           AI 음원 가사 및 썸네일 제작
         </h1>
-        <p className="text-zinc-300 text-xl md:text-2xl font-semibold mb-4 drop-shadow-lg">
+        <p className="text-zinc-300 text-lg sm:text-xl md:text-2xl font-semibold mb-4 drop-shadow-lg">
           유튜브 플레이리스트 채널을 누구나 운영할 수 있게 도와드립니다.
         </p>
       </div>

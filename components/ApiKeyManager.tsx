@@ -8,7 +8,7 @@ interface ApiKeyManagerProps {
 
 const ApiKeyManager: React.FC<ApiKeyManagerProps> = ({ onKeySet }) => {
   const [apiKey, setApiKey] = useState("");
-  const [remember, setRemember] = useState(false);
+  const [remember, setRemember] = useState(true);
   const [savedKey, setSavedKey] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
