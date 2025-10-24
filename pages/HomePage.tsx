@@ -44,9 +44,6 @@ const HomePage: React.FC<HomePageProps> = ({ apiKey, setApiKey }) => {
         <ApiKeyManager onKeySet={handleKeySet} />
       </div>
 
-      {/* 광고 */}
-      <ContentAd />
-
       {/* 메인 서비스 카드 (가사 생성 & 썸네일 생성) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mb-8">
         <Link to="/lyrics" className="group cursor-pointer">
