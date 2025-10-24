@@ -47,7 +47,7 @@ const FloatingBanner: React.FC = () => {
         left: "50%",
         transform: "translateX(-50%)",
         zIndex: 1000,
-        backgroundColor: "transparent",
+        background: "linear-gradient(to bottom right, rgb(9, 9, 11), rgb(24, 24, 27), rgb(9, 9, 11))",
         boxShadow: "0 -2px 10px rgba(0,0,0,0.3)",
         borderRadius: "8px 8px 0 0",
         padding: "8px",
