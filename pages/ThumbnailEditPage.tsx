@@ -7,11 +7,17 @@ const ThumbnailEditPage: React.FC = () => {
   const [originalImage, setOriginalImage] = useState<string | null>(null);
 
   useEffect(() => {
-    // 부모 창에서 전달된 이미지 데이터 가져오기
-    const params = new URLSearchParams(window.location.search);
-    const imageData = params.get("image");
+    // sessionStorage에서 이미지 데이터 가져오기
+    const imageData = sessionStorage.getItem('thumbnail_edit_image');
     if (imageData) {
-      setOriginalImage(decodeURIComponent(imageData));
+      setOriginalImage(imageData);
+    } else {
+      // sessionStorage에 데이터가 없으면 URL 파라미터에서 시도
+      const params = new URLSearchParams(window.location.search);
+      const imageParam = params.get("image");
+      if (imageParam) {
+        setOriginalImage(decodeURIComponent(imageParam));
+      }
     }
   }, []);
 

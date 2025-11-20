@@ -5,11 +5,17 @@ const ThumbnailDownloadPage: React.FC = () => {
   const [fileName, setFileName] = useState("playlist-thumbnail.png");
 
   useEffect(() => {
-    // URL 파라미터에서 이미지 데이터 가져오기
-    const params = new URLSearchParams(window.location.search);
-    const imageData = params.get("image");
+    // sessionStorage에서 이미지 데이터 가져오기
+    const imageData = sessionStorage.getItem('thumbnail_download_image');
     if (imageData) {
-      setImageUrl(decodeURIComponent(imageData));
+      setImageUrl(imageData);
+    } else {
+      // sessionStorage에 데이터가 없으면 URL 파라미터에서 시도
+      const params = new URLSearchParams(window.location.search);
+      const imageParam = params.get("image");
+      if (imageParam) {
+        setImageUrl(decodeURIComponent(imageParam));
+      }
     }
   }, []);
 

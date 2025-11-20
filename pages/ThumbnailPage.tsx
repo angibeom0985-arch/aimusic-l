@@ -714,9 +714,11 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
   const handleDownloadImage = useCallback(() => {
     if (!generatedImage) return;
 
-    // 이미지 데이터를 URL 파라미터로 전달하여 새 창 열기
-    const downloadUrl = `/thumbnail/download?image=${encodeURIComponent(generatedImage)}`;
-    window.open(downloadUrl, '_blank', 'width=900,height=800');
+    // sessionStorage에 이미지 데이터 저장
+    sessionStorage.setItem('thumbnail_download_image', generatedImage);
+    
+    // 새 창 열기
+    window.open('/thumbnail/download', '_blank', 'width=900,height=800');
   }, [generatedImage]);
 
   const handleUpscaleImage = useCallback(() => {
@@ -755,9 +757,11 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
   const handleModifyImage = useCallback(() => {
     if (!generatedImage) return;
     
-    // 이미지 데이터를 URL 파라미터로 전달하여 새 창 열기
-    const editUrl = `/thumbnail/edit?image=${encodeURIComponent(generatedImage)}`;
-    window.open(editUrl, '_blank', 'width=600,height=700');
+    // sessionStorage에 이미지 데이터 저장
+    sessionStorage.setItem('thumbnail_edit_image', generatedImage);
+    
+    // 새 창 열기
+    window.open('/thumbnail/edit', '_blank', 'width=600,height=700');
   }, [generatedImage]);
 
   const handleModifyWithPrompt = useCallback(async (promptText: string) => {
