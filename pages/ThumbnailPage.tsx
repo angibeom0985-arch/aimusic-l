@@ -78,7 +78,6 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
   
   // 이미지 수정 관련 상태
   const [isModifying, setIsModifying] = useState<boolean>(false);
-  const [showModifyInput, setShowModifyInput] = useState<boolean>(false);
   const [modifyPrompt, setModifyPrompt] = useState<string>("");
 
   const [selectedPose, setSelectedPose] = useState<string | null>(() => {
@@ -743,15 +742,24 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
   const handleModifyImage = useCallback(() => {
     if (!generatedImage) return;
-    setShowModifyInput(true);
+    
+    // prompt로 입력 받기
+    const userPrompt = window.prompt(
+      "원하는 이미지 수정 내용을 입력하세요:\n\n예시:\n- 배경을 하늘색으로 변경\n- 사람의 표정을 더 밝게\n- 색감을 더 따뜻하게"
+    );
+    
+    if (userPrompt && userPrompt.trim()) {
+      setModifyPrompt(userPrompt.trim());
+      // 프롬프트가 입력되면 바로 수정 실행
+      handleModifyWithPrompt(userPrompt.trim());
+    }
   }, [generatedImage]);
 
-  const handleModifyWithPrompt = useCallback(async () => {
-    if (!generatedImage || !modifyPrompt.trim()) return;
+  const handleModifyWithPrompt = useCallback(async (promptText: string) => {
+    if (!generatedImage || !promptText) return;
 
     setIsModifying(true);
     setError(null);
-    setShowModifyInput(false);
 
     // 쿠팡 링크를 새창으로 열기
     window.open("https://link.coupang.com/a/bZYkzU", "_blank");
@@ -761,7 +769,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
       const modifiedImageUrl = await upscaleImage(
         generatedImage,
         apiKey,
-        modifyPrompt
+        promptText
       );
       setGeneratedImage(modifiedImageUrl);
       setModifyPrompt("");
@@ -773,7 +781,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     } finally {
       setIsModifying(false);
     }
-  }, [generatedImage, apiKey, modifyPrompt]);
+  }, [generatedImage, apiKey]);
 
   const canGenerate =
     !isLoading && !isUpscaling && !isModifying && (selectedTags.size > 0 || !!uploadedImage);
@@ -1179,41 +1187,6 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               >
                 {isModifying ? "⏳ 수정 중..." : "✨ 이미지 수정"}
               </button>
-
-              {/* 이미지 수정 입력 UI */}
-              {showModifyInput && (
-                <div className="bg-zinc-800 border border-zinc-700 rounded-lg p-4 mt-2">
-                  <label
-                    htmlFor="modifyPrompt"
-                    className="block text-sm font-medium text-zinc-300 mb-2"
-                  >
-                    원하는 느낌을 입력하세요:
-                  </label>
-                  <textarea
-                    id="modifyPrompt"
-                    value={modifyPrompt}
-                    onChange={(e) => setModifyPrompt(e.target.value)}
-                    placeholder="예시: 배경을 하늘색으로 변경, 사람의 표정을 더 밝게, 색감을 더 따뜻하게..."
-                    className="w-full h-24 px-3 py-2 bg-zinc-900 border border-zinc-600 rounded-md text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
-                    rows={4}
-                  />
-                  <div className="flex gap-2 mt-3">
-                    <button
-                      onClick={handleModifyWithPrompt}
-                      disabled={isModifying || !modifyPrompt.trim()}
-                      className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 disabled:from-zinc-700 disabled:to-zinc-700 disabled:text-zinc-400 text-white font-bold py-2 px-4 rounded-full transition-all duration-300"
-                    >
-                      ✨ 수정하기
-                    </button>
-                    <button
-                      onClick={() => setShowModifyInput(false)}
-                      className="flex-1 bg-zinc-600 hover:bg-zinc-500 text-white font-bold py-2 px-4 rounded-full transition-all duration-300"
-                    >
-                      취소
-                    </button>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
 
