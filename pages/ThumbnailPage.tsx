@@ -706,9 +706,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-
-    showMessageAndOpenCoupang("✅ 다운로드가 완료되었습니다!");
-  }, [generatedImage, showMessageAndOpenCoupang]);
+  }, [generatedImage]);
 
   const handleUpscaleImage = useCallback(() => {
     if (!generatedImage) return;
@@ -1228,8 +1226,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   완벽한 썸네일이 완성되었어요! 🎉
                 </h3>
                 <p className="text-lg text-zinc-300 font-semibold mb-2">
-                  이제 감동적인 <span className="text-green-400">가사</span>만
-                  있으면 끝!
+                  또 다른 <span className="text-green-400">가사</span>를 만들러 가볼까요?
                 </p>
                 <p className="text-zinc-400 text-sm md:text-base">
                   ✨ AI가 당신의 썸네일에 어울리는 완벽한 가사를 1초 만에

@@ -56,10 +56,6 @@ const AppContent: React.FC = () => {
         </main>
 
         <footer className="text-center mt-12 text-zinc-500 text-sm pb-28 md:pb-32">
-          <p className="mb-2">
-            쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를
-            제공받습니다.
-          </p>
           <p>&copy; 2025 AI 음원 가사 및 썸네일 제작. All rights reserved.</p>
         </footer>
       </div>

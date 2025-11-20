@@ -13,14 +13,14 @@ const services: Service[] = [
   {
     icon: "📹",
     title: "숏폼/롱폼 영상 소스 무제한 생성",
-    description: "프로페셔널 영상 편집과 효과를 위한 도구를 확인해보세요",
+    description: "다양한 영상 소스를 빠르게 생성하세요",
     url: "https://youtube-image.money-hotissue.com/",
     gradient: "from-green-600 via-emerald-500 to-teal-600",
   },
   {
     icon: "🔥",
     title: "떡상한 대본 비밀 파헤치고 내 걸로 만들기",
-    description: "위에서 만든 대본을 토대로 AI 영상 1분 가능",
+    description: "인기 대본을 분석하고 나만의 콘텐츠를 만드세요",
     url: "https://youtube-analyze.money-hotissue.com/",
     gradient: "from-orange-600 via-amber-500 to-yellow-600",
   },
@@ -44,12 +44,6 @@ const RelatedServices: React.FC = () => {
         >
           🎬 더 많은 영상 제작 도구가 필요하신가요?
         </h2>
-        <p className="text-zinc-400 text-base md:text-lg">
-          프로페셔널 영상 편집과 효과를 위한 도구들을 확인해보세요!
-        </p>
-        <p className="text-zinc-500 text-sm mt-2">
-          위에서 만든 대본을 토대로 AI 영상 1분 가능
-        </p>
       </div>
 
       {/* 서비스 그리드 */}
