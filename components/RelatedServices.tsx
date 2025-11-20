@@ -19,7 +19,7 @@ const services: Service[] = [
   },
   {
     icon: "🔥",
-    title: "떡상한 대본 비밀 파헤치고 내 걸로 만들기",
+    title: "떡상한 영상의 대본 구조를 카피하기",
     description: "인기 대본을 분석하고 나만의 콘텐츠를 만드세요",
     url: "https://youtube-analyze.money-hotissue.com/",
     gradient: "from-orange-600 via-amber-500 to-yellow-600",
