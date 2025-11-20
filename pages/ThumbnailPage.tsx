@@ -75,6 +75,11 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
   const [error, setError] = useState<string | null>(null);
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // 이미지 수정 관련 상태
+  const [isModifying, setIsModifying] = useState<boolean>(false);
+  const [showModifyInput, setShowModifyInput] = useState<boolean>(false);
+  const [modifyPrompt, setModifyPrompt] = useState<string>("");
 
   const [selectedPose, setSelectedPose] = useState<string | null>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -738,8 +743,42 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     }
   }, [generatedImage, apiKey, upscaleDirection]);
 
+  const handleModifyImage = useCallback(() => {
+    if (!generatedImage) return;
+    setShowModifyInput(true);
+  }, [generatedImage]);
+
+  const handleModifyWithPrompt = useCallback(async () => {
+    if (!generatedImage || !modifyPrompt.trim()) return;
+
+    setIsModifying(true);
+    setError(null);
+    setShowModifyInput(false);
+
+    // 쿠팡 링크를 새창으로 열기
+    window.open("https://link.coupang.com/a/bZYkzU", "_blank");
+
+    try {
+      // upscaleImage 함수를 재활용하여 이미지 수정
+      const modifiedImageUrl = await upscaleImage(
+        generatedImage,
+        apiKey,
+        modifyPrompt
+      );
+      setGeneratedImage(modifiedImageUrl);
+      setModifyPrompt("");
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다.";
+      setError(`이미지 수정 실패: ${errorMessage}`);
+      console.error(err);
+    } finally {
+      setIsModifying(false);
+    }
+  }, [generatedImage, apiKey, modifyPrompt]);
+
   const canGenerate =
-    !isLoading && !isUpscaling && (selectedTags.size > 0 || !!uploadedImage);
+    !isLoading && !isUpscaling && !isModifying && (selectedTags.size > 0 || !!uploadedImage);
 
   if (!apiKey) {
     return (
@@ -1061,7 +1100,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
           <div className="flex-grow flex flex-col justify-end">
             <div className="flex items-center justify-center bg-black rounded-lg border border-zinc-800 aspect-video min-h-[300px]">
-              {isLoading || isUpscaling ? (
+              {isLoading || isUpscaling || isModifying ? (
                 <LoadingSpinner />
               ) : error ? (
                 <p className="text-red-400 text-center p-4">{error}</p>
@@ -1081,13 +1120,23 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               )}
             </div>
             <div className="mt-4 flex flex-col gap-2">
-              <button
-                onClick={handleUpscaleImage}
-                disabled={!generatedImage || isLoading || isUpscaling}
-                className="w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-green-500/50 hover:scale-105"
-              >
-                {isUpscaling ? "⏳ 업스케일링..." : "⬆️ 업스케일"}
-              </button>
+              {/* 업스케일 및 다운로드 버튼 가로 배치 */}
+              <div className="flex gap-2">
+                <button
+                  onClick={handleUpscaleImage}
+                  disabled={!generatedImage || isLoading || isUpscaling || isModifying}
+                  className="flex-1 bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 hover:from-green-600 hover:via-emerald-600 hover:to-teal-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-green-500/50 hover:scale-105"
+                >
+                  {isUpscaling ? "⏳ 업스케일링..." : "⬆️ 업스케일"}
+                </button>
+                <button
+                  onClick={handleDownloadImage}
+                  disabled={!generatedImage || isLoading || isUpscaling || isModifying}
+                  className="flex-1 bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500 hover:from-blue-600 hover:via-sky-600 hover:to-cyan-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-blue-500/50 hover:scale-105"
+                >
+                  💾 다운로드
+                </button>
+              </div>
 
               {/* 업스케일 방향 입력 UI */}
               {showUpscaleInput && (
@@ -1124,13 +1173,49 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                 </div>
               )}
 
+              {/* 이미지 수정 버튼 */}
               <button
-                onClick={handleDownloadImage}
-                disabled={!generatedImage || isLoading || isUpscaling}
-                className="w-full bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500 hover:from-blue-600 hover:via-sky-600 hover:to-cyan-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-blue-500/50 hover:scale-105"
+                onClick={handleModifyImage}
+                disabled={!generatedImage || isLoading || isUpscaling || isModifying}
+                className="w-full bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-500 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-purple-500/50 hover:scale-105"
               >
-                💾 다운로드
+                {isModifying ? "⏳ 수정 중..." : "✨ 이미지 수정"}
               </button>
+
+              {/* 이미지 수정 입력 UI */}
+              {showModifyInput && (
+                <div className="bg-zinc-800 border border-zinc-700 rounded-lg p-4 mt-2">
+                  <label
+                    htmlFor="modifyPrompt"
+                    className="block text-sm font-medium text-zinc-300 mb-2"
+                  >
+                    원하는 느낌을 입력하세요:
+                  </label>
+                  <textarea
+                    id="modifyPrompt"
+                    value={modifyPrompt}
+                    onChange={(e) => setModifyPrompt(e.target.value)}
+                    placeholder="예시: 배경을 하늘색으로 변경, 사람의 표정을 더 밝게, 색감을 더 따뜻하게..."
+                    className="w-full h-24 px-3 py-2 bg-zinc-900 border border-zinc-600 rounded-md text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                    rows={4}
+                  />
+                  <div className="flex gap-2 mt-3">
+                    <button
+                      onClick={handleModifyWithPrompt}
+                      disabled={isModifying || !modifyPrompt.trim()}
+                      className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 disabled:from-zinc-700 disabled:to-zinc-700 disabled:text-zinc-400 text-white font-bold py-2 px-4 rounded-full transition-all duration-300"
+                    >
+                      ✨ 수정하기
+                    </button>
+                    <button
+                      onClick={() => setShowModifyInput(false)}
+                      className="flex-1 bg-zinc-600 hover:bg-zinc-500 text-white font-bold py-2 px-4 rounded-full transition-all duration-300"
+                    >
+                      취소
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
