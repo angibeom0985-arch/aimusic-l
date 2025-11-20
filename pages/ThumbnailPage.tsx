@@ -711,49 +711,12 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
     }, 1500);
   }, []);
 
-  const handleDownloadImage = useCallback(async () => {
+  const handleDownloadImage = useCallback(() => {
     if (!generatedImage) return;
 
-    try {
-      // 이미지를 fetch하여 blob으로 변환
-      const response = await fetch(generatedImage);
-      const blob = await response.blob();
-      
-      // Blob URL 생성
-      const blobUrl = URL.createObjectURL(blob);
-      
-      // 새 창에서 이미지 열기 (브라우저의 다운로드 대화상자 표시)
-      const newWindow = window.open(blobUrl, '_blank');
-      
-      // URL 정리 (약간의 지연 후)
-      setTimeout(() => {
-        URL.revokeObjectURL(blobUrl);
-      }, 1000);
-      
-      // 새 창이 차단되었을 경우를 대비한 fallback
-      if (!newWindow) {
-        // 직접 다운로드 실행
-        const link = document.createElement("a");
-        link.href = blobUrl;
-        link.download = "playlist-thumbnail.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        setTimeout(() => {
-          URL.revokeObjectURL(blobUrl);
-        }, 1000);
-      }
-    } catch (error) {
-      console.error('다운로드 오류:', error);
-      // 오류 발생 시 기존 방식으로 시도
-      const link = document.createElement("a");
-      link.href = generatedImage;
-      link.download = "playlist-thumbnail.png";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
+    // 이미지 데이터를 URL 파라미터로 전달하여 새 창 열기
+    const downloadUrl = `/thumbnail/download?image=${encodeURIComponent(generatedImage)}`;
+    window.open(downloadUrl, '_blank', 'width=900,height=800');
   }, [generatedImage]);
 
   const handleUpscaleImage = useCallback(() => {

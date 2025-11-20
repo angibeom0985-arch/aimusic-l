@@ -6,6 +6,7 @@ import HowToUsePage from "./pages/HowToUsePage";
 import AdminPage from "./pages/AdminPage";
 import ThumbnailPage from "./pages/ThumbnailPage";
 import ThumbnailEditPage from "./pages/ThumbnailEditPage";
+import ThumbnailDownloadPage from "./pages/ThumbnailDownloadPage";
 import HomePage from "./pages/HomePage";
 import { initContentProtection } from "./utils/contentProtection";
 import AdBlockDetector from "./components/AdBlockDetector";
@@ -51,6 +52,7 @@ const AppContent: React.FC = () => {
               element={<ThumbnailPage apiKey={apiKey} />}
             />
             <Route path="/thumbnail/edit" element={<ThumbnailEditPage />} />
+            <Route path="/thumbnail/download" element={<ThumbnailDownloadPage />} />
             <Route path="/api-guide" element={<ApiGuidePage />} />
             <Route path="/how-to-use" element={<HowToUsePage />} />
             <Route path="/admin" element={<AdminPage />} />
