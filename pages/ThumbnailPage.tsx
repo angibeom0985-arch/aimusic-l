@@ -78,6 +78,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
   
   // 이미지 수정 관련 상태
   const [isModifying, setIsModifying] = useState<boolean>(false);
+  const [showModifyInput, setShowModifyInput] = useState<boolean>(false);
   const [modifyPrompt, setModifyPrompt] = useState<string>("");
 
   const [selectedPose, setSelectedPose] = useState<string | null>(() => {
@@ -742,17 +743,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
   const handleModifyImage = useCallback(() => {
     if (!generatedImage) return;
-    
-    // prompt로 입력 받기
-    const userPrompt = window.prompt(
-      "원하는 이미지 수정 내용을 입력하세요:\n\n예시:\n- 배경을 하늘색으로 변경\n- 사람의 표정을 더 밝게\n- 색감을 더 따뜻하게"
-    );
-    
-    if (userPrompt && userPrompt.trim()) {
-      setModifyPrompt(userPrompt.trim());
-      // 프롬프트가 입력되면 바로 수정 실행
-      handleModifyWithPrompt(userPrompt.trim());
-    }
+    setShowModifyInput(true);
   }, [generatedImage]);
 
   const handleModifyWithPrompt = useCallback(async (promptText: string) => {
@@ -760,6 +751,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
 
     setIsModifying(true);
     setError(null);
+    setShowModifyInput(false);
 
     // 쿠팡 링크를 새창으로 열기
     window.open("https://link.coupang.com/a/bZYkzU", "_blank");
@@ -1187,6 +1179,53 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               )}
             </div>
           </div>
+
+          {/* 이미지 수정 대화상자 */}
+          {showModifyInput && (
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+              <div className="bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-800 border border-zinc-700/50 rounded-2xl p-6 max-w-md w-full shadow-2xl">
+                <h3 className="text-xl font-bold text-zinc-100 mb-4">
+                  원하는 이미지 수정 내용을 입력하세요
+                </h3>
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-zinc-300 mb-2">
+                    예시:
+                  </label>
+                  <ul className="text-sm text-zinc-400 space-y-1 mb-4">
+                    <li>- 배경을 하늘색으로 변경</li>
+                    <li>- 사람의 표정을 더 밝게</li>
+                    <li>- 색감을 더 따뜻하게</li>
+                  </ul>
+                  <textarea
+                    value={modifyPrompt}
+                    onChange={(e) => setModifyPrompt(e.target.value)}
+                    placeholder="수정할 내용을 입력하세요..."
+                    className="w-full h-32 px-4 py-3 bg-zinc-800 border border-zinc-600 rounded-lg text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                    autoFocus
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setShowModifyInput(false)}
+                    className="flex-1 bg-zinc-700 hover:bg-zinc-600 text-white font-bold py-3 px-4 rounded-full transition-all duration-300"
+                  >
+                    취소
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (modifyPrompt.trim()) {
+                        handleModifyWithPrompt(modifyPrompt.trim());
+                      }
+                    }}
+                    disabled={!modifyPrompt.trim()}
+                    className="flex-1 bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-600 hover:from-purple-700 hover:via-violet-700 hover:to-indigo-700 disabled:from-zinc-700 disabled:to-zinc-700 disabled:text-zinc-500 text-white font-bold py-3 px-4 rounded-full transition-all duration-300"
+                  >
+                    확인
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* 가사 생성 유도 섹션 */}
           {generatedImage && (
