@@ -1126,7 +1126,7 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
               )}
             </div>
             <div className="mt-4 flex flex-col gap-2">
-              {/* 업스케일 및 다운로드 버튼 가로 배치 */}
+              {/* 업스케일, 다운로드, 이미지 수정 버튼 가로 배치 */}
               <div className="flex gap-2">
                 <button
                   onClick={handleUpscaleImage}
@@ -1141,6 +1141,13 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   className="flex-1 bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-500 hover:from-blue-600 hover:via-sky-600 hover:to-cyan-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-blue-500/50 hover:scale-105"
                 >
                   💾 다운로드
+                </button>
+                <button
+                  onClick={handleModifyImage}
+                  disabled={!generatedImage || isLoading || isUpscaling || isModifying}
+                  className="flex-1 bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-500 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-purple-500/50 hover:scale-105"
+                >
+                  {isModifying ? "⏳ 수정 중..." : "✨ 이미지 수정"}
                 </button>
               </div>
 
@@ -1178,15 +1185,6 @@ const ThumbnailPage: React.FC<ThumbnailPageProps> = ({ apiKey }) => {
                   </div>
                 </div>
               )}
-
-              {/* 이미지 수정 버튼 */}
-              <button
-                onClick={handleModifyImage}
-                disabled={!generatedImage || isLoading || isUpscaling || isModifying}
-                className="w-full bg-gradient-to-r from-purple-500 via-violet-500 to-indigo-500 hover:from-purple-600 hover:via-violet-600 hover:to-indigo-600 disabled:from-zinc-800 disabled:to-zinc-800 disabled:text-zinc-500 disabled:cursor-not-allowed text-white font-bold py-3 px-4 rounded-full transition-all duration-300 shadow-lg hover:shadow-purple-500/50 hover:scale-105"
-              >
-                {isModifying ? "⏳ 수정 중..." : "✨ 이미지 수정"}
-              </button>
             </div>
           </div>
 
